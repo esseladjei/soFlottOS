@@ -1,0 +1,34 @@
+import { NextResponse } from "next/server";
+import { BackendError, BackendUnavailableError, loginAgainstBackend } from "@/lib/api/backend";
+import { setSession } from "@/lib/auth/session";
+import { toPublicSession } from "@/lib/auth/session-cookie";
+import type { LoginRequest } from "@/types/api";
+
+export function GET() {
+  return NextResponse.json(
+    { title: "Method not allowed", detail: "Use POST /api/auth/login to create a frontend session.", status: 405 },
+    { status: 405, headers: { allow: "POST" } },
+  );
+}
+
+export async function POST(request: Request) {
+  try {
+    const credentials = (await request.json()) as LoginRequest;
+    const session = await loginAgainstBackend(credentials);
+    await setSession(session);
+    return NextResponse.json(toPublicSession(session));
+  } catch (error) {
+    if (error instanceof BackendError) {
+      return NextResponse.json(error.body, { status: error.status });
+    }
+
+    if (error instanceof BackendUnavailableError) {
+      return NextResponse.json(error.problem, { status: error.problem.status ?? 503 });
+    }
+
+    return NextResponse.json(
+      { title: "Authentication failed", detail: "An unexpected error occurred while signing you in.", status: 500 },
+      { status: 500 },
+    );
+  }
+}

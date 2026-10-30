@@ -1,0 +1,62 @@
+@soFlottOS.Api_HostAddress = http://localhost:5235
+@DevPassword = SET_YOUR_LOCAL_PASSWORD
+
+### Login as admin
+POST {{soFlottOS.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@soflott.local",
+  "password": "{{DevPassword}}"
+}
+
+### Get clients
+GET {{soFlottOS.Api_HostAddress}}/api/clients
+Authorization: Bearer {{token}}
+
+### Create order quote
+POST {{soFlottOS.Api_HostAddress}}/api/orders/quote
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "clientId": 1,
+  "pickupLat": 48.3705,
+  "pickupLng": 10.8978,
+  "dropoffLat": 48.265,
+  "dropoffLng": 10.984,
+  "weightKg": 2.5,
+  "cargoCategory": "Document"
+}
+
+### Create order
+POST {{soFlottOS.Api_HostAddress}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "clientId": 1,
+  "cargoCategory": "Document",
+  "weightKg": 2.5,
+  "pickupAddress": "Musterstraße 12, Augsburg",
+  "pickupLat": 48.3705,
+  "pickupLng": 10.8978,
+  "pickupContactName": "Anna Weber",
+  "pickupPhone": "+491701234567",
+  "dropoffAddress": "Bahnhofstraße 24, Mering",
+  "dropoffLat": 48.265,
+  "dropoffLng": 10.984,
+  "dropoffContactName": "Dr. Fischer",
+  "dropoffPhone": "+491711112222",
+  "accessNotes": "Use the rear lab entrance.",
+  "externalReference": "LAB-1042"
+}
+
+### Assign order
+PUT {{soFlottOS.Api_HostAddress}}/api/orders/1/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverUserId": 3
+}

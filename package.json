@@ -1,0 +1,20 @@
+{
+  "name": "soflottos-monorepo",
+  "private": true,
+  "scripts": {
+    "db:up": "docker compose up -d mysql",
+    "db:down": "docker compose down",
+    "restore:api": "node ./scripts/dotnetw.mjs restore soFlottOS.sln",
+    "tools:api": "node ./scripts/dotnetw.mjs tool restore --tool-manifest apps/api/.config/dotnet-tools.json",
+    "migrate:api": "cd apps/api && node ../../scripts/dotnetw.mjs ef database update --project src/soFlottOS.Api",
+    "dev:api": "node ./scripts/dotnetw.mjs run --project apps/api/src/soFlottOS.Api/soFlottOS.Api.csproj",
+    "build:api": "node ./scripts/dotnetw.mjs build soFlottOS.sln",
+    "test:api": "node ./scripts/dotnetw.mjs test soFlottOS.sln",
+    "install:web": "npm --prefix apps/web install",
+    "dev:web": "npm --prefix apps/web run dev",
+    "lint:web": "npm --prefix apps/web run lint",
+    "typecheck:web": "npm --prefix apps/web run typecheck",
+    "build:web": "npm --prefix apps/web run build",
+    "check:web": "npm --prefix apps/web run check"
+  }
+}

@@ -1,0 +1,43 @@
+﻿<!--
+  The one and only backend project.
+  Folder layers inside it: Domain -> Data (+Repositories) -> Services -> Controllers.
+-->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Allows the test project to construct the web host via WebApplicationFactory. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <UserSecretsId>323d786a-69ac-422c-a719-b5ca21f4e73f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Web: authentication and the generated OpenAPI document. -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.12.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
+
+    <!-- Data: EF Core + the MySQL provider. Design is only needed for `dotnet ef`. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <!-- Health checks for /healthz. -->
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.9" />
+
+    <!-- Security: password hashing. -->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Makes internal types visible to the unit test project. -->
+    <InternalsVisibleTo Include="soFlottOS.Api.Tests" />
+  </ItemGroup>
+
+</Project>
