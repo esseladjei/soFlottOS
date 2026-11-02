@@ -83,7 +83,13 @@ Never commit real secrets. Configure `Jwt__SigningKey` (at least 32 random
 characters) and `ConnectionStrings__MySql` with environment variables or .NET
 User Secrets. OpenRouteService routing requires `Routing__ApiKey`; local
 development defaults to offline `GeoDistance`. To seed development accounts,
-set `Seed__Enabled=true` and provide a strong `Seed__DefaultPassword` locally.
+run `npm run seed:password -- 'YOUR_PASSWORD'` and `npm run seed:enable` from the
+repository root, then start or restart the API. These scripts save
+`Seed:DefaultPassword` and `Seed:Enabled` in local User Secrets. Seeding runs only
+in Development when the database has no users; it does not update existing
+passwords. See [development account setup](../../README.md#creating-development-accounts)
+for password requirements and login emails. Environment variables
+`Seed__Enabled=true` and `Seed__DefaultPassword` are an alternative.
 
 Transactional emails are staged in the same EF context as the business change.
 Booking uses a transaction across order, invoice and outbox saves. Delivery uses

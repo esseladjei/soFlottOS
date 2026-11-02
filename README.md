@@ -55,15 +55,41 @@ npm run install:web           # 3. frontend dependencies
 npm run dev:web               # 4. frontend on http://localhost:3000
 ```
 
-To create development accounts, set `Seed:Enabled=true` and configure a unique,
-strong `Seed:DefaultPassword` through User Secrets or an environment variable.
-The accounts are:
+### Creating development accounts
+
+Seeding automatically creates the three accounts below when the API starts.
+Before starting (or restarting) the API, run these commands from the repository
+root to save the seed settings in local .NET User Secrets, outside source control:
+
+```bash
+npm run seed:password -- 'REPLACE_WITH_YOUR_OWN_PASSWORD'
+npm run seed:enable
+npm run dev:api
+```
+
+Replace `REPLACE_WITH_YOUR_OWN_PASSWORD` with a unique password of at least
+12 characters, including uppercase and lowercase letters, a number and a symbol.
+Keep the surrounding single quotes. The password command can appear in your
+terminal history and npm output; do not share those logs.
+MySQL must be running, and `Jwt:SigningKey` and `ConnectionStrings:MySql` must
+already be configured as described above. If you run the API in Rider, restart
+`soFlottOS.Api: http` instead of running `npm run dev:api`.
+
+On successful creation, the API logs `Seeded development accounts: ...`.
+Open the frontend at `http://localhost:3000` and log in with one of these emails
+and the password you chose:
 
 | Role | Email |
 |---|---|
 | Admin | `admin@soflott.local` |
 | Client | `client@soflott.local` |
 | Driver | `driver@soflott.local` |
+
+**Seeding only runs in Development and when the database has no users.**
+If any user already exists, all three accounts are skipped. Changing the seed
+password does not update existing accounts. After creating them, you can run
+`npm run seed:disable` to disable seeding on subsequent API starts; this does
+not delete the accounts.
 
 ## Root scripts
 
@@ -73,6 +99,8 @@ The accounts are:
 | `npm run dev:api` | run the backend |
 | `npm run build:api` / `test:api` | build / unit-test the backend |
 | `npm run tools:api` | restore the `dotnet-ef` CLI |
+| `npm run seed:password -- 'YOUR_PASSWORD'` | save the development accounts' password in local User Secrets |
+| `npm run seed:enable` / `seed:disable` | enable / disable development account creation on API startup |
 | `npm run dev:web` | run the frontend |
 | `npm run check:web` | lint + typecheck + build the frontend |
 

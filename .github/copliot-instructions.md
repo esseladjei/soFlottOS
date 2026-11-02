@@ -17,7 +17,7 @@
 - **Framework:** C# .NET 8/9 ASP.NET Core Web API using Clean Architecture (Repository Pattern, Service Layer, Controllers).
 - **ORM & Database:** Entity Framework Core (EF Core) with MySQL 8.0+.
 - **Authentication:** JWT Bearer tokens with Role-Based Access Control (`Admin`, `Dispatcher`, `Driver`, `Client`).
-- **Integrations:** OpenRouteService / Mapbox API (routing & distance), Twilio (SMS/WhatsApp notifications), Emails(Resend).
+- **Integrations:** OpenRouteService / Mapbox API (routing & distance), Twilio (SMS/WhatsApp notifications).
 
 ### Frontend Architecture
 - **Framework:** Next.js 14+ (App Router, React Server Components, TypeScript, Tailwind CSS).
@@ -28,7 +28,23 @@
 
 ---
 
-## 3. Financial & Tax Logic Rules (CRITICAL FOR CODE GENERATION)
+## 3. SEO & Route Architecture Standards
+
+### Domain Route Separation
+- Keep logistics marketing pages separated from IT consulting services:
+    - Local Express Courier routes: `/app/express/[city]/page.tsx`
+    - Subcontracting routes: `/app/partner/page.tsx`
+    - IT Consulting routes: `/app/it-consulting/page.tsx`
+
+### Technical SEO & Metadata Guidelines
+- **Dynamic Metadata:** Utilize Next.js `generateMetadata` in Server Components for all public marketing pages. Title tags must follow: `[Service Keyword] in [City/Region] | soFlott`.
+- **Structured Data (Schema.org):** Inject `CourierService` JSON-LD schema for local express pages and `ProfessionalService` JSON-LD for IT consulting pages.
+- **Multilingual Support:** Always attach `hreflang` metadata attributes (`de-DE` for express courier, `en` for cross-border IT consulting).
+- **Legal B2B Pricing Rule:** Ensure all public-facing pricing components explicitly display `"zzgl. 19% MwSt."` (net pricing notice).
+
+---
+
+## 4. Financial & Tax Logic Rules (CRITICAL FOR CODE GENERATION)
 
 When generating code for invoicing, billing, or financial logic, always follow these exact German tax rules:
 
@@ -54,28 +70,25 @@ When generating code for invoicing, billing, or financial logic, always follow t
 
 ---
 
-## 4. Coding Conventions & Best Practices
+## 5. Coding Conventions & Best Practices
 
 ### C# / .NET Guidelines
 - Always use **strong static typing**, record types for DTOs, and async/await for I/O operations (`Task<IActionResult>`).
 - Enforce Dependency Injection in `Program.cs` using interface abstraction (`IService`, `IRepository`).
 - Guard against SQL injection by utilizing EF Core LINQ queries; avoid raw unparameterized SQL.
 - Format non-zero calculations defensively (e.g., check for division by zero in routing or distance math).
-- Localize date/time and currency formatting using `CultureInfo` for German locale (`de-DE`) in all financial outputs.
 
 ### TypeScript / Next.js Guidelines
 - Use strictly typed interfaces/types for API responses and payload structures; never use implicit `any`.
 - Keep components modular: place client-side UI triggers (`useState`, HTML5 signature pads) in explicitly marked `'use client'` components.
 - Secure API fetch wrappers by embedding JWT `Authorization: Bearer <token>` headers on all protected routes.
+- Ensure all public components use `<Image />` for webp/avif optimizations and semantic HTML `<header>`, `<main>`, `<footer>` tags for Core Web Vitals.
 
 ---
 
-## 5. Key Database Schema Entities
+## 6. Key Database Schema Entities
 - `Users`: `Id`, `Email`, `PasswordHash`, `FullName`, `Role` (`Admin`, `Dispatcher`, `Driver`, `Client`).
 - `Clients`: `Id`, `UserId`, `CompanyName`, `CountryCode`, `VatIdNumber`, `TaxExemptionCode`.
 - `Orders`: `Id`, `ClientId`, `AssignedDriverId`, `CargoCategory`, `SpecialInstructions`, `DistanceKm`, `PriceNet`, `VatAmount`, `TotalPriceGross`, `Status`.
 - `ProofOfDeliveries`: `Id`, `OrderId`, `RecipientName`, `SignatureDataUrl` (Base64 string), `GpsLatitude`, `GpsLongitude`.
 - `Invoices`: `Id`, `InvoiceNumber`, `ClientId`, `ServiceType` (`CourierExpress`, `CourierSubcontract`, `ITConsulting`), `NetTotal`, `VatRate`, `VatTotal`, `GrossTotal`, `CurrencyCode`, `TaxExemptionNote`, `Status`.
-
-## 6. API Contract
-All information exchanged between the frontend and backend must adhere to the following JSON API contract: located in docs/api-contract.md This contract defines the request and response payloads, including required fields, data types, and validation rules for each endpoint.
