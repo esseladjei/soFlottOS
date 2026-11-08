@@ -48,10 +48,6 @@ export const baseMetadata: Metadata = {
     "geo.region": `${siteConfig.address.country}-BY`,
     "geo.placename": siteConfig.serviceArea,
   },
-  icons: {
-    icon: "/logo/soFlott_arrow.png",
-    apple: "/logo/soFlott_arrow.png",
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

@@ -5,6 +5,7 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { BrandTagline } from "@/components/ui/brand-tagline";
 import type { MarketingContent } from "@/content/marketing/types";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/routes";
@@ -23,6 +24,7 @@ export function MarketingFooter({ locale, content }: { locale: Locale; content: 
             <p className="font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight text-stone-950">
               {siteConfig.companyName}
             </p>
+            <BrandTagline className="mt-1 text-sm" locale={locale} />
             <p className="mt-3 max-w-sm text-sm leading-6 text-stone-600">{footer.tagline}</p>
 
             <p className="mt-6 text-xs font-extrabold uppercase tracking-widest text-stone-500">

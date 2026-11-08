@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Nunito_Sans } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
@@ -46,6 +47,7 @@ export function RootShell({ locale, children }: { locale: Locale; children: Reac
             <ServiceWorkerRegistration />
           </LocaleProvider>
         </AppProviders>
+        <Analytics />
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -216,12 +217,24 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<AppDbContext>("database");
 
+// Behind Render's TLS-terminating proxy: trust X-Forwarded-* so the client IP (rate limiting)
+// and scheme are correct. The proxy is not loopback, so the default trusted lists are cleared.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 var app = builder.Build();
 
 // --- 3. HTTP pipeline (order matters) --------------------------------------
+app.UseForwardedHeaders();
 app.UseExceptionHandler();
 
-if (!app.Environment.IsDevelopment())
+// The proxy handles HTTP->HTTPS; the container itself only listens on plain HTTP.
+if (!app.Environment.IsDevelopment() && !string.Equals(
+        Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase))
 {
     app.UseHttpsRedirection();
 }

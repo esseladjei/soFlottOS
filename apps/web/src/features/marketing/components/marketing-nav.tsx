@@ -4,6 +4,7 @@
 // the customer-portal login and a contact call to action. Every label comes
 // from the content files, so the bar switches language automatically.
 
+import { BrandTagline } from "@/components/ui/brand-tagline";
 import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
@@ -36,18 +37,19 @@ export function MarketingNav({ locale, content }: { locale: Locale; content: Mar
       <div className="relative mx-auto flex min-h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
         <Link
           aria-label={`${siteConfig.brand} – ${content.pages.home.label}`}
-          className="w-fit shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-4"
+          className="flex w-fit shrink-0 flex-col rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-4"
           href={localePath(locale)}
         >
           <Image
             alt=""
-            className="h-auto w-24 shrink-0"
-            height={556}
+            className="h-auto w-16 shrink-0 sm:w-20"
+            height={147}
             priority
-            sizes="96px"
-            src="/logo/soFlott_arrow_nav.png"
-            width={908}
+            sizes="(min-width: 640px) 80px, 64px"
+            src="/logo/soFlott_nav_sm.png"
+            width={240}
           />
+          <BrandTagline className="mt-2 hidden whitespace-nowrap text-xs leading-none text-orange-600 sm:block" locale={locale} />
         </Link>
 
         <nav aria-label={nav.ariaLabel} className="hidden items-center gap-1 lg:flex">

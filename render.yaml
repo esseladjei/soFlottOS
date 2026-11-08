@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: soflott-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: ./apps/api
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # External MySQL (Render has no managed MySQL), e.g. server=...;port=3306;database=...;user=...;password=...;SslMode=Required
+      - key: ConnectionStrings__MySql
+        sync: false
+      - key: Jwt__SigningKey
+        generateValue: true
+      - key: Cors__AllowedOrigins__0
+        sync: false
+      - key: Email__FrontendBaseUrl
+        sync: false
+      - key: Email__Enabled
+        value: "false"
+      - key: Email__ApiKey
+        sync: false
+      - key: Routing__ApiKey
+        sync: false
+    # To enable Email (password reset) in production, attach a persistent disk and set
+    # Authentication__DataProtectionKeyPath to a path on it; the API requires this.
