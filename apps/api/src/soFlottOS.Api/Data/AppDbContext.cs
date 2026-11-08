@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using soFlottOS.Api.Domain;
 using soFlottOS.Api.Domain.Entities;
@@ -13,8 +14,10 @@ namespace soFlottOS.Api.Data;
 /// lives in this single file.
 /// </para>
 /// </summary>
-public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IDataProtectionKeyContext
 {
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
+
     public DbSet<User> Users => Set<User>();
 
     public DbSet<Client> Clients => Set<Client>();

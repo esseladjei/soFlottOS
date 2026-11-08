@@ -24,11 +24,10 @@ export Email__ReplyTo='info@soflott.de'
 export Email__FrontendBaseUrl='https://your-app.example'
 ```
 
-Password-recovery emails use this outbox as well. Production email-enabled
-deployments must also configure `Authentication__DataProtectionKeyPath` to a
-persistent private key ring shared by API/worker replicas, because reset email
-payloads are encrypted at rest. See `../Security/README.md` for account recovery
-and key-management requirements. Existing lifecycle templates are unchanged.
+Password-recovery emails use this outbox as well. Data Protection keys are persisted in the database, so no extra configuration is
+needed for production, because reset email payloads are encrypted at rest. See
+`../Security/README.md` for account recovery and key-management requirements.
+Existing lifecycle templates are unchanged.
 
 Use a verified Resend sending domain and a key with permission to send email.
 The Resend development sender is restricted to authorized test recipients.

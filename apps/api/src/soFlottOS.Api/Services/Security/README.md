@@ -73,19 +73,13 @@ use the recipient's saved locale, not the admin/driver initiating the action.
 Manual CRM contacts use the request locale, defaulting to German. Localized
 outbox payloads remain immutable across retries; no migration is generated here.
 
-When email is enabled outside development, startup additionally requires:
-
-```bash
-export Authentication__DataProtectionKeyPath='/path/to/persistent/private/key-ring'
-```
-
-Keep the key ring outside the database and web root, restrict filesystem access
-to the API identity, protect it with your platform's at-rest encryption, and
-persist/back it up across deployments. Every API/worker replica must share this
-key ring and the `soFlottOS` Data Protection application name. Losing the keys
-makes queued reset emails undecryptable; these are explicitly marked failed by
-the worker, and users must request a new link. Development can use the framework's
-default local key ring.
+Data Protection keys are stored in the `DataProtectionKeys` table of the API
+database (migration `AddDataProtectionKeys`), so reset tokens and queued reset
+emails survive restarts and are shared by every API/worker replica using the
+`soFlottOS` application name. No filesystem path or disk is required. Restrict
+database access and back it up: anyone who can read this table can forge
+tokens, and losing it makes queued reset emails undecryptable; these are
+explicitly marked failed by the worker, and users must request a new link.
 
 Focused checks:
 

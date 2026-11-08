@@ -31,8 +31,6 @@ services:
         value: rechnung@soflott.de
       - key: Routing__ApiKey
         sync: false
-    # To enable Email (password reset) in production, attach a persistent disk and set
-    # Authentication__DataProtectionKeyPath to a path on it; the API requires this.
 
 databases:
   - name: soflott-db

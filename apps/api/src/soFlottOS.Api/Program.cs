@@ -68,13 +68,6 @@ builder.Services.AddSingleton(databaseOptions);
 builder.Services.AddSingleton(emailOptions);
 builder.Services.AddSingleton(privacyOptions);
 builder.Services.AddSingleton(TimeProvider.System);
-var dataProtection = builder.Services.AddDataProtection().SetApplicationName("soFlottOS");
-var keyPath = builder.Configuration["Authentication:DataProtectionKeyPath"];
-if (!string.IsNullOrWhiteSpace(keyPath))
-    dataProtection.PersistKeysToFileSystem(new DirectoryInfo(keyPath));
-else if (emailOptions.Enabled && !builder.Environment.IsDevelopment())
-    throw new InvalidOperationException("Password recovery requires a persistent Authentication:DataProtectionKeyPath in production.");
-
 // --- 2. Dependency injection ----------------------------------------------
 
 // 2a. Database (data layer).
@@ -84,6 +77,11 @@ var connectionString = NormalizePostgresConnectionString(
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString, npgsql => npgsql.EnableRetryOnFailure()));
+
+// Data Protection keys live in the database so tokens (e.g. password reset) survive restarts and deploys.
+builder.Services.AddDataProtection()
+    .SetApplicationName("soFlottOS")
+    .PersistKeysToDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
