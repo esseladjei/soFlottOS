@@ -74,8 +74,9 @@ else if (emailOptions.Enabled && !builder.Environment.IsDevelopment())
 // --- 2. Dependency injection ----------------------------------------------
 
 // 2a. Database (data layer).
-var connectionString = builder.Configuration.GetConnectionString("Postgres")
-    ?? throw new InvalidOperationException("ConnectionStrings:Postgres is missing.");
+var connectionString = NormalizePostgresConnectionString(
+    builder.Configuration.GetConnectionString("Postgres")
+    ?? throw new InvalidOperationException("ConnectionStrings:Postgres is missing."));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString, npgsql => npgsql.EnableRetryOnFailure()));
@@ -261,6 +262,26 @@ app.Run();
 return;
 
 /// <summary>Reads one configuration section into a typed object, failing when it is missing.</summary>
+// Hosts such as Render provide postgres://user:pass@host:port/db; Npgsql expects key=value pairs.
+static string NormalizePostgresConnectionString(string value)
+{
+    if (!value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) &&
+        !value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        return value;
+
+    var uri = new Uri(value);
+    var credentials = uri.UserInfo.Split(':', 2);
+    return new Npgsql.NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.IsDefaultPort || uri.Port < 0 ? 5432 : uri.Port,
+        Database = uri.AbsolutePath.Trim('/'),
+        Username = Uri.UnescapeDataString(credentials[0]),
+        Password = credentials.Length > 1 ? Uri.UnescapeDataString(credentials[1]) : null,
+        SslMode = Npgsql.SslMode.Prefer
+    }.ConnectionString;
+}
+
 static T ReadOptions<T>(IConfiguration configuration, string sectionName)
     where T : class, new()
 {
