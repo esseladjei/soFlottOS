@@ -7,6 +7,7 @@ public sealed record EmailContent(string Subject, string Html, string Text, IRea
 public enum EmailAudience { Customer, Driver }
 public enum OrderEmailKind { Confirmed, Assigned, AssignmentRemoved, Cancelled, EnRoute, Delivered }
 public enum InvoiceEmailKind { Issued, Sent, Paid, Overdue }
+public enum PrivacyRequestEmailKind { Acknowledgement, InternalNotification }
 public abstract record EmailTemplateModel
 {
     public string? Locale { get; init; }
@@ -15,6 +16,7 @@ public sealed record AccountCreatedEmail(User User) : EmailTemplateModel;
 public sealed record ClientOnboardedEmail(Client Client) : EmailTemplateModel;
 public sealed record OrderEmail(Order Order, OrderEmailKind Kind, EmailAudience Audience) : EmailTemplateModel;
 public sealed record InvoiceEmail(Invoice Invoice, InvoiceEmailKind Kind) : EmailTemplateModel;
+public sealed record PrivacyRequestEmail(PrivacyRequest Request, PrivacyRequestEmailKind Kind) : EmailTemplateModel;
 
 public interface IEmailTemplateRenderer
 {

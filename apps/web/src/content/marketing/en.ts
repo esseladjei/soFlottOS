@@ -9,6 +9,7 @@
 // numbers, clients, certifications or service promises.
 // ---------------------------------------------------------------------------
 
+import { legalPagesEn } from "@/content/marketing/legal-en";
 import type { MarketingContent } from "@/content/marketing/types";
 
 export const en: MarketingContent = {
@@ -273,60 +274,8 @@ export const en: MarketingContent = {
       ],
     },
 
-    "legal/privacy": {
-      label: "Privacy",
-      meta: {
-        title: "Privacy Notice",
-        description:
-          "How soFlott UG (haftungsbeschränkt) processes personal data on this website and in the customer portal.",
-      },
-      hero: {
-        eyebrow: "Legal",
-        title: "Privacy notice",
-        intro: "How we handle personal data when you visit this website, contact us or use the customer portal.",
-      },
-      blocks: [
-        {
-          kind: "text",
-          paragraphs: [
-            "The controller responsible for data processing on this website is soFlott UG (haftungsbeschränkt). Contact details are listed in the imprint.",
-          ],
-          sections: [
-            {
-              title: "Visiting the website",
-              paragraphs: [
-                "When you open a page, your browser transmits technical data such as your IP address, date and time, the requested page and your browser type. This data is needed to deliver the website securely and is processed on the basis of our legitimate interest (Art. 6(1)(f) GDPR). Server log files are kept only as long as necessary for security purposes.",
-                "Fonts are served from our own server. No content is loaded from third-party font services when you visit this website.",
-              ],
-            },
-            {
-              title: "Cookies",
-              paragraphs: [
-                "We only use cookies that are needed for the website to work. The cookie “soflott_locale” remembers your language choice for up to one year. When you sign in to the customer portal, the cookie “soflott_session” keeps you signed in. We do not use advertising or tracking cookies.",
-              ],
-            },
-            {
-              title: "Enquiry and quote forms",
-              paragraphs: [
-                "Our enquiry forms do not store any data on this website. When you submit a form, your own email program opens with a prepared message. Only when you send that email do we receive your details. We use them to answer your enquiry and prepare an offer (Art. 6(1)(b) GDPR) and delete them when they are no longer needed, subject to statutory retention periods.",
-              ],
-            },
-            {
-              title: "Customer portal",
-              paragraphs: [
-                "If you create a business account, we process your account, order, delivery and invoice data to perform our contract with you (Art. 6(1)(b) GDPR) and to meet statutory accounting and retention obligations (Art. 6(1)(c) GDPR).",
-              ],
-            },
-            {
-              title: "Your rights",
-              paragraphs: [
-                "You have the right to access, rectification, erasure, restriction of processing and data portability, and the right to object to processing based on legitimate interest. You can also lodge a complaint with a data protection supervisory authority.",
-              ],
-            },
-          ],
-        },
-      ],
-    },
+    // Privacy policy, terms and cookie page: see `legal-en.ts`.
+    ...legalPagesEn,
 
     // ----------------------------------------------------------------------
     // soFlott Express
@@ -1617,7 +1566,7 @@ export const en: MarketingContent = {
       },
       {
         title: "Company",
-        links: ["about", "contact", "legal/imprint", "legal/privacy"],
+        links: ["about", "contact"],
       },
     ],
     contactTitle: "Contact",

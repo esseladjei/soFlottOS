@@ -8,6 +8,9 @@ public interface IEmailCommunications
     void ClientOnboarded(Client client);
     void OrderChanged(Order order, OrderEmailKind kind, User? affectedDriver = null);
     void InvoiceChanged(Invoice invoice, InvoiceEmailKind kind);
+
+    /// <summary>Stages the requester's acknowledgement and the internal notification for a new privacy request.</summary>
+    void PrivacyRequestReceived(PrivacyRequest request, string internalRecipient);
 }
 
 // Recipient policy is separate from templates and from the delivery provider.
@@ -32,6 +35,17 @@ public sealed class EmailCommunications(IEmailQueue queue) : IEmailCommunication
 
     public void InvoiceChanged(Invoice invoice, InvoiceEmailKind kind) =>
         queue.Stage($"invoice_{kind.ToString().ToLowerInvariant()}", new InvoiceEmail(invoice, kind) { Locale = invoice.Client.User?.PreferredLocale }, CustomerRecipients(invoice.Client));
+
+    public void PrivacyRequestReceived(PrivacyRequest request, string internalRecipient)
+    {
+        queue.Stage("privacy_request_received",
+            new PrivacyRequestEmail(request, PrivacyRequestEmailKind.Acknowledgement) { Locale = request.Locale },
+            request.Email);
+        // The internal inbox is German-speaking and never receives the requester's personal data.
+        queue.Stage("privacy_request_notification",
+            new PrivacyRequestEmail(request, PrivacyRequestEmailKind.InternalNotification) { Locale = "de" },
+            internalRecipient);
+    }
 
     private static string[] CustomerRecipients(Client client) =>
         client.User is null ? [client.Email] : [client.Email, client.User.Email];

@@ -124,8 +124,19 @@ export type ContentBlock =
     }
   /** Checklist. */
   | { kind: "checklist"; title: string; intro?: string; items: string[] }
-  /** Plain prose, optionally with sub-headed sections (legal pages, about). */
-  | { kind: "text"; title?: string; paragraphs: string[]; sections?: { title: string; paragraphs: string[] }[] }
+  /**
+   * Plain prose, optionally with sub-headed sections (legal pages, about).
+   * `toc` (the contents heading) adds a linked table of contents and `numbered`
+   * numbers the sections, so long policies can be cited ("see section 9").
+   */
+  | {
+      kind: "text";
+      title?: string;
+      paragraphs: string[];
+      sections?: { title: string; paragraphs: string[]; items?: string[]; links?: LinkItem[] }[];
+      toc?: string;
+      numbered?: boolean;
+    }
   /** Highlighted note, e.g. what we do not promise or what must be agreed. */
   | { kind: "notice"; title: string; text: string }
   /** Frequently asked questions (also emitted as FAQPage JSON-LD). */
@@ -135,7 +146,11 @@ export type ContentBlock =
   /** Contact details card for the page's division. */
   | { kind: "contact"; title: string; intro?: string }
   /** Legal identity table, filled from `siteConfig` (imprint). */
-  | { kind: "imprint"; title: string };
+  | { kind: "imprint"; title: string }
+  /** The full cookie settings (privacy preferences), shown inline on the cookie page. */
+  | { kind: "cookieSettings" }
+  /** GDPR data-subject request form with a status lookup. */
+  | { kind: "privacyRequest" };
 
 export interface PageContent {
   /** Short name used in navigation, breadcrumbs and the footer. */

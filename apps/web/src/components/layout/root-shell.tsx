@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Nunito_Sans } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
@@ -21,6 +20,10 @@ import "@/app/globals.css";
 // pass in the language. It also publishes that language to every client
 // component through `LocaleProvider`, which is where `useAppContent()` and
 // `useFormatters()` get their data from.
+//
+// No analytics or other optional script is rendered here. Those load only after
+// the visitor consents (see `features/privacy`), which only the public website
+// asks for.
 // ---------------------------------------------------------------------------
 
 const sans = Nunito_Sans({
@@ -47,7 +50,6 @@ export function RootShell({ locale, children }: { locale: Locale; children: Reac
             <ServiceWorkerRegistration />
           </LocaleProvider>
         </AppProviders>
-        <Analytics />
       </body>
     </html>
   );

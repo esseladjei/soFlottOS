@@ -85,3 +85,42 @@ public enum NotificationStatus
     Sent = 2,
     Failed = 3
 }
+
+/// <summary>Which cookie choice a visitor made in the consent banner.</summary>
+public enum ConsentAction
+{
+    AcceptAll = 1,
+    RejectOptional = 2,
+    Custom = 3
+}
+
+/// <summary>The GDPR data-subject right a person is exercising.</summary>
+public enum PrivacyRequestType
+{
+    /// <summary>Art. 15 - access to the stored personal data.</summary>
+    Access = 1,
+
+    /// <summary>Art. 17 - erasure.</summary>
+    Deletion = 2,
+
+    /// <summary>Art. 16 - rectification.</summary>
+    Correction = 3,
+
+    /// <summary>Art. 20 - data portability.</summary>
+    Export = 4,
+
+    /// <summary>Art. 18 - restriction of processing.</summary>
+    Restriction = 5,
+
+    /// <summary>Art. 21 - objection to processing.</summary>
+    Objection = 6
+}
+
+/// <summary>Where a privacy request stands in the admin's handling process.</summary>
+public enum PrivacyRequestStatus
+{
+    Received = 1,
+    InProgress = 2,
+    Completed = 3,
+    Rejected = 4
+}

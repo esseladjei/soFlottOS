@@ -10,6 +10,8 @@
 
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { getAppContent, type AppContent } from "@/content/app";
+import { CONSENT_COOKIE_NAME, parseConsent } from "@/features/privacy/lib/consent-model";
+import { readCookie } from "@/features/privacy/lib/consent-store";
 import {
   defaultLocale,
   LOCALE_COOKIE_MAX_AGE,
@@ -64,9 +66,18 @@ export function useFormatters(): Formatters {
 }
 
 /**
- * Stores the chosen language. `middleware.ts` reads this cookie on the next
- * request and forwards the language to the server components.
+ * Stores the language the visitor picked in the signed-in app. `middleware.ts`
+ * reads this cookie on the next request and forwards the language to the
+ * server components.
+ *
+ * The language is a "preferences" cookie. Without that consent the choice is
+ * kept for the browser session only - a short-lived cookie that answers the
+ * visitor's own explicit request and disappears when the browser closes.
  */
 export function rememberLocale(locale: Locale) {
-  document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; path=/; max-age=${LOCALE_COOKIE_MAX_AGE}; samesite=lax`;
+  const consent = parseConsent(readCookie(CONSENT_COOKIE_NAME));
+  const lifetime = consent?.preferences ? `; max-age=${LOCALE_COOKIE_MAX_AGE}` : "";
+  const secure = window.location.protocol === "https:" ? "; secure" : "";
+
+  document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; path=/${lifetime}; samesite=lax${secure}`;
 }

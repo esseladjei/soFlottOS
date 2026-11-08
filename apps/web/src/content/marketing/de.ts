@@ -6,6 +6,7 @@
 // editing: no invented numbers, clients, certifications or service promises.
 // ---------------------------------------------------------------------------
 
+import { legalPagesDe } from "@/content/marketing/legal-de";
 import type { MarketingContent } from "@/content/marketing/types";
 
 export const de: MarketingContent = {
@@ -270,61 +271,8 @@ export const de: MarketingContent = {
       ],
     },
 
-    "legal/privacy": {
-      label: "Datenschutz",
-      meta: {
-        title: "Datenschutzerklärung",
-        description:
-          "Wie die soFlott UG (haftungsbeschränkt) personenbezogene Daten auf dieser Website und im Kundenportal verarbeitet.",
-      },
-      hero: {
-        eyebrow: "Rechtliches",
-        title: "Datenschutzerklärung",
-        intro:
-          "Wie wir mit personenbezogenen Daten umgehen, wenn Sie diese Website besuchen, uns kontaktieren oder das Kundenportal nutzen.",
-      },
-      blocks: [
-        {
-          kind: "text",
-          paragraphs: [
-            "Verantwortlich für die Datenverarbeitung auf dieser Website ist die soFlott UG (haftungsbeschränkt). Die Kontaktdaten finden Sie im Impressum.",
-          ],
-          sections: [
-            {
-              title: "Besuch der Website",
-              paragraphs: [
-                "Beim Aufruf einer Seite übermittelt Ihr Browser technische Daten wie IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite und den Browsertyp. Diese Daten sind für die sichere Bereitstellung der Website erforderlich und werden auf Grundlage unseres berechtigten Interesses verarbeitet (Art. 6 Abs. 1 lit. f DSGVO). Server-Logdateien werden nur so lange gespeichert, wie es aus Sicherheitsgründen erforderlich ist.",
-                "Schriftarten werden von unserem eigenen Server ausgeliefert. Beim Besuch dieser Website werden keine Inhalte von externen Schriftarten-Diensten geladen.",
-              ],
-            },
-            {
-              title: "Cookies",
-              paragraphs: [
-                "Wir verwenden nur Cookies, die für den Betrieb der Website erforderlich sind. Das Cookie „soflott_locale“ speichert Ihre Sprachauswahl für bis zu ein Jahr. Wenn Sie sich im Kundenportal anmelden, hält das Cookie „soflott_session“ Sie angemeldet. Werbe- oder Tracking-Cookies setzen wir nicht ein.",
-              ],
-            },
-            {
-              title: "Anfrage- und Angebotsformulare",
-              paragraphs: [
-                "Unsere Anfrageformulare speichern keine Daten auf dieser Website. Beim Absenden öffnet sich Ihr eigenes E-Mail-Programm mit einer vorbereiteten Nachricht. Erst wenn Sie diese E-Mail senden, erhalten wir Ihre Angaben. Wir verwenden sie zur Beantwortung Ihrer Anfrage und zur Angebotserstellung (Art. 6 Abs. 1 lit. b DSGVO) und löschen sie, wenn sie nicht mehr benötigt werden, vorbehaltlich gesetzlicher Aufbewahrungsfristen.",
-              ],
-            },
-            {
-              title: "Kundenportal",
-              paragraphs: [
-                "Wenn Sie ein Geschäftskundenkonto anlegen, verarbeiten wir Konto-, Auftrags-, Zustell- und Rechnungsdaten zur Erfüllung unseres Vertrags mit Ihnen (Art. 6 Abs. 1 lit. b DSGVO) und zur Erfüllung gesetzlicher Buchführungs- und Aufbewahrungspflichten (Art. 6 Abs. 1 lit. c DSGVO).",
-              ],
-            },
-            {
-              title: "Ihre Rechte",
-              paragraphs: [
-                "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit sowie das Recht, einer auf berechtigtem Interesse beruhenden Verarbeitung zu widersprechen. Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren.",
-              ],
-            },
-          ],
-        },
-      ],
-    },
+    // Privacy policy, terms and cookie page: see `legal-de.ts`.
+    ...legalPagesDe,
 
     // ----------------------------------------------------------------------
     // soFlott Express
@@ -1618,7 +1566,7 @@ export const de: MarketingContent = {
       },
       {
         title: "Unternehmen",
-        links: ["about", "contact", "legal/imprint", "legal/privacy"],
+        links: ["about", "contact"],
       },
     ],
     contactTitle: "Kontakt",

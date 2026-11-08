@@ -6,10 +6,15 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { BrandTagline } from "@/components/ui/brand-tagline";
+import { getPrivacyContent } from "@/content/privacy";
 import type { MarketingContent } from "@/content/marketing/types";
+import { PrivacyFooterLink } from "@/features/privacy/components/privacy-footer-link";
 import type { Locale } from "@/i18n/config";
-import { localePath } from "@/i18n/routes";
+import { localePath, type MarketingPage } from "@/i18n/routes";
 import { siteConfig, telHref } from "@/lib/site";
+
+const legalPages: readonly MarketingPage[] = ["legal/imprint", "legal/privacy", "legal/terms"];
+const legalLinkClass = "font-semibold text-stone-700 hover:text-stone-950 hover:underline";
 
 export function MarketingFooter({ locale, content }: { locale: Locale; content: MarketingContent }) {
   const { footer, common, pages } = content;
@@ -98,9 +103,23 @@ export function MarketingFooter({ locale, content }: { locale: Locale; content: 
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-stone-200 pt-6 text-xs text-stone-600 sm:flex-row sm:items-center sm:justify-between">
-          <p>{footer.copyright(year, siteConfig.companyName)}</p>
-          <p>{footer.legalNote}</p>
+        <div className="mt-10 border-t border-stone-200 pt-6 text-xs text-stone-600">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {legalPages.map((page) => (
+              <li key={page}>
+                <Link className={legalLinkClass} href={localePath(locale, page)}>
+                  {pages[page].label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <PrivacyFooterLink className={legalLinkClass} label={getPrivacyContent(locale).settings.open} />
+            </li>
+          </ul>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p>{footer.copyright(year, siteConfig.companyName)}</p>
+            <p>{footer.legalNote}</p>
+          </div>
         </div>
       </div>
     </footer>

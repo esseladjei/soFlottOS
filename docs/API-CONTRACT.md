@@ -128,6 +128,27 @@ names and phone numbers are required. All four coordinates may be omitted togeth
 in that case the quote contains the base fee only until address geocoding is available.
 Driver profiles include completed delivery counts and gross revenue from delivered jobs.
 
+## Privacy - `/api/privacy` (GDPR / TDDDG)
+
+Consent evidence and data-subject requests. Enums travel as strings. Consent
+records carry a browser-generated random id and no IP address or user agent.
+Both anonymous POST routes share a rate limit of 10 requests per minute per IP.
+
+| Method | Route | Auth | Body / Response |
+| --- | --- | --- | --- |
+| POST | `/api/privacy/consent` | anonymous | `{id, previousId?, version, action: AcceptAll\|RejectOptional\|Custom, analytics, marketing, preferences}` → `204` |
+| GET | `/api/privacy/consent/history` | Admin | consent records, newest first |
+| POST | `/api/privacy/data-request` | anonymous | `{type: Access\|Deletion\|Correction\|Export\|Restriction\|Objection, email, fullName?, message?, locale}` → `201 {id, status, createdAt, dueAt}` |
+| GET | `/api/privacy/data-request/{id}` | anonymous (id is the reference) | `{id, type, status, createdAt, dueAt, completedAt}` |
+| GET | `/api/privacy/data-requests?status=` | Admin | list of requests |
+| PUT | `/api/privacy/data-requests/{id}/status` | Admin | `{status: Received\|InProgress\|Completed\|Rejected, handlerNote?}` |
+
+`dueAt` is one month after receipt (Art. 12 (3) GDPR). Consent evidence and
+resolved requests are purged after `Privacy:ConsentEvidenceRetentionDays` /
+`Privacy:CompletedRequestRetentionDays` (default 1095 days); open requests are
+never purged. The browser reaches the anonymous routes through Next.js route
+handlers under `/api/privacy/*`, which validate the payload first.
+
 ## Payload shapes
 
 The exact TypeScript shape of every payload lives in

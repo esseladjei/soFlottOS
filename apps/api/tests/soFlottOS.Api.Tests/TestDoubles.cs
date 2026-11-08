@@ -96,4 +96,6 @@ internal sealed class FakeEmailCommunications : IEmailCommunications
     public void ClientOnboarded(Client client) => OnboardedClients.Add(client);
     public void OrderChanged(Order order, OrderEmailKind kind, User? affectedDriver = null) => Orders.Add((order, kind, affectedDriver));
     public void InvoiceChanged(Invoice invoice, InvoiceEmailKind kind) => Invoices.Add((invoice, kind));
+    public List<(PrivacyRequest Request, string InternalRecipient)> PrivacyRequests { get; } = [];
+    public void PrivacyRequestReceived(PrivacyRequest request, string internalRecipient) => PrivacyRequests.Add((request, internalRecipient));
 }

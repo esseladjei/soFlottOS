@@ -16,6 +16,10 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { RootShell } from "@/components/layout/root-shell";
 import { getMarketingContent } from "@/content/marketing";
+import { ConsentProvider } from "@/features/privacy/components/consent-provider";
+import { ConsentScripts } from "@/features/privacy/components/consent-scripts";
+import { CookieBanner } from "@/features/privacy/components/cookie-banner";
+import { CookieSettingsDialog } from "@/features/privacy/components/cookie-settings-dialog";
 import { MarketingFooter } from "@/features/marketing/components/marketing-footer";
 import { MarketingNav } from "@/features/marketing/components/marketing-nav";
 import { OrganizationJsonLd } from "@/features/marketing/components/structured-data";
@@ -54,26 +58,33 @@ export default async function MarketingLocaleLayout({
 
   return (
     <RootShell locale={locale}>
-      <div className="flex min-h-dvh flex-col bg-white">
-        {/* Keyboard users can jump straight to the content. */}
-        <a
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
-          href="#main"
-        >
-          {content.common.skipToContent}
-        </a>
+      <ConsentProvider>
+        <div className="flex min-h-dvh flex-col bg-white">
+          {/* Keyboard users can jump straight to the content. */}
+          <a
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
+            href="#main"
+          >
+            {content.common.skipToContent}
+          </a>
 
-        <MarketingNav content={content} locale={locale} />
+          <MarketingNav content={content} locale={locale} />
 
-        <main className="flex-1" id="main">
-          {children}
-        </main>
+          <main className="flex-1" id="main">
+            {children}
+          </main>
 
-        <MarketingFooter content={content} locale={locale} />
+          <MarketingFooter content={content} locale={locale} />
 
-        {/* Invisible data that tells search engines who we are. */}
-        <OrganizationJsonLd description={content.pages.home.meta.description} locale={locale} />
-      </div>
+          {/* Invisible data that tells search engines who we are. */}
+          <OrganizationJsonLd description={content.pages.home.meta.description} locale={locale} />
+        </div>
+
+        {/* Cookie consent: the banner, the settings dialog and the gate for optional scripts. */}
+        <CookieBanner />
+        <CookieSettingsDialog />
+        <ConsentScripts />
+      </ConsentProvider>
     </RootShell>
   );
 }

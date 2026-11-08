@@ -134,6 +134,45 @@ namespace soFlottOS.Api.Data.Migrations
                     b.ToTable("Clients", (string)null);
                 });
 
+            modelBuilder.Entity("soFlottOS.Api.Domain.Entities.ConsentRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<bool>("Analytics")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Marketing")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Preferences")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("PreviousConsentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("PreviousConsentId");
+
+                    b.ToTable("ConsentRecords", (string)null);
+                });
+
             modelBuilder.Entity("soFlottOS.Api.Domain.Entities.EmailMessage", b =>
                 {
                     b.Property<int>("Id")
@@ -478,6 +517,62 @@ namespace soFlottOS.Api.Data.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("soFlottOS.Api.Domain.Entities.PrivacyRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DueAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("HandlerNote")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Locale")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status", "CreatedAt");
+
+                    b.ToTable("PrivacyRequests", (string)null);
                 });
 
             modelBuilder.Entity("soFlottOS.Api.Domain.Entities.ProofOfDelivery", b =>

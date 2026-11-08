@@ -42,6 +42,7 @@ const nextConfig: NextConfig = {
   //   - pre-i18n root paths (/platform, /operations, /security)
   //   - the pre-division page structure (services, pricing, ...) which was
   //     replaced by /express and /digital (implementation brief v2.0).
+  //   - the German short URLs of the legal pages (/datenschutz, /impressum, ...).
   async redirects() {
     const moved: [string, string][] = [
       ["services", "express"],
@@ -51,10 +52,22 @@ const nextConfig: NextConfig = {
       ["security", "legal/privacy"],
     ];
 
+    const legalShortUrls: [string, string][] = [
+      ["datenschutz", "legal/privacy"],
+      ["impressum", "legal/imprint"],
+      ["agb", "legal/terms"],
+      ["cookie-einstellungen", "legal/cookies"],
+    ];
+
     return [
       { source: "/platform", destination: "/de/express/how-it-works", permanent: true },
       { source: "/operations", destination: "/de/express", permanent: true },
       { source: "/security", destination: "/de/legal/privacy", permanent: true },
+      ...legalShortUrls.map(([from, to]) => ({
+        source: `/${from}`,
+        destination: `/de/${to}`,
+        permanent: true,
+      })),
       ...moved.map(([from, to]) => ({
         source: `/:locale(de|en)/${from}`,
         destination: `/:locale/${to}`,

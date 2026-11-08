@@ -53,6 +53,9 @@ if (emailOptions.Enabled && !builder.Environment.IsDevelopment() &&
 var seedOptions = ReadOptions<SeedOptions>(builder.Configuration, SeedOptions.SectionName);
 seedOptions.Validate();
 
+var privacyOptions = ReadOptions<PrivacyOptions>(builder.Configuration, PrivacyOptions.SectionName);
+privacyOptions.Validate();
+
 var databaseOptions = ReadOptions<DatabaseOptions>(builder.Configuration, DatabaseOptions.SectionName);
 
 builder.Services.AddSingleton(jwtOptions);
@@ -63,6 +66,7 @@ builder.Services.AddSingleton(invoicingOptions);
 builder.Services.AddSingleton(seedOptions);
 builder.Services.AddSingleton(databaseOptions);
 builder.Services.AddSingleton(emailOptions);
+builder.Services.AddSingleton(privacyOptions);
 builder.Services.AddSingleton(TimeProvider.System);
 var dataProtection = builder.Services.AddDataProtection().SetApplicationName("soFlottOS");
 var keyPath = builder.Configuration["Authentication:DataProtectionKeyPath"];
@@ -86,6 +90,8 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IConsentRepository, ConsentRepository>();
+builder.Services.AddScoped<IPrivacyRequestRepository, PrivacyRequestRepository>();
 builder.Services.AddScoped<DataSeeder>();
 
 // 2b. Business logic (service layer).
@@ -98,6 +104,8 @@ builder.Services.AddScoped<AccountSessionValidator>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<BookingAvailabilityService>();
+builder.Services.AddScoped<IConsentService, ConsentService>();
+builder.Services.AddScoped<IPrivacyRequestService, PrivacyRequestService>();
 builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
@@ -136,6 +144,9 @@ builder.Services.AddHttpClient<IEmailSender, ResendEmailSender>(client =>
     client.Timeout = TimeSpan.FromSeconds(emailOptions.TimeoutSeconds);
 }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
 builder.Services.AddHostedService<EmailWorker>();
+
+// Daily job that deletes consent evidence and finished privacy requests once their retention expires.
+builder.Services.AddHostedService<DataRetentionService>();
 
 // 2d. Web layer.
 builder.Services.AddControllers()
@@ -190,7 +201,8 @@ builder.Services.AddCors(options => options.AddPolicy("frontend", policy =>
     policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 }));
 
-// Basic abuse protection: 100 requests/minute per IP, 5/minute on the auth endpoints.
+// Basic abuse protection: 100 requests/minute per IP, 5/minute on the auth endpoints,
+// 10/minute per IP on the public privacy endpoints (consent evidence and data requests).
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -212,6 +224,18 @@ builder.Services.AddRateLimiter(options =>
         limiter.QueueLimit = 0;
         limiter.AutoReplenishment = true;
     });
+
+    // The IP only keys the in-memory counter; it is never stored or logged.
+    options.AddPolicy("privacy", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
 });
 
 // /healthz tells Docker or a load balancer whether the API (and PostgreSQL) is alive.

@@ -38,6 +38,41 @@ Copy `.env.example` to `.env.local` if you need local overrides.
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Public site origin used by metadata and SEO routes | `http://localhost:3000` |
 | `SOFLOTT_API_BASE_URL` | ASP.NET backend base URL used only by Next.js server route handlers | `http://localhost:5235` |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 ID; loaded only after Analytics consent | unset (off) |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | Google Ads ID; loaded only after Marketing consent | unset (off) |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta pixel ID; loaded only after Marketing consent | unset (off) |
+| `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` | LinkedIn Insight Tag ID; loaded only after Marketing consent | unset (off) |
+| `NEXT_PUBLIC_CONSENT_EVIDENCE` | Set to `false` to stop sending consent decisions to the API | on |
+
+## Cookie consent and privacy
+
+`src/features/privacy` implements the GDPR/TDDDG consent system from
+`FeatureSpecs/Cookie_PrivacySpec.txt` on the public marketing site.
+
+- **Categories:** Necessary (always on), Analytics, Ads & Marketing, Preferences.
+  The decision is stored in the first-party `soflott_consent` cookie (180 days,
+  `SameSite=Lax`, notice version `1.0`). A missing, malformed, expired or
+  other-version cookie counts as "no consent" and shows the banner again;
+  raise `CONSENT_VERSION` in `lib/consent-model.ts` to force fresh consent.
+- **Nothing optional runs before consent.** `ConsentScripts` mounts Google
+  Consent Mode v2 with every signal `denied`, and loads GA4, Google Ads, Meta,
+  LinkedIn and Vercel Analytics only when the visitor allows the category *and*
+  the ID is configured. Withdrawing consent deletes the category's cookies and reloads.
+- **UI:** `CookieBanner` (equal-weight Accept all / Reject optional / Settings),
+  `CookieSettingsDialog`, the `/legal/cookies` page and a footer link that
+  reopen the settings at any time. Texts live in `src/content/privacy`.
+- **Evidence and requests:** each decision is posted best-effort to
+  `/api/privacy/consent`; the privacy page hosts a data-subject request form and
+  status lookup (`/api/privacy/data-request`). See `docs/API-CONTRACT.md`.
+- **Legal pages:** `src/content/marketing/legal-de.ts` / `legal-en.ts` hold the
+  20-section privacy policy, an AGB draft and the cookie page. They show a
+  "draft" banner until `NEXT_PUBLIC_LEGAL_REVIEWED=true`.
+- **Portal locale cookie:** `soflott_locale` is a Preferences cookie. Without
+  Preferences consent it is session-only, and the consent enforcer deletes it.
+- Only the marketing layout mounts the banner; the client/driver portal and the
+  admin console set no optional cookies.
+
+Run the consent tests with `node --test src/features/privacy/lib/consent.test.mjs`.
 
 ## Running locally
 

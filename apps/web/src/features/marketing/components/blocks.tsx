@@ -9,6 +9,8 @@ import type { ContentBlock, LinkItem, MarketingContent } from "@/content/marketi
 import { EnquiryForm } from "@/features/marketing/components/enquiry-form";
 import { MarketingIcon } from "@/features/marketing/components/icon";
 import { Section, SectionIntro } from "@/features/marketing/components/section";
+import { CookieSettingsInline } from "@/features/privacy/components/cookie-settings-inline";
+import { PrivacyRequestForm } from "@/features/privacy/components/privacy-request-form";
 import { resolveHref } from "@/features/marketing/lib/links";
 import { buttonBase, divisionThemes, type DivisionTheme } from "@/features/marketing/lib/theme";
 import type { Locale } from "@/i18n/config";
@@ -227,7 +229,10 @@ function Block({ block, ctx, index }: { block: ContentBlock; ctx: BlockContext; 
         </Section>
       );
 
-    case "text":
+    case "text": {
+      const sections = block.sections ?? [];
+      const sectionId = (sectionIndex: number) => `${headingId}-s${sectionIndex + 1}`;
+
       return (
         <Section className={band} labelledBy={block.title ? headingId : undefined}>
           <div className="max-w-3xl">
@@ -241,19 +246,55 @@ function Block({ block, ctx, index }: { block: ContentBlock; ctx: BlockContext; 
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            {block.sections?.map((section) => (
-              <div className="mt-8" key={section.title}>
-                <h3 className="text-lg font-bold text-stone-950">{section.title}</h3>
+
+            {block.toc && sections.length > 0 ? (
+              <nav aria-label={block.toc} className="mt-8 rounded-2xl border border-stone-200 bg-stone-50 p-5">
+                <p className="text-xs font-extrabold uppercase tracking-widest text-stone-500">{block.toc}</p>
+                <ol className={cn("mt-3 space-y-1.5 text-sm sm:columns-2 sm:gap-8", block.numbered ? "list-decimal pl-5" : "list-none")}>
+                  {sections.map((section, sectionIndex) => (
+                    <li className="break-inside-avoid" key={section.title}>
+                      <a className="font-semibold text-stone-700 hover:text-stone-950 hover:underline" href={`#${sectionId(sectionIndex)}`}>
+                        {section.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            ) : null}
+
+            {sections.map((section, sectionIndex) => (
+              <div className="mt-8 scroll-mt-24" id={sectionId(sectionIndex)} key={section.title}>
+                <h3 className="text-lg font-bold text-stone-950">
+                  {block.numbered ? `${sectionIndex + 1}. ` : ""}
+                  {section.title}
+                </h3>
                 <div className="mt-2 space-y-3 text-base leading-7 text-stone-700">
                   {section.paragraphs.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
+                  {section.items?.length ? (
+                    <ul className="list-disc space-y-1.5 pl-6">
+                      {section.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {section.links?.length ? (
+                    <p className="flex flex-wrap gap-x-5 gap-y-1 text-sm font-bold">
+                      {section.links.map((link) => (
+                        <Link className="text-stone-950 underline underline-offset-4 hover:text-orange-700" href={resolveHref(locale, link)} key={link.label}>
+                          {link.label}
+                        </Link>
+                      ))}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             ))}
           </div>
         </Section>
       );
+    }
 
     case "notice":
       return (
@@ -358,6 +399,24 @@ function Block({ block, ctx, index }: { block: ContentBlock; ctx: BlockContext; 
         </Section>
       );
     }
+
+    case "cookieSettings":
+      return (
+        <Section className={band} id="settings">
+          <div className="max-w-3xl">
+            <CookieSettingsInline />
+          </div>
+        </Section>
+      );
+
+    case "privacyRequest":
+      return (
+        <Section className={band} id="privacy-request">
+          <div className="max-w-3xl">
+            <PrivacyRequestForm />
+          </div>
+        </Section>
+      );
 
     case "imprint": {
       const { legal, address } = siteConfig;

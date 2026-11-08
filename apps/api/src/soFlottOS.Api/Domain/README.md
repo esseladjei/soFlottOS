@@ -5,5 +5,7 @@ a proof of delivery, an invoice, a queued notification.
 
 * `Enums.cs` — the fixed lists of values (roles, order status, invoice status, ...).
 * `Entities/` — one file per database table. `BaseEntity.cs` holds `Id`, `CreatedAt`, `UpdatedAt`.
+  `ConsentRecord` and `PrivacyRequest` are the exception: they use client/server-generated `Guid` keys
+  (the id is the access capability) and set their own timestamps.
 
 Rules of this layer: **no** database code, **no** HTTP code, **no** references to other layers.

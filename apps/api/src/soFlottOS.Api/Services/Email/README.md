@@ -70,6 +70,7 @@ The queue remains persisted across restarts.
 | Start transit | Customer recipients; approximate driving duration |
 | Proof of delivery | Customer recipients with HTML delivery certificate; completion acknowledgment to driver |
 | Invoice Sent/Paid/Overdue transition | Customer recipients; Sent includes invoice attachment |
+| Privacy request received | Requester (acknowledgement with reference id and due date, in the request's language) and `Privacy:NotificationEmail` (internal notice without requester data) |
 
 Customer addresses are deduplicated case-insensitively. Each recipient gets a
 separate provider request, not a shared CC list. Drivers never receive customer

@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { CONSENT_COOKIE_NAME, parseConsent } from "@/features/privacy/lib/consent-model";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { decodeSessionCookieValue, isPortalSession } from "@/lib/auth/session-cookie";
 import {
@@ -13,8 +14,9 @@ import type { UserRole } from "@/types/api";
 // ---------------------------------------------------------------------------
 // Middleware runs BEFORE every matching page is rendered. It does two jobs:
 //
-//   1. Language:  sends "/" to "/de" or "/en" and remembers the language the
-//                 visitor last looked at.
+//   1. Language:  sends "/" to "/de" or "/en" and - only if the visitor allowed
+//                 the "preferences" cookie category - remembers the language
+//                 they last looked at.
 //   2. Access:    keeps signed-out visitors out of /client and /driver, and
 //                 signed-in users away from /login and /register. Admins use
 //                 the separate admin console (apps/admin), not this portal.
@@ -26,6 +28,11 @@ const roleHomes: Record<PortalRole, string> = {
   Client: "/client",
   Driver: "/driver",
 };
+
+/** The language cookie is a preferences cookie: it may only be written after consent. */
+function mayRememberLocale(request: NextRequest): boolean {
+  return parseConsent(request.cookies.get(CONSENT_COOKIE_NAME)?.value)?.preferences === true;
+}
 
 function readSession(request: NextRequest) {
   const session = decodeSessionCookieValue(request.cookies.get(SESSION_COOKIE_NAME)?.value);
@@ -66,11 +73,13 @@ export function middleware(request: NextRequest) {
   if (pathname === "/") {
     const locale = preferredLocale(request);
     const response = NextResponse.redirect(new URL(`/${locale}`, request.url));
-    response.cookies.set(LOCALE_COOKIE_NAME, locale, {
-      path: "/",
-      maxAge: LOCALE_COOKIE_MAX_AGE,
-      sameSite: "lax",
-    });
+    if (mayRememberLocale(request)) {
+      response.cookies.set(LOCALE_COOKIE_NAME, locale, {
+        path: "/",
+        maxAge: LOCALE_COOKIE_MAX_AGE,
+        sameSite: "lax",
+      });
+    }
     return response;
   }
 
@@ -101,8 +110,8 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Remember the language of the page that was actually opened, so a later
-  // visit to "/" lands in the same language.
-  if (urlLocale) {
+  // visit to "/" lands in the same language - but only with consent.
+  if (urlLocale && mayRememberLocale(request)) {
     response.cookies.set(LOCALE_COOKIE_NAME, urlLocale, {
       path: "/",
       maxAge: LOCALE_COOKIE_MAX_AGE,

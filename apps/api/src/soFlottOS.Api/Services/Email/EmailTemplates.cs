@@ -16,6 +16,7 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
         OrderEmail { Audience: EmailAudience.Driver } order => order.Order.AssignedDriver?.PreferredLocale,
         OrderEmail order => order.Order.Client.User?.PreferredLocale,
         InvoiceEmail invoice => invoice.Invoice.Client.User?.PreferredLocale,
+        PrivacyRequestEmail privacy => privacy.Request.Locale,
         _ => null
     }) ?? "de");
 
@@ -28,6 +29,7 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
             ClientOnboardedEmail onboarded => Onboarded(onboarded.Client, locale),
             OrderEmail order => OrderUpdate(order, locale),
             InvoiceEmail invoice => InvoiceUpdate(invoice, locale),
+            PrivacyRequestEmail privacy => PrivacyRequestUpdate(privacy, locale),
             _ => throw new ArgumentOutOfRangeException(nameof(model), "Unsupported email template.")
         };
     }
@@ -208,6 +210,27 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
             T(locale, "invoice.action"), instructions, attachments);
     }
 
+    private EmailContent PrivacyRequestUpdate(PrivacyRequestEmail model, string locale)
+    {
+        var request = model.Request;
+        var internalNotice = model.Kind == PrivacyRequestEmailKind.InternalNotification;
+        var heading = T(locale, internalNotice ? "privacy.internalHeading" : "privacy.receivedHeading");
+        List<(string Label, string Value)> details =
+        [
+            (T(locale, "privacy.reference"), request.Id.ToString("D")),
+            (T(locale, "privacy.type"), T(locale, $"privacy.type.{request.Type.ToString().ToLowerInvariant()}")),
+            (T(locale, "privacy.receivedAt"), Day(request.CreatedAt, locale)),
+            (T(locale, "privacy.dueAt"), Day(request.DueAt, locale))
+        ];
+        if (internalNotice)
+            details.Add((T(locale, "privacy.language"), request.Locale.ToUpperInvariant()));
+
+        // No name, free text or other requester data is echoed: the address is unverified and the form is public.
+        return Build(locale, $"soFlott · {heading} · {request.Id.ToString("N")[..8]}", heading, "",
+            T(locale, internalNotice ? "privacy.internalIntro" : "privacy.receivedIntro"), details, null, null,
+            T(locale, internalNotice ? "privacy.internalNote" : "privacy.receivedNote"));
+    }
+
     private EmailContent Build(string locale, string subject, string heading, string name, string intro,
         IReadOnlyList<(string Label, string Value)> details, string? url, string? action, string note,
         IReadOnlyList<EmailAttachment>? attachments = null)
@@ -222,7 +245,7 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
             <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#fff;border-radius:12px;overflow:hidden">
             <tr><td>{{EmailBranding.Header(options.FrontendBaseUrl, locale)}}</td></tr>
             <tr><td style="padding:32px"><p style="color:#ea580c;font-size:12px;letter-spacing:2px;text-transform:uppercase">{{E(T(locale, "brand.transaction"))}}</p>
-            <h1 style="font-size:26px;line-height:1.25">{{E(heading)}}</h1><p>{{E(T(locale, "greeting"))}} {{E(name)}},</p>
+            <h1 style="font-size:26px;line-height:1.25">{{E(heading)}}</h1><p>{{E(Greeting(locale, name))}}</p>
             <p style="line-height:1.7">{{E(intro)}}</p>{{Details(details)}}{{button}}<p style="font-size:14px;line-height:1.6;color:#4b5563">{{E(note)}}</p>
             <p style="line-height:1.6">{{E(T(locale, "closing"))}}<br><strong>{{E(T(locale, "team"))}}</strong></p></td></tr>
             <tr><td style="padding:24px 32px;background:#f9fafb;font-size:12px;line-height:1.7;color:#6b7280">
@@ -230,12 +253,15 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
             {{E(T(locale, "brand.contact"))}} {{E(string.IsNullOrWhiteSpace(options.ReplyTo) ? seller.Email : options.ReplyTo)}} · {{E(seller.Phone)}}<br>
             {{E(T(locale, "brand.noAdvertising"))}}</td></tr></table></td></tr></table></body></html>
             """;
-        var text = $"soFlott · {EmailBranding.Tagline(locale)}\n\n{heading}\n\n{T(locale, "greeting")} {name},\n\n{intro}\n\n" +
+        var text = $"soFlott · {EmailBranding.Tagline(locale)}\n\n{heading}\n\n{Greeting(locale, name)}\n\n{intro}\n\n" +
             string.Join("\n", details.Select(item => $"{item.Label}: {item.Value}")) +
             (url is null ? "" : $"\n\n{action}: {url}") +
             $"\n\n{note}\n\n{T(locale, "closing")}\n{T(locale, "team")}\n{seller.CompanyName}\n{seller.Email} | {seller.Phone}";
         return new EmailContent(subject.Replace('\r', ' ').Replace('\n', ' '), html, text, attachments ?? []);
     }
+
+    private static string Greeting(string locale, string name) =>
+        string.IsNullOrWhiteSpace(name) ? $"{T(locale, "greeting")}," : $"{T(locale, "greeting")} {name},";
 
     private static string Details(IReadOnlyList<(string Label, string Value)> details) =>
         "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;font-size:14px\">" +
@@ -258,6 +284,10 @@ public sealed class EmailTemplateRenderer(EmailOptions options, InvoicingOptions
         BusinessTime.ToLocal(value).ToString(
             EmailTranslations.Normalize(locale) == "en" ? "dd/MM/yyyy HH:mm zzz" : "dd.MM.yyyy HH:mm zzz",
             EmailTranslations.Culture(locale)) + $" ({BusinessTime.ZoneId})";
+    private static string Day(DateTimeOffset value, string locale) =>
+        BusinessTime.ToLocal(value).ToString(
+            EmailTranslations.Normalize(locale) == "en" ? "dd/MM/yyyy" : "dd.MM.yyyy",
+            EmailTranslations.Culture(locale));
     private static string Payment(PaymentMethod method, string locale) => method switch
     {
         PaymentMethod.BankTransfer => T(locale, "payment.bank"),

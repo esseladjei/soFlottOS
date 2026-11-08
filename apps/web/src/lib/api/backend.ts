@@ -139,6 +139,46 @@ export async function recoverPasswordAgainstBackend(
     throw new BackendError("Password recovery failed.", response.status, await readJsonOrText(response));
   }
 }
+/**
+ * Forwards a public (no session) privacy request to the backend and relays the
+ * answer. Used for cookie-consent evidence and GDPR data requests, which anyone
+ * may send. Only the status, the body and `Retry-After` are passed back.
+ */
+export async function forwardPublicPrivacyCall(path: string, init: { method: "GET" | "POST"; body?: string }) {
+  let backendResponse: Response;
+
+  try {
+    backendResponse = await fetchFromBackend(path, {
+      method: init.method,
+      headers: {
+        accept: "application/json",
+        ...(init.body === undefined ? {} : { "content-type": "application/json" }),
+      },
+      body: init.body,
+    });
+  } catch (error) {
+    if (error instanceof BackendUnavailableError) {
+      return NextResponse.json(error.problem, { status: error.problem.status ?? 503 });
+    }
+
+    throw error;
+  }
+
+  const headers = new Headers({
+    "content-type": backendResponse.headers.get("content-type") ?? "application/json; charset=utf-8",
+    "cache-control": "no-store",
+  });
+  const retryAfter = backendResponse.headers.get("retry-after");
+  if (retryAfter) {
+    headers.set("retry-after", retryAfter);
+  }
+
+  return new NextResponse(backendResponse.status === 204 ? null : await backendResponse.text(), {
+    status: backendResponse.status,
+    headers,
+  });
+}
+
 export async function proxyRequestToBackend(request: NextRequest, segments: string[]) {
   const session = getSessionFromRequest(request);
   if (!session) {

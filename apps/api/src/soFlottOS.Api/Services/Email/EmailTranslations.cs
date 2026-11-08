@@ -141,7 +141,28 @@ internal static class EmailTranslations
             ["cargo.document"] = ("Dokument", "Document"),
             ["cargo.smallBox"] = ("Kleines Paket", "Small parcel"),
             ["cargo.autoPart"] = ("Autoteil", "Auto part"),
-            ["cargo.oversized"] = ("Sperrgut", "Oversized item")
+            ["cargo.oversized"] = ("Sperrgut", "Oversized item"),
+            ["privacy.receivedHeading"] = ("Ihre Datenschutzanfrage ist eingegangen", "We have received your privacy request"),
+            ["privacy.receivedIntro"] = ("Wir haben Ihre Anfrage erhalten und beantworten sie spätestens bis zum unten genannten Datum (Art. 12 Abs. 3 DSGVO). Mit der Referenz können Sie den Bearbeitungsstand abrufen.",
+                "We have received your request and will respond by the date below at the latest (Art. 12(3) GDPR). The reference lets you check the processing status."),
+            ["privacy.receivedNote"] = ("Wenn Sie diese Anfrage nicht gestellt haben, können Sie diese Nachricht ignorieren. Auskünfte erteilen wir nur nach angemessener Identitätsprüfung.",
+                "If you did not make this request, you can ignore this message. We only disclose data after a reasonable identity check."),
+            ["privacy.internalHeading"] = ("Neue Datenschutzanfrage", "New privacy request"),
+            ["privacy.internalIntro"] = ("Über das Datenschutzformular ist eine neue Anfrage eingegangen. Die Angaben der Person finden Sie im Admin-Bereich.",
+                "A new request arrived through the privacy form. The requester's details are in the admin area."),
+            ["privacy.internalNote"] = ("Diese interne Nachricht enthält bewusst keine personenbezogenen Angaben der anfragenden Person.",
+                "This internal message deliberately contains no personal data of the requester."),
+            ["privacy.reference"] = ("Referenz", "Reference"),
+            ["privacy.type"] = ("Art der Anfrage", "Request type"),
+            ["privacy.receivedAt"] = ("Eingegangen am", "Received on"),
+            ["privacy.dueAt"] = ("Antwort bis spätestens", "Response due by"),
+            ["privacy.language"] = ("Sprache der Anfrage", "Request language"),
+            ["privacy.type.access"] = ("Auskunft (Art. 15)", "Access (Art. 15)"),
+            ["privacy.type.deletion"] = ("Löschung (Art. 17)", "Erasure (Art. 17)"),
+            ["privacy.type.correction"] = ("Berichtigung (Art. 16)", "Rectification (Art. 16)"),
+            ["privacy.type.export"] = ("Datenübertragung (Art. 20)", "Data portability (Art. 20)"),
+            ["privacy.type.restriction"] = ("Einschränkung der Verarbeitung (Art. 18)", "Restriction of processing (Art. 18)"),
+            ["privacy.type.objection"] = ("Widerspruch (Art. 21)", "Objection (Art. 21)")
         };
 
     public static string Normalize(string? locale) =>

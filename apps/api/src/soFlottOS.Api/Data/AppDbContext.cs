@@ -31,6 +31,10 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 
     public DbSet<BookingAvailability> BookingAvailability => Set<BookingAvailability>();
 
+    public DbSet<ConsentRecord> ConsentRecords => Set<ConsentRecord>();
+
+    public DbSet<PrivacyRequest> PrivacyRequests => Set<PrivacyRequest>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ConfigureUsers(modelBuilder);
@@ -40,6 +44,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         ConfigureInvoices(modelBuilder);
         ConfigureNotifications(modelBuilder);
         ConfigureEmails(modelBuilder);
+        ConfigureConsentRecords(modelBuilder);
+        ConfigurePrivacyRequests(modelBuilder);
         var availability = modelBuilder.Entity<BookingAvailability>();
         availability.ToTable("BookingAvailability");
         availability.HasKey(entity => entity.Id);
@@ -255,5 +261,37 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         email.Property(entity => entity.ProviderMessageId).HasMaxLength(255);
         email.Property(entity => entity.LastError).HasMaxLength(2000);
         email.HasIndex(entity => new { entity.Status, entity.NextAttemptAt });
+    }
+
+    private static void ConfigureConsentRecords(ModelBuilder modelBuilder)
+    {
+        var consent = modelBuilder.Entity<ConsentRecord>();
+        consent.ToTable("ConsentRecords");
+        consent.HasKey(entity => entity.Id);
+
+        // The client supplies the id, so the database must never generate one.
+        consent.Property(entity => entity.Id).ValueGeneratedNever();
+        consent.Property(entity => entity.Version).HasMaxLength(20).IsRequired();
+        consent.Property(entity => entity.Action).HasConversion<string>().HasMaxLength(32).IsRequired();
+
+        // PreviousConsentId is not a foreign key: the earlier decision may already be purged.
+        consent.HasIndex(entity => entity.PreviousConsentId);
+        consent.HasIndex(entity => entity.CreatedAt);
+    }
+
+    private static void ConfigurePrivacyRequests(ModelBuilder modelBuilder)
+    {
+        var request = modelBuilder.Entity<PrivacyRequest>();
+        request.ToTable("PrivacyRequests");
+        request.HasKey(entity => entity.Id);
+        request.Property(entity => entity.Id).ValueGeneratedNever();
+        request.Property(entity => entity.Type).HasConversion<string>().HasMaxLength(32).IsRequired();
+        request.Property(entity => entity.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
+        request.Property(entity => entity.Email).HasMaxLength(254).IsRequired();
+        request.Property(entity => entity.FullName).HasMaxLength(120);
+        request.Property(entity => entity.Message).HasMaxLength(2000);
+        request.Property(entity => entity.Locale).HasMaxLength(2).IsRequired();
+        request.Property(entity => entity.HandlerNote).HasMaxLength(2000);
+        request.HasIndex(entity => new { entity.Status, entity.CreatedAt });
     }
 }

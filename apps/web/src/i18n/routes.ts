@@ -48,6 +48,8 @@ export const corporatePages = [
   "contact",
   "legal/imprint",
   "legal/privacy",
+  "legal/terms",
+  "legal/cookies",
 ] as const;
 
 /** Page keys = URL paths after the locale. "home" is the locale index page. */

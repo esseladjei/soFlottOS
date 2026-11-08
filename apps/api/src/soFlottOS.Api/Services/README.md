@@ -7,6 +7,9 @@ The layer that decides *what may happen*. Controllers call these; these call rep
 * `OrderService` — quoting, booking (which also creates the invoice), dispatching, cancelling.
 * `DriverService` — availability state machine, start transit, proof of delivery.
 * `InvoiceService` — consecutive invoice numbers, status changes, printable detail.
+* `ConsentService` — minimal cookie-consent evidence (idempotent) and its decision history.
+* `PrivacyRequestService` — GDPR data-subject requests, status workflow and notification emails.
+* `DataRetentionService` — background sweep that deletes expired consent records and resolved requests.
 * `AdminService` — the dashboard KPIs.
 * `PricingService` — base fee + km rate, minimum charge, 19% German VAT.
 * `RoutingService` — distance between two points (straight line, or OpenRouteService).
