@@ -1,0 +1,69 @@
+================================================================================
+soFlott UG (haftungsbeschränkt) - MVP BUSINESS & SYSTEM BLUEPRINT
+================================================================================
+Part 1: MVP Feature Scope (What to Build First)1. User Roles & Authentication (JWT-based)Keep roles flat and strictly separated to avoid permission logic hell:Client (B2B): Can login, book ad-hoc orders, input special instructions, and view their order history/invoices.Driver: Can login, toggle availability (Online/Offline), view assigned jobs, and submit Proof of Delivery (PoD).Admin: Full access to manage clients, manually assign or reassign drivers, view system-wide revenue, and mark invoices as paid.2. CRM Module (Client Management)v1 Scope: Simple CRUD for business profiles (Company Name, Contact Person, Email, Phone, Billing Address, and USt-IdNr. for German tax compliance).Note: Clients can self-register or be manually onboarded by the Admin after a physical flyer drop.3. Order & Dispatch Module (The Core)Booking Flow: Client enters pickup address, drop-off address, cargo type, weight, and a text field for "Special Instructions" (e.g., "Ring back doorbell, ask for warehouse manager Hans").Pricing & Tax Engine: C# backend calculates distance via OpenRouteService, multiplies by your per-km rate, adds a base fee, tacks on 19% German VAT (MwSt), and generates a gross total.Payment Handling for MVP: Skip complex automated Stripe/PayPal webhook integrations for day one to avoid legal/compliance friction.Option A (Bank Transfer): Order is placed $\rightarrow$ system automatically generates a compliant German PDF Invoice ($\text{Rechnung}$) $\rightarrow$ client pays via standard bank transfer (Überweisung).Option B (PayPal Manual/Link): Client sends money to your business PayPal handle, and Admin manually flips the invoice status to "Paid" in the dashboard.4. Driver Module & Availability LogicAvailability State Machine: Instead of complex automatic multi-order pathfinding algorithms on day one, use a simplified state flag on the Driver table (IsAvailable: true/false).The Workflow:Driver logs into the mobile PWA and toggles status to Online.Admin (or automated matching) assigns an order to the driver. Driver status automatically flips to Busy / Blocked.Driver completes the run, captures the digital signature and GPS stamp via the PWA, and hits "Complete Delivery".Driver status automatically flips back to Online, making them instantly eligible for the next dispatch.Note on Multi-Drop Routing: For v1, allow the Admin to manually group sequential orders if they are on the same route, rather than writing a complex automated vehicle-routing-problem (VRP) solver right away.Part 2: Step-by-Step Implementation Blueprint for AI PromptingWhen you are ready to feed code generation prompts to your AI assistant, use this modular framework to build things in the correct sequence.Step 1: Database Setup & Entities (MySQL + C# EF Core)Task: Initialize the MySQL database and build the C# Entity Framework Core models.Entities needed: User (with Role enum), Client, Order (with SpecialInstructions string field and status flags), ProofOfDelivery, and Invoice.Step 2: Authentication API (C# Controllers + JWT)Task: Build /api/auth/login and /api/auth/register. Implement token generation with claims for Role (Admin, Client, Driver).Security: Ensure endpoints are locked down using [Authorize(Roles = "Admin")], etc.Step 3: Order & Pricing Engine API (C#)Task: Build the calculation service.Accept coordinates or addresses.Call OpenRouteService to fetch distance in kilometers.Compute: $\text{Net Price} = \text{Base} + (\text{KM} \times \text{Rate})$.Compute: $\text{Gross Price} = \text{Net Price} \times 1.19$.Save order with status Pending and trigger invoice creation.Step 4: Driver PWA & PoD Endpoint (Next.js + C#)Task: Build the driver view in Next.js showing active assigned jobs.Add a HTML5/Canvas signature pad component.Capture device GPS coordinates via navigator.geolocation.POST the Base64 signature string, recipient name, and GPS data to /api/driver/orders/{id}/pod, which updates the order status to Delivered and frees up the driver.Part 3: Market-Ready Strategy (How to Launch Lean)To transition from a software project to an active business making money in Germany:Don't wait for perfect software: Launch v1 with manual driver assignment by you (the Admin). 
+You don't need automated matching when you only have 1 or 2 routes running. 
+You can assign them via a simple dashboard view.Invoices must be legally compliant: Ensure your C# invoice generator outputs a consecutive invoice number (Rechnungsnummer), your UG/Gewerbe address, your tax number (Steuernummer or USt-IdNr.), and explicitly breaks down the 19% MwSt.Get your first customer before finishing the code: Print out simple flyers describing your fast, direct B2B courier service with a direct mobile number or a basic landing page. Walk into local auto workshops or electrical businesses, hand them the flyer, and tell them: "If you ever have an emergency part stuck across town, text this number and we will drive it straight to your lift within the hour."
+1. EXECUTIVE SUMMARY & BUSINESS MODEL
+--------------------------------------------------------------------------------
+- Company Name: soFlott UG (haftungsbeschränkt) / soFlottOS
+- Business Model: General B2B Express & Direct Courier Service (Direktfahrt / Eiltransport)
+- Core Value Proposition: Ultra-fast, point-to-point B2B delivery for local enterprises 
+  (auto workshops, legal firms, tech parts, etc.) backed by custom software tracking, 
+  digital signatures, and automated invoicing.
+- Monetization & Payment (v1 MVP): 
+  * Orders are placed online.
+  * System instantly calculates pricing (Base + Distance in KM) + 19% German VAT (MwSt).
+  * Invoices are automatically generated (PDF) upon order placement.
+  * Payment handled via Bank Transfer (Überweisung) or manual PayPal settlement.
+
+--------------------------------------------------------------------------------
+2. USER ROLES & ACCESS CONTROL (JWT + RBAC)
+--------------------------------------------------------------------------------
+- Client (B2B):
+  * Can register and log in.
+  * Can book ad-hoc delivery orders.
+  * Can provide specific instructions / extra notes per order (e.g., "Ask for warehouse manager Hans").
+  * Can view order history, download invoices, and check delivery status.
+
+- Driver:
+  * Can log in and toggle availability status (Online / Offline / Blocked).
+  * Automatically blocked/busy when assigned to an active delivery job.
+  * Automatically released back to 'Online' status upon submitting Proof of Delivery (PoD).
+  * Can view assigned delivery details, pickup/dropoff addresses, and route instructions.
+
+- Admin:
+  * Full operational oversight.
+  * Manages client accounts and manual driver assignments.
+  * Monitors revenue, order statuses, and invoice payment states.
+
+--------------------------------------------------------------------------------
+3. DATABASE SCHEMA SPECIFICATIONS (MySQL 8.0+)
+--------------------------------------------------------------------------------
+- Users Table: Id, Email, PasswordHash, FullName, Role (Admin, Client, Driver), CreatedAt
+- Clients Table: Id, UserId (FK), CompanyName, ContactPerson, Email, Phone, Street, City, PostalCode, TaxIdNumber (USt-IdNr.)
+- Orders Table: Id, ClientId (FK), AssignedDriverId (FK), CargoCategory, WeightKg, PickupAddress, PickupLat, PickupLng, DropoffAddress, DropoffLat, DropoffLng, DistanceKm, EstimatedPriceNet, VatAmount (19%), TotalPriceGross, SpecialInstructions (TEXT), Status (Pending, Assigned, InTransit, Delivered, Cancelled), CreatedAt
+- ProofOfDeliveries Table: Id, OrderId (FK), RecipientName, SignatureDataUrl (LONGTEXT Base64), GpsLatitude, GpsLongitude, DeliveredAt
+- Invoices Table: Id, InvoiceNumber, ClientId (FK), NetTotal, VatTotal, GrossTotal, Status (Draft, Sent, Paid, Overdue), IssuedAt, DueDate
+
+--------------------------------------------------------------------------------
+4. BACKEND ARCHITECTURE (C# .NET Core Web API)
+--------------------------------------------------------------------------------
+- Layers:
+  * Repositories (Data Access Layer via EF Core / AppDbContext)
+  * Services (Business Logic Layer: PricingService, RoutingService, NotificationService, InvoiceService)
+  * Controllers (API Endpoints with JWT Authorization)
+- Key Modules:
+  * Auth Controller: /api/auth/login, /api/auth/register
+  * Client CRM Controller: /api/clients (CRUD operations)
+  * Order Controller: /api/orders/quote, /api/orders (creation with dynamic distance calculation)
+  * Driver Controller: /api/driver/assigned, /api/driver/orders/{id}/pod (PoD submission and availability release)
+
+--------------------------------------------------------------------------------
+5. FRONTEND ARCHITECTURE (Next.js 14+ App Router & TypeScript)
+--------------------------------------------------------------------------------
+- Views / Routes:
+  * /app/(auth)/login/page.tsx -> Universal login screen routing based on JWT role.
+  * /app/client-portal/new-order/page.tsx -> B2B booking form with address inputs, special instructions field, and instant quote preview.
+  * /app/driver/active-run/page.tsx -> Mobile PWA driver view featuring job details, navigation links, and HTML5 canvas signature pad for digital Proof of Delivery.
+  * /app/admin/dashboard/page.tsx -> Operations dashboard for managing orders, manual driver dispatching, and tracking invoice statuses.

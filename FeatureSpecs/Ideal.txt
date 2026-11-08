@@ -1,0 +1,13 @@
+Can you help me structure this a a more practical way for mvp and market ready . And extra information if required 
+
+App features and business flow 
+
+CRM module where customers data are managed
+Order where Business can place order for courier service to deliver an item and pay via PayPal or bank transfer invoice . In any case an invoice is generated . An order place should allow a client or customer to provider specific instructions or extra information 
+
+Driver module where driver signup and join to deliver items for customer and get paid 
+The driver availability is determined automatically based on if they are already assigned a delivery job and are blocked . And as soon as they delivery their item they are released to accept new orders. However for efficiency, I driver should be able to be assigned other order if they order is on the same route of current order, so they can pick multiple items. A driver should be able to block their availability or enable it 
+
+User Account: A client can login ie a Business for example Apothoke or Auto Shop worker can login and book 
+A driver can login as a driver and take and order 
+And Admin user can manage all operations, they are have clear roles and operation to avoid conflict

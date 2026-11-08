@@ -1,0 +1,204 @@
+# soFlott UG (haftungsbeschränkt) - Complete System Architecture & Implementation Blueprint
+set up an off-the-shelf logistics routing software (like Routific, Circuit, or Onfleet). When you approach clients, you won't just offer a driving service; you will offer a fully digitized logistics solution. You can promise them optimized routing, digital proof-of-delivery signatures, and automated SMS tracking for the receiving clinics. This level of technical professionalism instantly elevates you above standard delivery drivers and justifies a premium contract rate.
+
+
+
+Professional Credibility: When a German law firm, auto workshop, or medical lab receives an invoice or a digital notification from soFlott UG, it sounds like a sleek, modern logistics provider rather than a solo freelancer working out of a car.
+
+Future-Proofing: If you ever decide to stop driving yourself and instead license your C# routing and dispatch software to other independent couriers across Europe, the soFlott brand can scale with you into a software company.
+
+## 1. System Overview & Technology Stack
+- **Project Name:** soFlottOS (Powered by soFlott UG)
+- **Domain:** General B2B Express & Direct Courier Service (*Direktfahrt / Eiltransport*)
+- **Backend:** C# (.NET 8/9, ASP.NET Core Web API, Entity Framework Core)
+- **Frontend / Client PWA:** Next.js 14+ (App Router, TypeScript, Tailwind CSS)
+- **Database:** MySQL 8.0+
+- **Authentication:** JSON Web Tokens (JWT) with Role-Based Access Control (RBAC)
+- **External Integrations:** OpenRouteService / Mapbox (Routing), Twilio (SMS/WhatsApp)
+
+---
+
+## 2. MySQL Database Schema Architecture
+
+The database consists of 6 core tables managing users, clients, orders, waypoints, proof-of-delivery, and billing records.
+
+### SQL DDL Script
+```sql
+CREATE DATABASE IF NOT EXISTS soflott_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_immutables;
+USE soflott_db;
+
+-- Users & Authentication Table
+CREATE TABLE Users (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    FullName VARCHAR(150) NOT NULL,
+    Role ENUM('Admin', 'Dispatcher', 'Driver', 'Client') NOT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Clients / B2B Accounts Table
+CREATE TABLE Clients (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserId INT NULL,
+    CompanyName VARCHAR(250) NOT NULL,
+    ContactPerson VARCHAR(150) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Phone VARCHAR(50) NOT NULL,
+    Street VARCHAR(250) NOT NULL,
+    City VARCHAR(100) NOT NULL,
+    PostalCode VARCHAR(20) NOT NULL,
+    TaxIdNumber VARCHAR(50) NULL, -- USt-IdNr.
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE SET NULL
+);
+
+-- Orders / Deliveries Table
+CREATE TABLE Orders (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    ClientId INT NOT NULL,
+    AssignedDriverId INT NULL,
+    CargoCategory ENUM('Document', 'SmallBox', 'AutoPart', 'Oversized') NOT NULL,
+    WeightKg DECIMAL(6,2) NOT NULL,
+    PickupAddress TEXT NOT NULL,
+    PickupLat DECIMAL(10,8) NOT NULL,
+    PickupLng DECIMAL(11,8) NOT NULL,
+    DropoffAddress TEXT NOT NULL,
+    DropoffLat DECIMAL(10,8) NOT NULL,
+    DropoffLng DECIMAL(11,8) NOT NULL,
+    DistanceKm DECIMAL(6,2) NOT NULL,
+    EstimatedPriceNet DECIMAL(10,2) NOT NULL,
+    VatAmount DECIMAL(10,2) NOT NULL, -- 19% MwSt
+    TotalPriceGross DECIMAL(10,2) NOT NULL,
+    Status ENUM('Pending', 'Assigned', 'InTransit', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ClientId) REFERENCES Clients(Id),
+    FOREIGN KEY (AssignedDriverId) REFERENCES Users(Id)
+);
+
+-- Proof of Delivery (PoD) Table
+CREATE TABLE ProofOfDeliveries (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    OrderId INT NOT NULL UNIQUE,
+    RecipientName VARCHAR(150) NOT NULL,
+    SignatureDataUrl LONGTEXT NOT NULL, -- Base64 SVG/PNG string
+    GpsLatitude DECIMAL(10,8) NOT NULL,
+    GpsLongitude DECIMAL(11,8) NOT NULL,
+    DeliveredAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (OrderId) REFERENCES Orders(Id) ON DELETE CASCADE
+);
+
+-- Invoices & Transactions Table
+CREATE TABLE Invoices (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    InvoiceNumber VARCHAR(50) NOT NULL UNIQUE,
+    ClientId INT NOT NULL,
+    NetTotal DECIMAL(10,2) NOT NULL,
+    VatTotal DECIMAL(10,2) NOT NULL,
+    GrossTotal DECIMAL(10,2) NOT NULL,
+    Status ENUM('Draft', 'Sent', 'Paid', 'Overdue') DEFAULT 'Draft',
+    IssuedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DueDate DATETIME NOT NULL,
+    FOREIGN KEY (ClientId) REFERENCES Clients(Id)
+);
+
+NEXT.JS FRONTEND                           │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌───────────────┐ │
+│  │ Dispatch Admin   │  │ Driver Mobile PWA│  │ Client Portal │ │
+│  │ (Desktop/Tablet) │  │ (Signature/Scan) │  │ (Lab/Clinic)  │ │
+│  └─────────┬────────┘  └─────────┬────────┘  └───────┬───────┘ │
+└────────────┼─────────────────────┼───────────────────┼─────────┘
+             │                     │                   │
+             └─────────────────────┼───────────────────┘
+                                   ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      C# (.NET) BACKEND API                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────────┐ │
+│  │ Route Engine │  │ CRM & Orders │  │ Billing & VAT Engine   │ │
+│  └──────┬───────┘  └──────┬───────┘  └───────────┬────────────┘ │
+└─────────┼─────────────────┼──────────────────────┼──────────────┘
+          │                 │                      │
+          ▼                 ▼                      ▼
+┌──────────────────┐ ┌──────────────┐ ┌───────────────────────────┐
+│ Routing / Maps   │ │ MySQL        │ │ SMS / WhatsApp API        │
+│ (OpenRoute/Mapbox│ │ Database     │ │ (Twilio / Meta API)       │
+└──────────────────┘ └──────────────┘ └───────────────────────────┘
+
+Database Domain Model (MySQL Entities)
+Clients & Contacts: Labs, clinics, pharmacies, billing addresses, contact persons, tax IDs (USt-IdNr.).
+
+Locations/Waypoints: Address data, geolocation (latitude/longitude), access notes (e.g., "Enter through rear lab door"), delivery windows.
+
+Orders & Items: Sender, receiver, priority level, package type (dental mold, prescription box, urgent document), status (Pending, Dispatched, In-Transit, Delivered, Failed).
+
+Routes & Runs: Sequence of waypoints, optimized order, assigned date, start/end timestamps, mileage.
+
+Proof of Delivery (PoD): Digital signature SVG/PNG string, timestamp, GPS coordinates at signature capture, recipient name.
+
+Invoices & Transactions: Line items, net amount, 19% MwSt, invoice status (Draft, Sent, Paid, Overdue), PDF export record.
+
+Core Modules & Functionality
+1. CRM & Client Portal
+Client Onboarding: Store contract types (Retainer vs. Ad-hoc), special delivery instructions, and default pricing tiers.
+
+Lab Self-Service Booking: Labs log in to request a pick-up for a specific dentist clinic without calling or texting you.
+
+2. Order Management & Smart Routing
+Optimized Routing: Integrates open-source routing (e.g., OpenRouteService API or Mapbox Matrix API) into C#. C# handles TSP (Traveling Salesperson Problem) calculations to sequence waypoints for minimal transit time.
+
+Live Status Board: Color-coded dispatch view on Next.js showing active routes, completed drops, and pending pick-ups.
+
+3. Driver Execution & Digital PoD (PWA)
+Mobile-responsive Next.js interface designed for high-speed touch interactions on a smartphone:
+
+One-tap navigation link opening Google Maps / Apple Maps.
+
+Canvas element for capturing recipient signature directly on-screen.
+
+Automatic timestamp and GPS coordinate tag upon signature save.
+
+4. Automated Notifications (SMS / WhatsApp)
+Triggered directly via C# background tasks upon status change:
+
+Driver En Route: Sent to clinic ("Your delivery from Dental Lab X is arriving in ~15 mins").
+
+Proof of Delivery: Sent to lab manager ("Order #1042 successfully delivered to Dr. Weber. Signature captured at 11:24 AM").
+
+5. Billing, Accounting & German Tax Engine
+Invoice Generation: Monthly automated generation of compliant German invoices (Rechnungen) including required legal headers, consecutive invoice numbers (Rechnungsnummer), tax breakdown (Netto + 19% MwSt = Brutto), and payment terms (e.g., 14 days net).
+
+Payment Tracking: Log incoming bank transfers; track overdue accounts with automated payment reminder emails (Mahnungen).
+
+C# Backend Architecture & Layer Breakdown
+The backend follows a strict Clean Architecture pattern separated into Repositories, Services, and Controllers.
+A. Data Access Layer & RepositoriesRepositories handle raw database interactions via Entity Framework Core (DbContext). 
+They contain zero business logic.AppDbContext.cs: Registers all EF Core DbSets (Users, Clients, Orders, ProofOfDeliveries, Invoices).GenericRepository<T>.cs: Implements base CRUD operations (GetByIdAsync, AddAsync, UpdateAsync, DeleteAsync).OrderRepository.cs: Specialized queries (e.g., fetch active orders by driver ID, filter orders by date range and status).
+B. Service Layer (Business Logic)Services encapsulate domain rules, external API calls, and calculations.PricingService.cs:Takes distance (km) from routing API.Applies formula: $\text{BaseFee} + (\text{Km} \times \text{Rate}) = \text{Net Price}$.Calculates exact 19% German VAT ($\text{Net} \times 0.19$) and sums Gross Total.RoutingService.cs:Communicates with OpenRouteService or Mapbox Matrix API via HttpClient.Computes optimal distance, time, and waypoint sequencing.NotificationService.cs:Connects to Twilio API to dispatch SMS or WhatsApp updates to clients and recipients.InvoiceService.cs:Automates consecutive invoice generation rules compliant with German tax laws (Rechnungspflichtangaben).
+C. Dependency Injection (Program.cs)Register services and database context properly in the ASP.NET Core DI container:
+
+4. API Routes & Endpoints Specifications
+All API controllers are secured via JWT bearer tokens and mapped using attribute routing.
+
+Authentication & Users (/api/auth)
+POST /api/auth/login — Authenticates user credentials, returns a signed JWT token and user role.
+
+Client Management CRM (/api/clients)
+GET /api/clients — Returns list of all B2B clients.
+
+POST /api/clients — Registers a new client company (Name, Address, Tax ID).
+
+GET /api/clients/{id} — Retrieves details and past orders for a specific client.
+
+Order Dispatch & Pricing (/api/orders)
+POST /api/orders/quote — Input pickup/dropoff coords; returns distance, estimated duration, and calculated net/gross price.
+
+POST /api/orders — Creates an ad-hoc order, triggers distance calculation, saves to MySQL, and queues notifications.
+
+GET /api/orders/active — Returns all active or unassigned orders for dispatcher dashboard.
+
+PUT /api/orders/{id}/assign — Assigns a specific order to a driver user ID.
+
+Driver Operations & PoD (/api/driver)
+GET /api/driver/assigned — Retrieves list of orders assigned to the logged-in driver.
+
+POST /api/driver/orders/{id}/pod — Uploads recipient name, GPS coordinates, and Base64 digital signature string. Updates order status to Delivered.

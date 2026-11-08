@@ -1,0 +1,910 @@
+# SOFLOTT UG (HAFTUNGSBESCHRÄNKT)
+# PRIVACY, GDPR & COOKIE CONSENT MANAGEMENT
+## FEATURE & IMPLEMENTATION SPECIFICATION
+
+Version: 1.0  
+Date: 08 November 2026  
+Project: soFlott Website and Digital Platform  
+Company: soFlott UG (haftungsbeschränkt)  
+Technology: Next.js + ASP.NET REST API  
+Target Market: Germany / European Union
+
+============================================================
+1. PROJECT OBJECTIVE
+============================================================
+
+Implement an internally developed privacy, cookie consent and GDPR management system for soFlott UG.
+
+The objective is to provide a professional, transparent and legally appropriate privacy experience without relying on a paid third-party Consent Management Platform (CMP).
+
+The system must:
+
+- Allow visitors to control optional cookies and tracking technologies.
+- Prevent non-essential tracking before valid consent.
+- Support Google Analytics 4 and , Facebook Pixel, Instagram Ad, LinkedIn Ads, Google Ads.
+- Implement Google Consent Mode v2.
+- Provide a persistent cookie settings interface.
+- Store and manage consent preferences.
+- Provide transparent privacy information.
+- Support customer and business data protection.
+- Support future expansion of the soFlott courier and digital services.
+
+The implementation must follow applicable GDPR (DSGVO), German TDDDG and other relevant European data protection requirements.
+
+IMPORTANT:
+Technical implementation does not automatically guarantee legal compliance. Final legal documents, processing purposes, legal bases and consent mechanisms must be validated against the actual business operations.
+
+============================================================
+2. SYSTEM ARCHITECTURE
+============================================================
+
+Frontend: app/web
+- Next.js
+- React
+- TypeScript
+
+Backend:
+- ASP.NET REST API
+- Existing application backend
+
+Database:
+- Existing application database, where applicable.
+
+Analytics:
+- Google Analytics 4
+
+Advertising:
+- Google Ads, Meta Pixel, LinkedIn Insight Tag.
+
+Tag Management:
+- Google Tag Manager (optional, recommended if multiple tags are used).
+
+Consent Management:
+- Custom-developed internal consent management module.
+
+No paid external CMP should be required.
+
+Suggested frontend structure:
+
+src/
+|
++-- components/
+|   +-- privacy/
+|       +-- CookieBanner.tsx
+|       +-- CookieSettings.tsx
+|       +-- CookieCategory.tsx
+|       +-- CookiePreferenceItem.tsx
+|       +-- PrivacyFooterLink.tsx
+|
++-- hooks/
+|   +-- useCookieConsent.ts
+|
++-- services/
+|   +-- consentService.ts
+|   +-- consentStorage.ts
+|   +-- googleConsentService.ts
+|
++-- config/
+|   +-- cookieCategories.ts
+|   +-- privacyConfig.ts
+|
++-- types/
+|   +-- consent.types.ts
+|
++-- app/
+    +-- datenschutz/
+    +-- impressum/
+    +-- agb/
+    +-- cookie-einstellungen/
+
+Suggested backend structure:
+
+Controllers/
+    PrivacyController.cs
+    ConsentController.cs
+    DataRequestController.cs
+
+Services/
+    ConsentService.cs
+    PrivacyRequestService.cs
+    DataRetentionService.cs
+
+Repositories/
+    ConsentRepository.cs
+
+Models/
+    ConsentRecord.cs
+    PrivacyRequest.cs
+
+The backend endpoints are optional for basic frontend consent functionality. Implement them when centralised consent evidence or privacy request management is needed.
+
+============================================================
+3. COOKIE CONSENT CATEGORIES
+============================================================
+
+The consent manager must provide exactly four main categories.
+
+3.1 NECESSARY
+
+Status: Always enabled.
+
+Purpose:
+Essential technologies required for website functionality, security and service delivery.
+
+Examples:
+- Authentication and session management.
+- CSRF protection.
+- Security and fraud prevention.
+- Essential application cookies.
+- Consent preference storage.
+- Load balancing and technical session functionality.
+
+Users cannot disable genuinely necessary technologies through the consent interface.
+
+Do not classify advertising or analytics technologies as necessary.
+
+3.2 ANALYTICS
+
+Status: Optional.
+
+Purpose:
+Understand website usage and improve the soFlott website and customer experience.
+
+Examples:
+- Google Analytics 4.
+- Page views.
+- Website traffic statistics.
+- Navigation patterns.
+- Traffic sources.
+- Campaign performance.
+- Conversion analysis.
+
+Default state: Disabled until consent.
+
+3.3 ADS & MARKETING
+
+Status: Optional.
+
+Purpose:
+Measure advertising performance and support advertising-related functionality.
+
+Examples:
+- Google Ads conversion tracking.
+- Google Ads remarketing.
+- Advertising identifiers.
+- Meta Pixel
+- Instagram Ad
+- LinkedIn Insight Tag
+- Advertising campaign measurement.
+- Enhanced conversions, where legally and technically appropriate.
+
+Default state: Disabled until consent.
+
+3.4 PREFERENCES
+
+Status: Optional.
+
+Purpose:
+Remember user choices and improve website usability.
+
+Examples:
+- Preferred language.
+- Non-essential display settings.
+- Personalisation preferences.
+- Optional interface settings.
+
+Default state: Disabled until consent.
+
+Essential language or accessibility functionality may be provided without consent where genuinely necessary and legally justified.
+
+============================================================
+4. COOKIE BANNER USER INTERFACE
+============================================================
+
+Implement a responsive cookie consent banner.
+
+Initial banner content:
+
+Title:
+Cookie-Einstellungen
+
+Description:
+We use cookies and similar technologies to provide our website, understand how it is used and improve our services and advertising.
+
+You can choose which optional technologies you allow. You can change your preferences at any time.
+
+Buttons:
+
+1. Accept All
+2. Reject Optional
+3. Customise Settings
+
+Requirements:
+
+- Accept All and Reject Optional must have equal prominence and accessibility.
+- Customise Settings opens detailed preferences.
+- No optional category may be preselected.
+- Necessary cookies are always active.
+- The banner must work on desktop, tablet and mobile.
+- The banner must be accessible using keyboard navigation.
+- Provide appropriate screen-reader labels.
+- Do not use misleading language or dark patterns.
+- The privacy policy and legal information must remain accessible.
+
+German interface text should be provided as the primary language, with English support if the website is bilingual.
+
+Suggested German buttons:
+
+- Alle akzeptieren
+- Nur notwendige
+- Einstellungen anpassen
+- Auswahl speichern
+
+============================================================
+5. COOKIE SETTINGS INTERFACE
+============================================================
+
+The visitor must be able to reopen cookie settings at any time.
+
+Each category must display:
+
+- Category name.
+- Description.
+- Enabled/disabled status.
+- Examples of technologies.
+- Purpose of processing.
+
+Suggested layout:
+
+NECESSARY
+Always active
+
+ANALYTICS
+Optional toggle
+
+ADS & MARKETING
+Optional toggle
+
+PREFERENCES
+Optional toggle
+
+Buttons:
+
+- Save preferences
+- Accept all
+- Reject optional
+
+The interface must also explain that refusing optional cookies does not prevent visitors from using essential website services.
+
+============================================================
+6. CONSENT MANAGEMENT LOGIC
+============================================================
+
+The system must support these actions:
+
+FIRST VISIT:
+- Check whether valid consent exists.
+- If no valid consent exists, display the banner.
+- Initialise necessary functionality only.
+- Keep optional tracking blocked.
+
+ACCEPT ALL:
+- Enable all four categories.
+- Update the consent record.
+- Update Google Consent Mode signals.
+- Load permitted tracking technologies.
+
+REJECT OPTIONAL:
+- Enable necessary functionality only.
+- Keep analytics, advertising and optional preferences disabled.
+- Update the consent record.
+
+CUSTOMISE:
+- Display category settings.
+- Allow individual category selection.
+- Save the selected categories.
+
+RETURNING VISITOR:
+- Read previously saved consent.
+- Validate its version and expiry.
+- Restore the selected preferences.
+- Do not repeatedly display the banner when valid consent exists.
+
+WITHDRAW CONSENT:
+- Allow the visitor to reopen settings.
+- Allow optional categories to be disabled.
+- Update consent signals.
+- Prevent future optional tracking.
+- Remove or disable applicable optional cookies where technically possible.
+
+CONSENT VERSION CHANGE:
+- If the consent notice or relevant processing purposes materially change, invalidate the old consent where necessary.
+- Request new consent.
+
+============================================================
+7. CONSENT STORAGE
+============================================================
+
+Store the consent selection in a first-party cookie.
+
+Suggested cookie:
+
+Name:
+soflott_consent
+
+Suggested properties:
+
+- Secure
+- SameSite=Lax
+- Appropriate expiry
+- Path=/
+
+Use a suitable retention period and renew consent when required.
+
+Illustrative structure:
+
+{
+  "necessary": true,
+  "analytics": false,
+  "marketing": false,
+  "preferences": false,
+  "version": "1.0",
+  "updatedAt": "2026-11-08T12:00:00Z"
+}
+
+This is an example data structure, not a complete legal consent record.
+
+Requirements:
+
+- Necessary must always remain true.
+- Validate stored data before using it.
+- Reject malformed or outdated consent data.
+- Do not trust client-provided consent information for unrelated security decisions.
+- Avoid storing personal information unnecessarily in the consent cookie.
+
+Consent evidence should be maintained separately where required.
+
+Possible consent evidence fields:
+
+- Consent record identifier.
+- Consent notice version.
+- Timestamp.
+- Selected categories.
+- Consent action.
+- Relevant consent configuration.
+- Withdrawal timestamp, where applicable.
+
+IP addresses and other identifiers should not be collected or retained unnecessarily. Determine the appropriate evidence and retention approach through legal review.
+
+============================================================
+8. GOOGLE ANALYTICS 4 INTEGRATION
+============================================================
+
+Google Analytics 4 must only operate under the appropriate consent conditions.
+
+Requirements:
+
+- Do not initialise optional analytics tracking before consent.
+- Do not send analytics events when analytics permission is absent.
+- Do not collect unnecessary personal information.
+- Do not send customer addresses, phone numbers, delivery instructions or payment information to GA4.
+- Respect consent withdrawal.
+- Configure data retention settings.
+- Review Google Signals and advertising features separately.
+
+The following Consent Mode signal must be controlled:
+
+analytics_storage
+
+Expected behaviour:
+
+No analytics consent:
+analytics_storage = denied
+
+Analytics consent:
+analytics_storage = granted
+
+Use Basic Consent Mode initially.
+
+Do not assume that setting a consent signal to denied automatically prevents every Google tag from loading. Optional tags must be blocked until the required consent has been obtained.
+
+============================================================
+9. GOOGLE ADS INTEGRATION
+============================================================
+
+Google Ads must be controlled independently from analytics.
+
+Relevant Consent Mode v2 signals:
+
+ad_storage
+ad_user_data
+ad_personalization
+
+Expected behaviour without marketing consent:
+
+ad_storage = denied
+ad_user_data = denied
+ad_personalization = denied
+
+After valid marketing consent:
+
+ad_storage = granted
+ad_user_data = granted
+ad_personalization = granted
+
+Requirements:
+
+- Block optional advertising tags before consent.
+- Do not enable remarketing before appropriate consent.
+- Do not upload customer lists without a separate legal assessment.
+- Do not use delivery recipient information for advertising.
+- Review enhanced conversions separately.
+- Provide transparent advertising disclosures.
+
+============================================================
+10. GOOGLE CONSENT MODE V2
+============================================================
+
+Implement Google Consent Mode v2.
+
+Relevant signals:
+
+analytics_storage
+ad_storage
+ad_user_data
+ad_personalization
+functionality_storage
+personalization_storage
+security_storage
+
+Suggested mapping:
+
+NECESSARY:
+security_storage = granted
+
+ANALYTICS:
+analytics_storage = granted only after consent.
+
+ADS & MARKETING:
+ad_storage = granted only after consent.
+ad_user_data = granted only after consent.
+ad_personalization = granted only after consent.
+
+PREFERENCES:
+functionality_storage = granted only after consent where applicable.
+personalization_storage = granted only after consent where applicable.
+
+Initial consent state must be established before optional Google tags can run.
+
+Google tags must receive updated consent signals when visitors change their preferences.
+
+The implementation must not use Consent Mode as a substitute for blocking optional tags in Basic Consent Mode.
+
+============================================================
+11. PRIVACY POLICY
+============================================================
+
+Create a dedicated page:
+
+/datenschutz
+
+The privacy policy must explain the actual data processing activities of soFlott UG.
+
+Required sections:
+
+1. Data controller and contact information.
+2. Website hosting and server logs.
+3. Website usage and technical information.
+4. Contact forms and enquiries.
+5. Customer account registration.
+6. Customer and courier bookings.
+7. Pickup and delivery information.
+8. Business customer information.
+9. Payment processing.
+10. Google Analytics.
+11. Google Ads.
+12. External service providers.
+13. Data processing agreements.
+14. International data transfers.
+15. Data retention.
+16. Data security.
+17. Data subject rights.
+18. Right to complain to a supervisory authority.
+19. Cookie and tracking technologies.
+20. Consent management and withdrawal.
+
+For each processing activity, identify:
+
+- Data categories.
+- Purpose.
+- Legal basis.
+- Recipients.
+- Retention period or criteria.
+- International transfers, if applicable.
+
+Do not publish generic or inaccurate statements.
+
+============================================================
+12. CUSTOMER AND BUSINESS DATA PROTECTION
+============================================================
+
+soFlott may process personal information from:
+
+PRIVATE CUSTOMERS:
+- Name.
+- Email address.
+- Telephone number.
+- Pickup address.
+- Delivery address.
+- Booking information.
+- Delivery instructions.
+- Payment references.
+
+BUSINESS CUSTOMERS:
+- Company name.
+- Registered or business address.
+- Business contact details.
+- Contact person.
+- VAT identification number, where necessary.
+- Contract and invoice information.
+- Delivery and service records.
+
+RECIPIENTS:
+- Recipient name.
+- Delivery address.
+- Telephone number, where necessary.
+- Delivery instructions.
+
+Recipients may be data subjects even if they have never registered with soFlott.
+
+Assess the applicable transparency obligations under GDPR Article 14 for personal data obtained indirectly.
+
+Do not collect more personal information than necessary.
+
+============================================================
+13. DATA SECURITY
+============================================================
+
+Implement appropriate technical and organisational measures.
+
+Recommended controls:
+
+- HTTPS throughout the application.
+- Secure password hashing.
+- Role-based access control.
+- Strong authentication for administrators.
+- API authentication and authorisation.
+- Rate limiting.
+- Input validation.
+- Protection against common web vulnerabilities.
+- Secure database credentials.
+- Encryption at rest where appropriate.
+- Encrypted backups.
+- Restricted production database access.
+- Security monitoring.
+- Appropriate audit logging.
+
+Do not log:
+
+- Passwords.
+- Authentication tokens.
+- Payment card details.
+- Unnecessary customer personal information.
+- Full delivery instructions unless operationally necessary.
+
+Establish a data breach response procedure, including assessment and applicable GDPR notification deadlines.
+
+============================================================
+14. DATA RETENTION AND DELETION
+============================================================
+
+Implement a documented retention policy.
+
+Different data categories require different retention periods.
+
+Examples:
+
+- Uncompleted enquiries.
+- Customer account data.
+- Booking and delivery records.
+- Invoices and accounting records.
+- Payment references.
+- Security logs.
+- Consent evidence.
+
+Do not apply one universal deletion period to every record.
+
+Accounting documents may need to be retained under German statutory requirements, even if a customer requests account deletion.
+
+Provide procedures for:
+
+- Account deletion requests.
+- Personal data access requests.
+- Data correction.
+- Data export.
+- Restriction of processing.
+- Objection requests.
+- Deletion where legally applicable.
+
+Deletion should include relevant systems and backups according to the documented retention and backup lifecycle.
+
+============================================================
+15. DATA PROCESSING AGREEMENTS
+============================================================
+
+Identify all third-party providers processing personal information on behalf of soFlott.
+
+Potential providers:
+
+- Website hosting.
+- Backend hosting.
+- Database hosting.
+- Email delivery.
+- Payment processing.
+- Cloud storage.
+- Analytics and advertising providers.
+
+Review whether a Data Processing Agreement (Auftragsverarbeitungsvertrag / AVV) is required under GDPR Article 28.
+
+Review international data transfers and applicable safeguards.
+
+Do not assume that using a European server automatically resolves every GDPR obligation.
+
+============================================================
+16. LEGAL WEBSITE PAGES
+============================================================
+
+Create the following website pages:
+
+/impressum
+/datenschutz
+/agb
+/cookie-einstellungen
+
+Additionally, depending on the business model:
+
+/widerrufsbelehrung
+/lieferbedingungen
+
+The legal applicability of withdrawal information depends on the actual service contracts and customer types.
+
+The footer should permanently display:
+
+- Impressum
+- Datenschutz
+- AGB
+- Cookie-Einstellungen
+- Contact
+
+Cookie settings must allow visitors to reopen and modify their consent.
+
+============================================================
+17. BACKEND API (OPTIONAL)
+============================================================
+
+Suggested endpoints:
+
+POST /api/privacy/consent
+GET /api/privacy/consent/history
+POST /api/privacy/data-request
+GET /api/privacy/data-request/{id}
+
+Purpose:
+
+POST /consent:
+Save a consent decision where centralised consent evidence is required.
+
+GET /consent/history:
+Retrieve consent history under appropriate authorisation.
+
+POST /data-request:
+Register a privacy request.
+
+GET /data-request/{id}:
+Check the status of a privacy request.
+
+Security:
+
+- Validate all requests.
+- Apply rate limiting.
+- Protect administrative endpoints.
+- Avoid exposing consent history to unauthorised users.
+- Minimise personal data collection.
+
+These endpoints should only be implemented where they provide a real operational benefit.
+
+============================================================
+18. TESTING REQUIREMENTS
+============================================================
+
+Test the following scenarios.
+
+TEST 1: First visit
+Expected:
+Cookie banner appears.
+No optional tracking runs.
+
+TEST 2: Accept all
+Expected:
+All categories are enabled.
+Permitted Google tracking activates.
+
+TEST 3: Reject optional
+Expected:
+Only necessary functionality remains.
+No optional tracking activates.
+
+TEST 4: Customise
+Expected:
+Individual categories can be selected.
+Only permitted technologies activate.
+
+TEST 5: Returning visitor
+Expected:
+Previously saved preferences are restored.
+
+TEST 6: Withdraw analytics consent
+Expected:
+Analytics tracking is stopped.
+Applicable optional cookies are removed where possible.
+
+TEST 7: Withdraw marketing consent
+Expected:
+Advertising tracking is stopped.
+Marketing consent signals are updated.
+
+TEST 8: Change consent version
+Expected:
+Old consent is re-evaluated.
+New consent is requested where necessary.
+
+TEST 9: Mobile experience
+Expected:
+Banner and settings work on mobile devices.
+
+TEST 10: Browser inspection
+Expected:
+Optional cookies and network requests are absent before consent.
+
+TEST 11: Google Tag Assistant
+Expected:
+Consent signals are correctly transmitted.
+
+TEST 12: Privacy request
+Expected:
+The system can register and process a data access or deletion request.
+
+============================================================
+19. IMPLEMENTATION PHASES
+============================================================
+
+PHASE 1 - LEGAL FOUNDATION
+
+- Create Impressum.
+- Create Datenschutzerklärung.
+- Define processing purposes.
+- Identify legal bases.
+- Define retention policies.
+- Identify external processors.
+
+PHASE 2 - COOKIE CONSENT
+
+- Build cookie banner.
+- Build settings interface.
+- Implement four categories.
+- Implement persistence.
+- Implement consent withdrawal.
+- Implement consent versioning.
+
+PHASE 3 - GOOGLE INTEGRATION
+
+- Configure Google Analytics 4.
+- Configure Google Ads.
+- Implement Google Consent Mode v2.
+- Ensure optional tags are blocked before consent.
+- Verify tracking behaviour.
+
+PHASE 4 - PRIVACY OPERATIONS
+
+- Implement privacy request handling.
+- Establish access controls.
+- Establish deletion procedures.
+- Document processor agreements.
+- Establish security and incident response procedures.
+
+PHASE 5 - FINAL TESTING
+
+- Test all consent scenarios.
+- Inspect browser cookies.
+- Inspect network requests.
+- Verify Google Consent Mode.
+- Review legal pages.
+- Conduct a final legal review.
+
+============================================================
+20. ACCEPTANCE CRITERIA
+============================================================
+
+The feature is considered complete when:
+
+[ ] Cookie banner displays on first visit.
+[ ] Necessary cookies are always enabled.
+[ ] Analytics is optional.
+[ ] Ads & Marketing is optional.
+[ ] Preferences is optional.
+[ ] Accept All works.
+[ ] Reject Optional works.
+[ ] Customise Settings works.
+[ ] Consent preferences persist.
+[ ] Consent can be withdrawn.
+[ ] Consent changes update Google signals.
+[ ] Optional Google tags remain blocked before consent.
+[ ] Google Analytics works only under the configured consent conditions.
+[ ] Google Ads works only under the configured consent conditions.
+[ ] Cookie Settings can be reopened from the footer.
+[ ] Datenschutzerklärung is available.
+[ ] Impressum is available.
+[ ] Customer and business data processing is documented.
+[ ] Privacy request procedures are established.
+[ ] Data retention policies are documented.
+[ ] Security controls are implemented.
+[ ] Production testing is completed.
+[ ] Legal review is completed.
+
+============================================================
+21. IMPORTANT LEGAL REFERENCES
+============================================================
+
+GDPR:
+- Article 5: Principles of processing.
+- Article 6: Lawfulness of processing.
+- Article 7: Conditions for consent.
+- Article 12-14: Transparency and information obligations.
+- Article 15-22: Data subject rights.
+- Article 28: Data processors.
+- Article 30: Records of processing activities.
+- Article 32: Security of processing.
+- Article 33-34: Personal data breaches.
+- Article 35: Data protection impact assessment.
+
+German TDDDG:
+- Section 25: Storage of information in terminal equipment and access to information already stored.
+
+German law:
+- Applicable provisions of the BGB.
+- Applicable statutory accounting and retention requirements.
+- Applicable commercial and tax requirements.
+
+Official resources:
+
+https://eur-lex.europa.eu/eli/reg/2016/679/oj
+
+https://www.gesetze-im-internet.de/ttdsg/
+
+https://www.datenschutzkonferenz-online.de/
+
+https://support.google.com/tagmanager/
+
+https://developers.google.com/tag-platform/security/guides/consent
+
+============================================================
+22. FINAL IMPLEMENTATION PRINCIPLES
+============================================================
+
+1. Build internally wherever technically reasonable.
+2. Avoid unnecessary paid subscriptions during the startup phase.
+3. Do not collect unnecessary personal information.
+4. Do not activate optional tracking before valid consent.
+5. Keep privacy information transparent and accessible.
+6. Make consent withdrawal straightforward.
+7. Maintain appropriate evidence of consent.
+8. Separate operational customer data from advertising data.
+9. Protect customer, recipient and business information.
+10. Ensure that actual system behaviour matches published privacy information.
+11. Review the implementation when new services or tracking technologies are introduced.
+12. Obtain legal review before treating the system as production-ready.
+
+END OF SPECIFICATION
+
+soFlott UG (haftungsbeschränkt)
+Privacy, GDPR & Cookie Consent Management

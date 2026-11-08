@@ -1,0 +1,30 @@
+Admin improvement
+
+1. Allow admins to create an order for a client instead of client only being able to create an order themselves.
+ This will enable admins to assist clients who may have difficulty navigating the ordering process or who require special assistance.
+ example: A client calls in to place an order, and the admin can create the order on their behalf, ensuring accuracy and efficiency.
+ 
+ 2. Allow admin to create or add drivers and assign them to specific orders.
+    2.1 Show driver completed deliveries and revenue generated per driver.
+    
+ 3. Allow admin to open and view invoice details for any order, including the ability to download or print invoices for record-keeping and client reference.
+    3.1 In the UI paid invoices should be clearly marked as "Paid" to avoid confusion and ensure accurate financial tracking and send confirmation email.
+    3.2 In the UI overdue invoices should be clearly marked as "Overdue" to alert admins and clients of pending payments and facilitate timely follow-ups and send payment reminder. 
+    3.3 Use clear UI indicators for both paid , sent and overdue invoices to enhance visibility and streamline financial management.
+ 
+ 4. Show active Order details when clicked
+ 
+ Book a delivery improvement
+ 1. Pick up latitude and longitude are optional for V1. Future version will prefilled via geolocation API. This will allow for more accurate and efficient delivery scheduling, as well as improved tracking and reporting capabilities.
+ 2. Pick up and drop off addresss are required fields for V1. Use separate fields for street name & house number , zip code, city and optional state to ensure accurate address entry and facilitate efficient delivery routing. Put it on one row for better user experience.
+ 3. Pick up  and drop off contact person and phone number are required fields for V1. This will ensure that the delivery personnel can easily reach the client for any necessary coordination or clarification during the delivery process.
+ 4. There should be a clear UI design separation from pickup and drop off address fields to avoid confusion and enhance user experience. This will help users easily distinguish between the two sets of information and reduce the likelihood of errors during data entry.
+ 5. Quote preview should show on either on the top or as a side panel of the booking form. This will provide users with a clear and immediate view of the estimated costs associated with their delivery, allowing them to make informed decisions before finalizing their order.
+ 6. After booking, either by client or admin, the system should send a confirmation email to the client with all relevant order details, including pickup and drop-off information, estimated delivery time, and contact information for the assigned driver. This will ensure that clients are well-informed and can track their orders effectively.
+ 
+ User Account Management 
+ Ensure strict Password Policy for all users, including clients and admins. This will enhance security and protect sensitive information within the system.
+ Add forgot password functionality for all users, allowing them to reset their passwords securely in case they forget them. This will improve user experience and reduce support requests related to account access issues.
+ 
+ Notifications, Email and Alerts 
+ Alert, emails and Notification messages should be localized in Germany and English for all users, ensuring clear communication and understanding across different language preferences. This will enhance user experience and reduce potential confusion or miscommunication.
