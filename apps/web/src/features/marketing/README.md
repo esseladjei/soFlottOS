@@ -19,7 +19,7 @@ Components that render the public website. Copy lives in
 
 There is no enquiry backend yet. Forms validate in the browser and open the
 visitor's email program with a prepared message to the division inbox
-(`NEXT_PUBLIC_EXPRESS_EMAIL`, `NEXT_PUBLIC_DIGITAL_EMAIL`, fallback
+(`NEXT_PUBLIC_EXPRESS_EMAIL`, `NEXT_PUBLIC_DIGITAL_EMAIL`, general enquiries use
 `NEXT_PUBLIC_CONTACT_EMAIL`). Nothing is stored. To add a backend later,
 replace `submitEnquiry` in `enquiry-form.tsx`.
 `/express/request-a-quote?type=subcontracting` preselects the subcontracting form.

@@ -20,7 +20,7 @@ Configure the **API process**, not the PostgreSQL service in `compose.yml`:
 export Email__Enabled=true
 export Email__ApiKey='<Resend API key from your secret store>'
 export Email__From='soFlott <notifications@your-verified-domain.example>'
-export Email__ReplyTo='support@your-domain.example'
+export Email__ReplyTo='info@soflott.de'
 export Email__FrontendBaseUrl='https://your-app.example'
 ```
 

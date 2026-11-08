@@ -12,6 +12,17 @@
 
 const env = process.env;
 
+/** Accepts "soflott.de" or a full URL; empty or invalid values fall back. */
+function resolveOrigin(value: string | undefined, fallback: string) {
+  const raw = value?.trim();
+  if (!raw) return fallback;
+  try {
+    return new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`).origin;
+  } catch {
+    return fallback;
+  }
+}
+
 export const siteConfig = {
   /** Product / software name used inside the signed-in app. */
   name: "soFlottOS",
@@ -24,25 +35,25 @@ export const siteConfig = {
   description:
     "soFlott UG (haftungsbeschränkt): B2B courier and logistics services through soFlott Express, IT consulting and software engineering through soFlott Digital.",
 
-  url: env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  url: resolveOrigin(env.NEXT_PUBLIC_SITE_URL, "http://localhost:3000"),
 
   // --- Contact -------------------------------------------------------------
   // PLACEHOLDER: replace with the real number before launch.
   phone: env.NEXT_PUBLIC_CONTACT_PHONE || "+49 821 0000000",
-  email: env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
+  email: env.NEXT_PUBLIC_CONTACT_EMAIL || "info@soflott.de",
 
   // --- Commercial divisions ------------------------------------------------
   // Brands / business units of the one legal entity above - NOT separate
-  // companies. Each division can have its own enquiry inbox; both fall back to
-  // the main address until dedicated inboxes exist.
+  // companies. Inbox routing: express courier services -> dispatch@,
+  // IT / software services -> digital@, everything else -> info@ (above).
   divisions: {
     express: {
       name: "soFlott Express",
-      email: env.NEXT_PUBLIC_EXPRESS_EMAIL || env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
+      email: env.NEXT_PUBLIC_EXPRESS_EMAIL || "dispatch@soflott.de",
     },
     digital: {
       name: "soFlott Digital",
-      email: env.NEXT_PUBLIC_DIGITAL_EMAIL || env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
+      email: env.NEXT_PUBLIC_DIGITAL_EMAIL || "digital@soflott.de",
     },
   },
 
@@ -79,4 +90,6 @@ export const siteConfig = {
 /** `tel:` links must not contain spaces or brackets. */
 export const telHref = `tel:${siteConfig.phone.replace(/[^+\d]/g, "")}`;
 
+export const expressMailtoHref = `mailto:${siteConfig.divisions.express.email}`;
+export const digitalMailtoHref = `mailto:${siteConfig.divisions.digital.email}`;
 export const mailtoHref = `mailto:${siteConfig.email}`;

@@ -388,6 +388,12 @@ function Block({ block, ctx, index }: { block: ContentBlock; ctx: BlockContext; 
             {content.common.phone}: <a className="underline" href={telHref}>{siteConfig.phone}</a>
             <br />
             {content.common.email}: <a className="underline" href={mailtoHref}>{siteConfig.email}</a>
+            {[siteConfig.divisions.express, siteConfig.divisions.digital].map((d) => (
+              <span key={d.email}>
+                <br />
+                {d.name}: <a className="underline" href={`mailto:${d.email}`}>{d.email}</a>
+              </span>
+            ))}
           </>,
         ],
         [content.imprint.divisions, `${siteConfig.divisions.express.name}, ${siteConfig.divisions.digital.name}`],

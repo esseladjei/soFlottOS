@@ -9,7 +9,7 @@ import { BrandTagline } from "@/components/ui/brand-tagline";
 import type { MarketingContent } from "@/content/marketing/types";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/routes";
-import { mailtoHref, siteConfig, telHref } from "@/lib/site";
+import { siteConfig, telHref } from "@/lib/site";
 
 export function MarketingFooter({ locale, content }: { locale: Locale; content: MarketingContent }) {
   const { footer, common, pages } = content;
@@ -39,9 +39,23 @@ export function MarketingFooter({ locale, content }: { locale: Locale; content: 
                 </a>
               </li>
               <li>
-                <a className="inline-flex items-center gap-2 hover:text-stone-950" href={mailtoHref}>
+                <a className="inline-flex items-center gap-2 hover:text-stone-950" href={`mailto:${siteConfig.divisions.express.email}`}>
                   <Mail aria-hidden className="size-4 text-stone-500" />
-                  <span className="sr-only">{common.email}: </span>
+                  <span className="sr-only">{common.email} ({siteConfig.divisions.express.name}): </span>
+                  {siteConfig.divisions.express.email}
+                </a>
+              </li>
+              <li>
+                <a className="inline-flex items-center gap-2 hover:text-stone-950" href={`mailto:${siteConfig.divisions.digital.email}`}>
+                  <Mail aria-hidden className="size-4 text-stone-500" />
+                  <span className="sr-only">{common.email} ({siteConfig.divisions.digital.name}): </span>
+                  {siteConfig.divisions.digital.email}
+                </a>
+              </li>
+              <li>
+                <a className="inline-flex items-center gap-2 hover:text-stone-950" href={`mailto:${siteConfig.email}`}>
+                  <Mail aria-hidden className="size-4 text-stone-500" />
+                  <span className="sr-only">{common.email} ({siteConfig.brand}): </span>
                   {siteConfig.email}
                 </a>
               </li>

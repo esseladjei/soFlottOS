@@ -23,6 +23,12 @@ services:
         value: "false"
       - key: Email__ApiKey
         sync: false
+      - key: Email__From
+        value: soFlott <info@soflott.de>
+      - key: Email__ReplyTo
+        value: info@soflott.de
+      - key: Invoicing__Email
+        value: rechnung@soflott.de
       - key: Routing__ApiKey
         sync: false
     # To enable Email (password reset) in production, attach a persistent disk and set

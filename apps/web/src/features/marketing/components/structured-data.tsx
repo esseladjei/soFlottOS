@@ -62,6 +62,31 @@ export function OrganizationJsonLd({ locale, description }: { locale: Locale; de
           logo: absoluteUrl("/logo/soFlott_arrow_nav.png"),
           email: siteConfig.email,
           telephone: siteConfig.phone,
+          contactPoint: [
+            {
+              "@type": "ContactPoint",
+              contactType: "customer service",
+              email: siteConfig.email,
+              telephone: siteConfig.phone,
+              availableLanguage: ["de", "en"],
+            },
+            {
+              "@type": "ContactPoint",
+              contactType: "dispatch",
+              name: siteConfig.divisions.express.name,
+              email: siteConfig.divisions.express.email,
+              telephone: siteConfig.phone,
+              areaServed: siteConfig.serviceArea,
+              availableLanguage: ["de", "en"],
+            },
+            {
+              "@type": "ContactPoint",
+              contactType: "sales",
+              name: siteConfig.divisions.digital.name,
+              email: siteConfig.divisions.digital.email,
+              availableLanguage: ["de", "en"],
+            },
+          ],
           ...postalAddress(),
           brand: [
             {
