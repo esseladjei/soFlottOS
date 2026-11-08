@@ -1,35 +1,28 @@
 // ---------------------------------------------------------------------------
-// /sitemap.xml - the list of pages we want Google to index.
+// /sitemap.xml - the list of pages we want search engines to index.
 //
-// Every marketing page is listed once per language, and each entry links to its
-// translations so Google treats them as one page in two languages.
+// Every indexable marketing page is listed once per language, and each entry
+// links to its translations so it is treated as one page in two languages.
+// Pages in `noindexPages` (e.g. case studies awaiting approval) and the
+// signed-in app (/login, /register, portal) are deliberately left out.
 // ---------------------------------------------------------------------------
 
 import type { MetadataRoute } from "next";
-import { languageAlternates, absoluteUrl } from "@/features/marketing/lib/seo";
+import { absoluteUrl, languageAlternates } from "@/features/marketing/lib/seo";
 import { locales } from "@/i18n/config";
-import { localePath, marketingPages } from "@/i18n/routes";
+import { isIndexable, localePath, marketingPages } from "@/i18n/routes";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
+  const pages = marketingPages.filter(isIndexable);
 
-  const marketing = locales.flatMap((locale) =>
-    marketingPages.map((page) => ({
+  return locales.flatMap((locale) =>
+    pages.map((page) => ({
       url: absoluteUrl(localePath(locale, page)),
       lastModified,
       changeFrequency: page === "home" ? ("weekly" as const) : ("monthly" as const),
-      priority: page === "home" ? 1 : 0.8,
+      priority: page === "home" ? 1 : page === "express" || page === "digital" ? 0.9 : 0.7,
       alternates: { languages: languageAlternates(page) },
     })),
   );
-
-  // The app itself does not need to rank, but the entry points may be indexed.
-  const app = ["/login", "/register"].map((path) => ({
-    url: absoluteUrl(path),
-    lastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.3,
-  }));
-
-  return [...marketing, ...app];
 }

@@ -15,6 +15,13 @@ export async function POST(request: Request) {
   try {
     const credentials = (await request.json()) as LoginRequest;
     const session = await loginAgainstBackend(credentials);
+    if (session.role === "Admin") {
+      return NextResponse.json(
+        { title: "Admin console required", detail: "Administrators sign in to the separate admin console.", status: 403 },
+        { status: 403 },
+      );
+    }
+
     await setSession(session);
     return NextResponse.json(toPublicSession(session));
   } catch (error) {

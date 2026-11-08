@@ -38,13 +38,28 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // The public pages moved under a language prefix (/de, /en). These permanent
-  // redirects keep old links and existing Google results working.
+  // Permanent redirects keep old links and search results working:
+  //   - pre-i18n root paths (/platform, /operations, /security)
+  //   - the pre-division page structure (services, pricing, ...) which was
+  //     replaced by /express and /digital (implementation brief v2.0).
   async redirects() {
+    const moved: [string, string][] = [
+      ["services", "express"],
+      ["industries", "express/direct-b2b-delivery"],
+      ["pricing", "express/request-a-quote"],
+      ["platform", "express/how-it-works"],
+      ["security", "legal/privacy"],
+    ];
+
     return [
-      { source: "/platform", destination: "/de/platform", permanent: true },
-      { source: "/operations", destination: "/de/services", permanent: true },
-      { source: "/security", destination: "/de/security", permanent: true },
+      { source: "/platform", destination: "/de/express/how-it-works", permanent: true },
+      { source: "/operations", destination: "/de/express", permanent: true },
+      { source: "/security", destination: "/de/legal/privacy", permanent: true },
+      ...moved.map(([from, to]) => ({
+        source: `/:locale(de|en)/${from}`,
+        destination: `/:locale/${to}`,
+        permanent: true,
+      })),
     ];
   },
 };

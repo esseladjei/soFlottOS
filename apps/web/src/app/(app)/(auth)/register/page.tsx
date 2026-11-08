@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RegisterPage() {
   const session = await getSession();
   if (session) {
-    redirect(session.role === "Admin" ? "/admin" : session.role === "Client" ? "/client" : "/driver");
+    redirect(session.role === "Client" ? "/client" : "/driver");
   }
   return <main className="min-h-screen bg-gradient-to-br from-orange-50 via-stone-50 to-white px-4 py-10 md:px-8 lg:px-12"><RegisterForm /></main>;
 }

@@ -9,7 +9,7 @@ import type { UserRole } from "@/types/api";
 export const dynamic = "force-dynamic";
 
 function roleHome(role: UserRole) {
-  return role === "Admin" ? "/admin" : role === "Client" ? "/client" : "/driver";
+  return role === "Client" ? "/client" : "/driver";
 }
 
 export default async function DriverLayout({ children }: { children: ReactNode }) {

@@ -1,65 +1,72 @@
 // ---------------------------------------------------------------------------
 // The SHAPE of all marketing copy.
 //
-// Why a type? Because `de.ts` and `en.ts` must contain exactly the same fields.
-// TypeScript now shows an error the moment a translation is missing, so the
-// English site can never silently fall back to half-German pages.
+// `de.ts` and `en.ts` must both satisfy `MarketingContent`. Because `pages` is
+// a `Record<MarketingPage, PageContent>`, adding a page to `i18n/routes.ts`
+// makes the build fail until BOTH languages contain copy for it.
 //
-// Nothing here is visual - these are plain words and numbers. The React
-// components in `features/marketing` decide how the words are rendered.
+// Every page is a hero + an ordered list of typed content blocks + an optional
+// closing call to action. The React components in `features/marketing` decide
+// how each block kind looks; the content files only contain words.
+//
+// Content rules (from the implementation brief, section 4.7):
+//   - no invented statistics, client logos, testimonials or certifications;
+//   - no service promise (same-day, prices, areas) the owner has not confirmed;
+//   - soFlott Express / soFlott Digital are divisions of soFlott UG.
 // ---------------------------------------------------------------------------
 
 import type { MarketingPage } from "@/i18n/routes";
 
 /**
- * Icons are referenced by name instead of importing React components into the
- * content files. `features/marketing/components/icon.tsx` maps each name to a
- * real Lucide icon.
+ * Icons are referenced by name; `features/marketing/components/icon.tsx` maps
+ * each name to a Lucide icon so the copy files stay free of React imports.
  */
 export type IconName =
-  | "alert"
-  | "award"
-  | "banknote"
   | "building"
   | "calendar"
   | "check"
+  | "clipboard"
   | "clock"
-  | "euro"
+  | "code"
   | "file"
-  | "gavel"
-  | "hospital"
+  | "handshake"
+  | "layers"
+  | "lifebuoy"
   | "lock"
   | "mail"
   | "map"
   | "package"
   | "phone"
-  | "printer"
+  | "plug"
   | "receipt"
+  | "refresh"
   | "route"
+  | "scale"
+  | "search"
   | "shield"
   | "signature"
-  | "smartphone"
-  | "sparkles"
   | "truck"
+  | "users"
   | "wrench";
 
-/** Title + description + keywords for one page, used by `generateMetadata`. */
+/** Title + description (+ optional keywords) used by `generateMetadata`. */
 export interface PageMeta {
   title: string;
   description: string;
-  keywords: string[];
+  keywords?: string[];
 }
 
 /**
  * A call-to-action link.
- * Use `page` for public marketing pages - the current language prefix is added
- * automatically, so you never hardcode "/de/..." in the copy.
- * Use `href` for fixed application paths such as "/login" or "/register".
+ * `page` = public marketing page (language prefix added automatically).
+ * `href` = fixed app path such as "/login" or "/register".
+ * `query` = optional query string appended to `page`, e.g. "type=subcontracting".
  */
 export interface LinkItem {
   label: string;
   page?: MarketingPage;
   href?: string;
+  query?: string;
 }
 
 export interface IconItem {
@@ -68,189 +75,187 @@ export interface IconItem {
   description: string;
 }
 
-/** One of the four customer groups from the marketing plan. */
-export interface SegmentItem {
-  icon: IconName;
-  name: string;
-  /** What hurts today, in their own words. */
-  pain: string;
-  /** Typical cargo we move for them. */
-  cargo: string;
-  /** The one-sentence sales hook. */
-  hook: string;
-}
-
 export interface FaqItem {
   question: string;
   answer: string;
 }
 
-export interface HomeContent {
+export type FormKind = "express-quote" | "digital-proposal" | "contact";
+
+/** Content blocks, rendered in order by `MarketingPageView`. */
+export type ContentBlock =
+  /** Grid of icon cards. */
+  | { kind: "cards"; eyebrow?: string; title: string; intro?: string; items: IconItem[] }
+  /** Cards that link to other pages (division hubs, related services). */
+  | {
+      kind: "links";
+      eyebrow?: string;
+      title: string;
+      intro?: string;
+      items: (IconItem & { page: MarketingPage })[];
+    }
+  /** The two divisions, side by side (corporate pages). */
+  | {
+      kind: "divisions";
+      eyebrow?: string;
+      title: string;
+      intro?: string;
+      items: {
+        division: "express" | "digital";
+        name: string;
+        summary: string;
+        points: string[];
+        cta: LinkItem;
+      }[];
+    }
+  /** Numbered steps. */
+  | { kind: "steps"; eyebrow?: string; title: string; intro?: string; steps: { title: string; description: string }[] }
+  /** Comparison table: one column per option, one row per criterion. */
+  | {
+      kind: "compare";
+      eyebrow?: string;
+      title: string;
+      intro?: string;
+      columns: string[];
+      /** One value per column, in the same order. */
+      rows: { label: string; values: string[] }[];
+      /** First link is rendered as the primary button. */
+      ctas?: LinkItem[];
+    }
+  /** Checklist. */
+  | { kind: "checklist"; title: string; intro?: string; items: string[] }
+  /** Plain prose, optionally with sub-headed sections (legal pages, about). */
+  | { kind: "text"; title?: string; paragraphs: string[]; sections?: { title: string; paragraphs: string[] }[] }
+  /** Highlighted note, e.g. what we do not promise or what must be agreed. */
+  | { kind: "notice"; title: string; text: string }
+  /** Frequently asked questions (also emitted as FAQPage JSON-LD). */
+  | { kind: "faq"; title: string; intro?: string; items: FaqItem[] }
+  /** Enquiry form. */
+  | { kind: "form"; form: FormKind; title: string; intro?: string }
+  /** Contact details card for the page's division. */
+  | { kind: "contact"; title: string; intro?: string }
+  /** Legal identity table, filled from `siteConfig` (imprint). */
+  | { kind: "imprint"; title: string };
+
+export interface PageContent {
+  /** Short name used in navigation, breadcrumbs and the footer. */
+  label: string;
   meta: PageMeta;
   hero: {
     eyebrow: string;
-    headlineLead: string;
-    headlineHighlight: string;
-    subheadline: string;
-    primaryCta: LinkItem;
-    secondaryCta: LinkItem;
-    bullets: string[];
-    note: string;
-    panel: {
-      eyebrow: string;
-      title: string;
-      stats: { label: string; value: string; caption: string }[];
-      liveLabel: string;
-      liveValue: string;
-      routeFrom: string;
-      routeTo: string;
-      routeSeparator: string;
-    };
-  };
-  trustBar: { icon: IconName; label: string }[];
-  comparison: {
-    eyebrow: string;
     title: string;
     intro: string;
-    columnOther: string;
-    columnSoFlott: string;
-    rows: { label: string; other: string; soFlott: string }[];
+    primaryCta?: LinkItem;
+    secondaryCta?: LinkItem;
+    points?: string[];
   };
-  usps: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    items: (IconItem & { proof: string })[];
-  };
-  segments: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    painLabel: string;
-    cargoLabel: string;
-    items: SegmentItem[];
-    cta: LinkItem;
-  };
-  cargo: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    groups: { icon: IconName; title: string; items: string[] }[];
-    note: string;
-  };
-  process: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    steps: { title: string; description: string }[];
-  };
-  platform: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    items: IconItem[];
-    cta: LinkItem;
-  };
-  pricing: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    points: IconItem[];
-    example: {
-      title: string;
-      rows: { label: string; value: string }[];
-      totalLabel: string;
-      totalValue: string;
-      note: string;
-    };
-    cta: LinkItem;
-  };
-  offer: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    cta: LinkItem;
-    note: string;
-  };
-  area: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    cities: string[];
-    note: string;
-  };
-  faq: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    items: FaqItem[];
-  };
-  finalCta: {
+  blocks: ContentBlock[];
+  cta?: {
     title: string;
     description: string;
     primaryCta: LinkItem;
-    secondaryCta: LinkItem;
-    phoneLabel: string;
+    secondaryCta?: LinkItem;
   };
 }
 
-/** A sub-page (services, pricing, ...). Simpler than the home page on purpose. */
-export interface SubPageContent {
-  meta: PageMeta;
-  eyebrow: string;
-  title: string;
-  intro: string;
-  lead: string[];
-  sections: {
-    title: string;
-    description: string;
-    items: IconItem[];
-  }[];
-  highlights: string[];
-  faq?: FaqItem[];
-  cta: {
-    title: string;
-    description: string;
-    primaryCta: LinkItem;
-    secondaryCta: LinkItem;
+/** Labels shared by every form field. */
+interface FieldText {
+  label: string;
+  hint?: string;
+}
+
+export interface FormsContent {
+  required: string;
+  optional: string;
+  submit: string;
+  submitting: string;
+  successTitle: string;
+  /** `{email}` is replaced with the receiving address. */
+  successText: string;
+  privacyConsent: string;
+  privacyLink: string;
+  errors: {
+    required: string;
+    email: string;
+    consent: string;
+    summary: string;
+  };
+  fields: {
+    company: FieldText;
+    name: FieldText;
+    email: FieldText;
+    phone: FieldText;
+    country: FieldText;
+    message: FieldText;
+    topic: FieldText;
+    pickup: FieldText;
+    delivery: FieldText;
+    date: FieldText;
+    shipment: FieldText;
+    area: FieldText;
+    volume: FieldText;
+    startDate: FieldText;
+    engagement: FieldText;
+    timeline: FieldText;
+    budget: FieldText;
+    stops: FieldText;
+    schedule: FieldText;
+  };
+  expressQuote: {
+    typeLegend: string;
+    types: { direct: string; routes: string; subcontracting: string };
+    engagementOptions: string[];
+    subject: { direct: string; routes: string; subcontracting: string };
+  };
+  digitalProposal: {
+    engagementOptions: string[];
+    subject: string;
+  };
+  contact: {
+    topicOptions: { express: string; digital: string; general: string };
+    subject: string;
   };
 }
 
 export interface MarketingContent {
-  /** Short words reused in many places. */
   common: {
     skipToContent: string;
     languageLabel: string;
+    breadcrumbLabel: string;
     phone: string;
     email: string;
-    callNow: string;
-    moreInfo: string;
-    vatNote: string;
+    address: string;
+    divisionOf: string;
+    legalDraft: string;
+    toBeCompleted: string;
   };
   nav: {
     ariaLabel: string;
-    items: { page: Exclude<MarketingPage, "home">; label: string }[];
+    menuLabel: string;
+    items: MarketingPage[];
     login: string;
-    cta: string;
+    cta: LinkItem;
   };
-  home: HomeContent;
-  pages: {
-    services: SubPageContent;
-    industries: SubPageContent;
-    pricing: SubPageContent;
-    platform: SubPageContent;
-    security: SubPageContent;
-    contact: SubPageContent;
+  /** Sub-navigation shown inside each division. */
+  divisions: Record<
+    "express" | "digital",
+    { name: string; tagline: string; ariaLabel: string; items: MarketingPage[]; cta: LinkItem }
+  >;
+  pages: Record<MarketingPage, PageContent>;
+  forms: FormsContent;
+  imprint: {
+    company: string;
+    address: string;
+    managingDirectors: string;
+    register: string;
+    vatId: string;
+    contact: string;
+    divisions: string;
   };
   footer: {
     tagline: string;
-    columns: {
-      title: string;
-      links: { page: MarketingPage; label: string }[];
-    }[];
+    columns: { title: string; links: MarketingPage[] }[];
     contactTitle: string;
-    serviceAreaTitle: string;
-    serviceAreaText: string;
     legalNote: string;
     copyright: (year: number, company: string) => string;
   };

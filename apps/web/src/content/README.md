@@ -11,7 +11,7 @@ content/marketing/        public website (/de/..., /en/...)
   en.ts      English copy
   index.ts   getMarketingContent(locale) -> the right file
 
-content/app/              login, register and the admin/client/driver console
+content/app/              login, register and the client/driver portal
   types.ts   the shape every translation must have, incl. enum and form labels
   de.ts      German copy - the default language
   en.ts      English copy

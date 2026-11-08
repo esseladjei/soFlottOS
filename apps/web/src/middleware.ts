@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
-import { decodeSessionCookieValue, isSessionExpired } from "@/lib/auth/session-cookie";
+import { decodeSessionCookieValue, isPortalSession } from "@/lib/auth/session-cookie";
 import {
   LOCALE_COOKIE_MAX_AGE,
   LOCALE_COOKIE_NAME,
@@ -15,26 +15,24 @@ import type { UserRole } from "@/types/api";
 //
 //   1. Language:  sends "/" to "/de" or "/en" and remembers the language the
 //                 visitor last looked at.
-//   2. Access:    keeps signed-out visitors out of /admin, /client and /driver,
-//                 and signed-in users away from /login and /register.
+//   2. Access:    keeps signed-out visitors out of /client and /driver, and
+//                 signed-in users away from /login and /register. Admins use
+//                 the separate admin console (apps/admin), not this portal.
 // ---------------------------------------------------------------------------
 
-const roleHomes: Record<UserRole, string> = {
-  Admin: "/admin",
+type PortalRole = Exclude<UserRole, "Admin">;
+
+const roleHomes: Record<PortalRole, string> = {
   Client: "/client",
   Driver: "/driver",
 };
 
 function readSession(request: NextRequest) {
   const session = decodeSessionCookieValue(request.cookies.get(SESSION_COOKIE_NAME)?.value);
-  if (!session || isSessionExpired(session.expiresAtUtc)) {
-    return null;
-  }
-  return session;
+  return isPortalSession(session) ? { ...session, role: session.role as PortalRole } : null;
 }
 
-function requiredRole(pathname: string): UserRole | null {
-  if (pathname.startsWith("/admin")) return "Admin";
+function requiredRole(pathname: string): PortalRole | null {
   if (pathname.startsWith("/client")) return "Client";
   if (pathname.startsWith("/driver")) return "Driver";
   return null;

@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const session = await getSession();
   if (session) {
-    redirect(session.role === "Admin" ? "/admin" : session.role === "Client" ? "/client" : "/driver");
+    redirect(session.role === "Client" ? "/client" : "/driver");
   }
   const params = await searchParams;
   return <main className="min-h-screen bg-gradient-to-br from-orange-50 via-stone-50 to-white px-4 py-10 md:px-8 lg:px-12"><LoginForm redirectTo={params.redirectTo} showDemoAccounts={process.env.NODE_ENV !== "production"} /></main>;

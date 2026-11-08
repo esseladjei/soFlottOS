@@ -1,16 +1,17 @@
 // ---------------------------------------------------------------------------
 // JSON-LD structured data.
 //
-// This is invisible to humans but read by Google. It powers:
-//   - the local business panel (address, phone, opening hours, service area)
-//   - FAQ rich results (the expandable questions under a search result)
-//   - breadcrumb trails above a search result
+// Invisible to humans but read by search engines. It describes:
+//   - the organisation (soFlott UG) and its two divisions (brands)
+//   - the service offered on a division service page
+//   - FAQ rich results and the breadcrumb trail
 //
-// Each component renders a single <script type="application/ld+json"> tag.
+// Only facts that are actually configured in `siteConfig` are emitted - no
+// invented opening hours, coordinates, ratings or price ranges.
 // ---------------------------------------------------------------------------
 
 import type { FaqItem } from "@/content/marketing/types";
-import { absoluteUrl, languageAlternates } from "@/features/marketing/lib/seo";
+import { absoluteUrl } from "@/features/marketing/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { localePath, type MarketingPage } from "@/i18n/routes";
 import { siteConfig } from "@/lib/site";
@@ -19,73 +20,62 @@ import { siteConfig } from "@/lib/site";
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
-      // The content is our own static object, never user input.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      // The content is our own static object, never user input. `<` is escaped
+      // so no string can close the script tag early.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
       type="application/ld+json"
     />
   );
 }
 
 /** Stable ids so the different blocks can reference each other. */
-const businessId = `${siteConfig.url}#business`;
+const organizationId = `${siteConfig.url}#organization`;
 const websiteId = `${siteConfig.url}#website`;
 
-/**
- * Who we are and where we operate. Rendered once per page in the locale layout.
- */
-export function BusinessJsonLd({ locale, description }: { locale: Locale; description: string }) {
+function postalAddress() {
+  const { street, postalCode, city, country } = siteConfig.address;
+  if (!street || !postalCode || !city) return {};
+  return {
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: street,
+      postalCode,
+      addressLocality: city,
+      addressCountry: country,
+    },
+  };
+}
+
+/** The company and its divisions. Rendered once per page in the locale layout. */
+export function OrganizationJsonLd({ locale, description }: { locale: Locale; description: string }) {
   return (
     <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "@id": businessId,
-          additionalType: "https://schema.org/CourierService",
+          "@type": "Organization",
+          "@id": organizationId,
           name: siteConfig.brand,
           legalName: siteConfig.companyName,
           description,
           url: absoluteUrl(localePath(locale)),
-          telephone: siteConfig.phone,
+          logo: absoluteUrl("/logo/soFlott_arrow_nav.png"),
           email: siteConfig.email,
-          priceRange: siteConfig.priceRange,
-          currenciesAccepted: "EUR",
-          ...(siteConfig.address.street &&
-          siteConfig.address.postalCode &&
-          siteConfig.address.city
-            ? {
-                address: {
-                  "@type": "PostalAddress",
-                  streetAddress: siteConfig.address.street,
-                  postalCode: siteConfig.address.postalCode,
-                  addressLocality: siteConfig.address.city,
-                  addressCountry: siteConfig.address.country,
-                },
-              }
-            : {}),
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: siteConfig.geo.latitude,
-            longitude: siteConfig.geo.longitude,
-          },
-          areaServed: {
-            "@type": "GeoCircle",
-            geoMidpoint: {
-              "@type": "GeoCoordinates",
-              latitude: siteConfig.geo.latitude,
-              longitude: siteConfig.geo.longitude,
-            },
-            geoRadius: siteConfig.geo.radiusMeters,
-          },
-          openingHoursSpecification: [
+          telephone: siteConfig.phone,
+          ...postalAddress(),
+          brand: [
             {
-              "@type": "OpeningHoursSpecification",
-              dayOfWeek: siteConfig.openingHours.days,
-              opens: siteConfig.openingHours.opens,
-              closes: siteConfig.openingHours.closes,
+              "@type": "Brand",
+              name: siteConfig.divisions.express.name,
+              url: absoluteUrl(localePath(locale, "express")),
+            },
+            {
+              "@type": "Brand",
+              name: siteConfig.divisions.digital.name,
+              url: absoluteUrl(localePath(locale, "digital")),
             },
           ],
-          sameAs: siteConfig.sameAs,
+          ...(siteConfig.sameAs.length ? { sameAs: siteConfig.sameAs } : {}),
         }}
       />
       <JsonLd
@@ -96,47 +86,48 @@ export function BusinessJsonLd({ locale, description }: { locale: Locale; descri
           name: siteConfig.brand,
           url: absoluteUrl(localePath(locale)),
           inLanguage: locale,
-          publisher: { "@id": businessId },
+          publisher: { "@id": organizationId },
         }}
       />
     </>
   );
 }
 
-/** Describes the courier service itself, so Google can match service queries. */
+/** Describes the service on a division service page. */
 export function ServiceJsonLd({
   locale,
+  page,
   name,
   description,
+  brand,
+  areaServed,
 }: {
   locale: Locale;
+  page: MarketingPage;
   name: string;
   description: string;
+  brand: string;
+  /** Plain-text area; omitted when the service is not region-bound. */
+  areaServed?: string;
 }) {
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "Service",
-        serviceType: name,
         name,
+        serviceType: name,
         description,
-        provider: { "@id": businessId },
-        areaServed: siteConfig.serviceArea.split(",").map((city) => ({
-          "@type": "City",
-          name: city.trim(),
-        })),
-        availableChannel: {
-          "@type": "ServiceChannel",
-          serviceUrl: absoluteUrl(localePath(locale, "pricing")),
-          servicePhone: siteConfig.phone,
-        },
+        url: absoluteUrl(localePath(locale, page)),
+        provider: { "@id": organizationId },
+        brand: { "@type": "Brand", name: brand },
+        ...(areaServed ? { areaServed } : {}),
       }}
     />
   );
 }
 
-/** Turns the FAQ section into Google's expandable question results. */
+/** Turns an FAQ block into FAQPage structured data. */
 export function FaqJsonLd({ items }: { items: FaqItem[] }) {
   return (
     <JsonLd
@@ -153,37 +144,25 @@ export function FaqJsonLd({ items }: { items: FaqItem[] }) {
   );
 }
 
-/** "Home > Pricing" trail shown above the search result. */
+/** "Home > soFlott Express > How it works" trail. */
 export function BreadcrumbJsonLd({
   locale,
-  homeLabel,
-  page,
-  pageLabel,
+  items,
 }: {
   locale: Locale;
-  homeLabel: string;
-  page: MarketingPage;
-  pageLabel: string;
+  items: { page: MarketingPage; label: string }[];
 }) {
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: homeLabel,
-            item: absoluteUrl(localePath(locale)),
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: pageLabel,
-            item: languageAlternates(page)[locale],
-          },
-        ],
+        itemListElement: items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.label,
+          item: absoluteUrl(localePath(locale, item.page)),
+        })),
       }}
     />
   );

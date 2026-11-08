@@ -18,47 +18,59 @@ export const siteConfig = {
   shortName: "soFlottOS",
   /** Customer-facing brand used on the public website. */
   brand: "soFlott",
-  /** Legal entity printed on invoices and in the footer. */
+  /** Legal entity printed on invoices, in the imprint and in the footer. */
   companyName: "soFlott UG (haftungsbeschränkt)",
 
   description:
-    "soFlott. Schnell für Unternehmen. Regional B2B courier service around Augsburg, Mering and Munich with direct transport, digital proof of delivery and transparent fixed pricing.",
+    "soFlott UG (haftungsbeschränkt): B2B courier and logistics services through soFlott Express, IT consulting and software engineering through soFlott Digital.",
 
-  url: env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 
   // --- Contact -------------------------------------------------------------
   // PLACEHOLDER: replace with the real number before launch.
-  phone: env.NEXT_PUBLIC_CONTACT_PHONE ?? "+49 821 0000000",
-  email: env.NEXT_PUBLIC_CONTACT_EMAIL ?? "dispatch@soflott.de",
+  phone: env.NEXT_PUBLIC_CONTACT_PHONE || "+49 821 0000000",
+  email: env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
 
-  // --- Address (used by the LocalBusiness structured data) -----------------
+  // --- Commercial divisions ------------------------------------------------
+  // Brands / business units of the one legal entity above - NOT separate
+  // companies. Each division can have its own enquiry inbox; both fall back to
+  // the main address until dedicated inboxes exist.
+  divisions: {
+    express: {
+      name: "soFlott Express",
+      email: env.NEXT_PUBLIC_EXPRESS_EMAIL || env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
+    },
+    digital: {
+      name: "soFlott Digital",
+      email: env.NEXT_PUBLIC_DIGITAL_EMAIL || env.NEXT_PUBLIC_CONTACT_EMAIL || "dispatch@soflott.de",
+    },
+  },
+
+  // --- Legal identity (Impressum) ------------------------------------------
+  // OWNER DECISION: fill these from the commercial register entry before
+  // launch. Empty values are shown as "to be completed" on /legal/imprint.
+  legal: {
+    managingDirectors: env.NEXT_PUBLIC_LEGAL_MANAGING_DIRECTORS ?? "",
+    registerCourt: env.NEXT_PUBLIC_LEGAL_REGISTER_COURT ?? "",
+    registerNumber: env.NEXT_PUBLIC_LEGAL_REGISTER_NUMBER ?? "",
+    vatId: env.NEXT_PUBLIC_LEGAL_VAT_ID ?? "",
+    /** Set to "true" once a legal adviser has reviewed imprint and privacy. */
+    reviewed: env.NEXT_PUBLIC_LEGAL_REVIEWED === "true",
+  },
+
+  // --- Address (imprint + Organization structured data) --------------------
   address: {
     street: env.NEXT_PUBLIC_ADDRESS_STREET ?? "",
     postalCode: env.NEXT_PUBLIC_ADDRESS_POSTAL_CODE ?? "",
     city: env.NEXT_PUBLIC_ADDRESS_CITY ?? "",
-    country: env.NEXT_PUBLIC_ADDRESS_COUNTRY ?? "DE",
+    country: env.NEXT_PUBLIC_ADDRESS_COUNTRY || "DE",
   },
 
-  /** Rough centre of the service area; helps Google place the business. */
-  geo: {
-    latitude: Number(env.NEXT_PUBLIC_GEO_LAT ?? 48.3705),
-    longitude: Number(env.NEXT_PUBLIC_GEO_LNG ?? 10.8978),
-    /** Radius of the service area in metres. */
-    radiusMeters: 75_000,
-  },
-
-  /** Region named in the copy and in `areaServed`. */
-  serviceArea: env.NEXT_PUBLIC_SERVICE_AREA ?? "Augsburg, Mering and Munich",
-
-  /** Shown as `openingHours` in structured data. Mo-Fr 07:00-19:00. */
-  openingHours: {
-    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "07:00",
-    closes: "19:00",
-  },
-
-  /** Google uses this as a rough price indicator in local results. */
-  priceRange: "€€",
+  /**
+   * Region named in metadata. OWNER DECISION: confirm the real Express service
+   * area before launch (brief section 14).
+   */
+  serviceArea: env.NEXT_PUBLIC_SERVICE_AREA || "Augsburg, Mering and Munich",
 
   /** Social or directory profiles. Leave empty until the profiles exist. */
   sameAs: [] as string[],

@@ -69,7 +69,10 @@ export function isSessionExpired(expiresAtUtc: string) {
   return new Date(expiresAtUtc).getTime() <= Date.now();
 }
 
-export function hasValidSessionCookie(value?: string | null) {
-  const session = decodeSessionCookieValue(value);
-  return !!session && !isSessionExpired(session.expiresAtUtc);
+/**
+ * Admins use the separate admin console (`apps/admin`), so the customer portal
+ * only accepts unexpired Client and Driver sessions.
+ */
+export function isPortalSession(session: SessionCookiePayload | null): session is SessionCookiePayload {
+  return !!session && session.role !== "Admin" && !isSessionExpired(session.expiresAtUtc);
 }

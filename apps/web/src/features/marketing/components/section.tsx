@@ -9,37 +9,49 @@ export function Section({
   children,
   className,
   id,
+  labelledBy,
 }: {
   children: ReactNode;
   className?: string;
   id?: string;
+  labelledBy?: string;
 }) {
   return (
-    <section className={cn("border-b border-stone-200 py-16 md:py-20", className)} id={id}>
+    <section aria-labelledby={labelledBy} className={cn("py-14 md:py-20", className)} id={id}>
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">{children}</div>
     </section>
   );
 }
 
-/** Eyebrow + headline + intro, centred. Used at the top of most sections. */
+/** Eyebrow + headline + intro. Used at the top of most sections. */
 export function SectionIntro({
   eyebrow,
   title,
   intro,
-  align = "center",
+  id,
+  accent = "text-stone-600",
+  align = "left",
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  intro: string;
+  intro?: string;
+  id?: string;
+  /** Theme text colour for the eyebrow. */
+  accent?: string;
   align?: "center" | "left";
 }) {
   return (
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
-      <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-orange-600">{eyebrow}</p>
-      <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-stone-950 md:text-4xl">
+      {eyebrow ? (
+        <p className={cn("text-xs font-extrabold uppercase tracking-[0.2em]", accent)}>{eyebrow}</p>
+      ) : null}
+      <h2
+        className="mt-2 font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight text-stone-950 md:text-3xl"
+        id={id}
+      >
         {title}
       </h2>
-      <p className="mt-4 text-base leading-7 text-stone-600">{intro}</p>
+      {intro ? <p className="mt-3 text-base leading-7 text-stone-600">{intro}</p> : null}
     </div>
   );
 }

@@ -23,7 +23,7 @@ import {
 } from "@/features/auth/schemas";
 
 function home(role: Session["role"]) {
-  return role === "Admin" ? "/admin" : role === "Client" ? "/client" : "/driver";
+  return role === "Client" ? "/client" : "/driver";
 }
 
 export function RegisterForm() {

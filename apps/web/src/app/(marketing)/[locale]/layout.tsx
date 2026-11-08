@@ -7,9 +7,9 @@
 // which is what lets the German pages say `lang="de"` and the English pages
 // `lang="en"`.
 //
-// URLs produced by this folder:
-//   /de, /de/services, /de/pricing, ...
-//   /en, /en/services, /en/pricing, ...
+// URLs produced by this folder (see `[[...slug]]/page.tsx` and i18n/routes.ts):
+//   /de, /de/about, /de/express/..., /de/digital/..., /de/legal/...
+//   /en, /en/about, /en/express/..., /en/digital/..., /en/legal/...
 // ---------------------------------------------------------------------------
 
 import { notFound } from "next/navigation";
@@ -18,7 +18,7 @@ import { RootShell } from "@/components/layout/root-shell";
 import { getMarketingContent } from "@/content/marketing";
 import { MarketingFooter } from "@/features/marketing/components/marketing-footer";
 import { MarketingNav } from "@/features/marketing/components/marketing-nav";
-import { BusinessJsonLd } from "@/features/marketing/components/structured-data";
+import { OrganizationJsonLd } from "@/features/marketing/components/structured-data";
 import { isLocale, locales } from "@/i18n/config";
 import { baseMetadata, baseViewport } from "@/lib/metadata";
 
@@ -71,11 +71,8 @@ export default async function MarketingLocaleLayout({
 
         <MarketingFooter content={content} locale={locale} />
 
-        {/* Invisible data that tells Google who we are and where we operate. */}
-        <BusinessJsonLd
-          description={content.home.meta.description}
-          locale={locale}
-        />
+        {/* Invisible data that tells search engines who we are. */}
+        <OrganizationJsonLd description={content.pages.home.meta.description} locale={locale} />
       </div>
     </RootShell>
   );

@@ -5,7 +5,7 @@
 // canonical URL, the hreflang alternates (de / en / x-default) and the Open
 // Graph + Twitter cards for a single marketing page.
 //
-// Why hreflang matters: it tells Google that /de/pricing and /en/pricing are
+// Why hreflang matters: it tells Google that /de/express and /en/express are
 // the SAME page in two languages, so they do not compete with each other.
 // ---------------------------------------------------------------------------
 
@@ -15,12 +15,12 @@ import { defaultLocale, locales, openGraphLocales, type Locale } from "@/i18n/co
 import { localePath, type MarketingPage } from "@/i18n/routes";
 import { siteConfig } from "@/lib/site";
 
-/** Absolute URL for a marketing page, e.g. https://example.com/de/pricing */
+/** Absolute URL for a marketing page, e.g. https://example.com/de/express */
 export function absoluteUrl(path: string): string {
   return new URL(path, siteConfig.url).toString();
 }
 
-/** { de: "/de/pricing", en: "/en/pricing", "x-default": "/de/pricing" } */
+/** { de: "/de/express", en: "/en/express", "x-default": "/de/express" } */
 export function languageAlternates(page: MarketingPage): Record<string, string> {
   const alternates: Record<string, string> = {};
 
@@ -39,10 +39,13 @@ export function buildPageMetadata({
   locale,
   page,
   meta,
+  indexable = true,
 }: {
   locale: Locale;
   page: MarketingPage;
   meta: PageMeta;
+  /** false -> `noindex, follow` (e.g. pages awaiting owner approval). */
+  indexable?: boolean;
 }): Metadata {
   const canonical = absoluteUrl(localePath(locale, page));
 
@@ -50,6 +53,7 @@ export function buildPageMetadata({
     title: meta.title,
     description: meta.description,
     keywords: meta.keywords,
+    ...(indexable ? {} : { robots: { index: false, follow: true } }),
     alternates: {
       canonical,
       languages: languageAlternates(page),

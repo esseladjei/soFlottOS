@@ -26,7 +26,6 @@ interface LoginFormProps {
 }
 
 const demoAccounts = [
-  { role: "Admin", email: "admin@soflott.local" },
   { role: "Client", email: "client@soflott.local" },
   { role: "Driver", email: "driver@soflott.local" },
 ] as const;
@@ -34,7 +33,7 @@ const demoAccounts = [
 const highlightIcons = [ShieldCheck, Truck];
 
 function roleHome(role: UserRole) {
-  return role === "Admin" ? "/admin" : role === "Client" ? "/client" : "/driver";
+  return role === "Client" ? "/client" : "/driver";
 }
 
 function safeRedirect(redirectTo: string | undefined, role: UserRole) {
@@ -54,7 +53,7 @@ export function LoginForm({ redirectTo, showDemoAccounts = false }: LoginFormPro
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "admin@soflott.local",
+      email: "client@soflott.local",
     },
   });
 
@@ -67,7 +66,7 @@ export function LoginForm({ redirectTo, showDemoAccounts = false }: LoginFormPro
       router.refresh();
     },
     onError: (error) => {
-      const message = error instanceof ApiError ? error.message : t.failed;
+      const message = error instanceof ApiError ? (error.status === 403 ? t.adminConsole : error.message) : t.failed;
       toast.error(message);
     },
   });
@@ -109,7 +108,7 @@ export function LoginForm({ redirectTo, showDemoAccounts = false }: LoginFormPro
         {showDemoAccounts ? (
           <Card>
             <CardHeader><CardTitle>{t.demoTitle}</CardTitle><CardDescription>{t.demoDescription}</CardDescription></CardHeader>
-            <CardContent className="grid gap-3 sm:grid-cols-3">
+            <CardContent className="grid gap-3 sm:grid-cols-2">
               {demoAccounts.map((account) => (
                 <button className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-left transition hover:border-orange-300 hover:bg-orange-50" key={account.role} onClick={() => fillDemoAccount(account.email)} type="button">
                   <p className="text-sm font-bold text-stone-900">{account.role}</p><p className="mt-1 text-sm text-stone-500">{account.email}</p>
@@ -124,7 +123,7 @@ export function LoginForm({ redirectTo, showDemoAccounts = false }: LoginFormPro
         <CardHeader><CardTitle>{t.formTitle}</CardTitle><CardDescription>{t.formDescription}</CardDescription></CardHeader>
         <CardContent>
           <form className="space-y-5" onSubmit={form.handleSubmit((values) => loginMutation.mutate(values))}>
-            <div className="space-y-2"><label className="text-sm font-bold text-stone-700" htmlFor="email">{t.emailLabel}</label><Input autoComplete="email" id="email" placeholder="admin@soflott.local" {...form.register("email")} />{form.formState.errors.email ? <p className="text-sm text-rose-600">{form.formState.errors.email.message}</p> : null}</div>
+            <div className="space-y-2"><label className="text-sm font-bold text-stone-700" htmlFor="email">{t.emailLabel}</label><Input autoComplete="email" id="email" placeholder="client@soflott.local" {...form.register("email")} />{form.formState.errors.email ? <p className="text-sm text-rose-600">{form.formState.errors.email.message}</p> : null}</div>
             <div className="space-y-2"><label className="text-sm font-bold text-stone-700" htmlFor="password">{t.passwordLabel}</label><Input autoComplete="current-password" id="password" type="password" {...form.register("password")} />{form.formState.errors.password ? <p className="text-sm text-rose-600">{form.formState.errors.password.message}</p> : null}</div>
             <Link className="block text-sm font-bold text-orange-600" href="/forgot-password">{t.forgotPassword}</Link>
             <Button className="w-full" disabled={loginMutation.isPending} size="lg" type="submit">{loginMutation.isPending ? <><LoaderCircle className="size-4 animate-spin" />{t.submitting}</> : <>{t.submit}<ArrowRight className="size-4" /></>}</Button>

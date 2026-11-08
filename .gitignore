@@ -24,6 +24,8 @@ yarn-error.log*
 # Local environment files
 apps/web/.env*
 !apps/web/.env.example
+apps/admin/.env*
+!apps/admin/.env.example
 
 # Local AI-agent notes; never commit requirements drafts
 /Requirements/

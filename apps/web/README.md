@@ -4,12 +4,11 @@ Next.js frontend for the soFlottOS B2B courier platform. It uses the App Router,
 
 ## Folder structure
 
-- `src/app` — routes. Route groups keep public marketing pages, auth pages, and the three role workspaces separate:
+- `src/app` — routes. Route groups keep public marketing pages, auth pages, and the client/driver workspaces separate:
   - `(marketing)` for `/`, `/platform`, `/operations`, `/security`
   - `(auth)` for `/login` and `/register`
   - `(client)` for booking, orders, and invoices
   - `(driver)` for mobile-first driver PWA jobs and proof of delivery
-  - `(admin)` for operations, CRM, drivers, and invoices
   - `api` for Next.js route handlers (`auth`, `session`, and `proxy`)
 - `src/features/<area>` — area-specific API calls, React Query hooks, Zod schemas, and components.
 - `src/components/ui` — small reusable UI primitives.
@@ -28,7 +27,8 @@ Each feature/route folder has a short README or header comment to explain its pu
 3. The backend returns an `AuthResponse` with a JWT. Next.js stores it in an HTTP-only base64url cookie named `soflott_session`.
 4. The browser only receives the safe public `Session` (`userId`, `email`, `fullName`, `role`, optional `clientId`, `expiresAtUtc`).
 5. Client components call `/api/proxy/<backend-path>` through React Query hooks. The proxy reads the cookie and forwards the JWT to the backend.
-6. `middleware.ts` protects `/admin`, `/client`, and `/driver`, redirects anonymous users to `/login?redirectTo=...`, redirects signed-in users away from auth pages, and enforces role boundaries.
+6. `middleware.ts` protects `/client` and `/driver`, redirects anonymous users to `/login?redirectTo=...`, redirects signed-in users away from auth pages, and enforces role boundaries.
+7. Administrators use the separate internal console in `apps/admin`. This portal's `/api/auth/login` answers `403` for `Admin` accounts, and `getSession()`/middleware/proxy treat an Admin cookie as signed out.
 
 ## Environment variables
 

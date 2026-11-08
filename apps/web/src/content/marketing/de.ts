@@ -1,10 +1,9 @@
 // ---------------------------------------------------------------------------
-// GERMAN marketing copy (the default language of the site).
+// GERMAN marketing copy (default language).
 //
-// This file holds every word a visitor reads on the public pages. Edit the text
-// here - you never need to touch a React component to change the wording.
-//
-// Phone number, e-mail and company address come from `src/lib/site.ts`.
+// Must contain exactly the same pages and fields as `en.ts` - TypeScript
+// enforces this. Read the content rules at the top of `types.ts` before
+// editing: no invented numbers, clients, certifications or service promises.
 // ---------------------------------------------------------------------------
 
 import type { MarketingContent } from "@/content/marketing/types";
@@ -13,1076 +12,1617 @@ export const de: MarketingContent = {
   common: {
     skipToContent: "Zum Inhalt springen",
     languageLabel: "Sprache wählen",
+    breadcrumbLabel: "Brotkrumennavigation",
     phone: "Telefon",
     email: "E-Mail",
-    callNow: "Jetzt anrufen",
-    moreInfo: "Mehr erfahren",
-    vatNote: "Alle Preise zzgl. 19 % MwSt.",
+    address: "Adresse",
+    divisionOf: "Ein Geschäftsbereich der soFlott UG (haftungsbeschränkt)",
+    legalDraft:
+      "Entwurf – diese Seite wird vor dem Livegang rechtlich geprüft und finalisiert.",
+    toBeCompleted: "wird ergänzt",
   },
 
   nav: {
     ariaLabel: "Hauptnavigation",
-    items: [
-      { page: "services", label: "Leistungen" },
-      { page: "industries", label: "Branchen" },
-      { page: "pricing", label: "Preise" },
-      { page: "platform", label: "Technologie" },
-      { page: "security", label: "Sicherheit" },
-      { page: "contact", label: "Kontakt" },
-    ],
-    login: "Kundenlogin",
-    cta: "Direktfahrt anfragen",
+    menuLabel: "Menü öffnen",
+    items: ["express", "digital", "about", "contact"],
+    login: "Kunden-Login",
+    cta: { label: "Kontakt aufnehmen", page: "contact" },
   },
 
-  home: {
-    meta: {
-      title: "Kurierdienst Augsburg & München | Eiltransport für Gewerbe",
-      description:
-        "soFlott ist Ihr regionaler Direktkurier für Gewerbekunden in Augsburg, Mering und München: Eiltransporte ohne Umladung, Abholung in 15 Minuten, digitale Unterschrift in Echtzeit und transparente Festpreise zzgl. 19 % MwSt.",
-      keywords: [
-        "Kurierdienst Augsburg",
-        "Kurierdienst Mering",
-        "Kurierdienst München",
-        "Eiltransport Augsburg",
-        "Direktfahrt buchen",
-        "Expresskurier Gewerbe",
-        "Kurierdienst Notfall",
-        "Direktkurier Augsburg",
-        "Sonderfahrt München",
-        "B2B Kurier",
-        "Ersatzteile Kurier Werkstatt",
-        "Kurier Kanzlei Gerichtsunterlagen",
-        "Dentallabor Kurier",
-        "Medizinischer Kurierdienst",
-      ],
-    },
-    hero: {
-      eyebrow: "soFlott. Schnell für Unternehmen.",
-      headlineLead: "Ihr regionaler Direktkurier",
-      headlineHighlight: "für Gewerbe.",
-      subheadline:
-        "Wenn ein Ersatzteil fehlt, eine Frist läuft oder ein Kunde wartet, zählt jede Minute. soFlott fährt Ihre Sendung ohne Zwischenstopp und ohne Sortierzentrum direkt von A nach B – mit digitaler Empfangsunterschrift, Live-Status und B2B-Rechnung per E-Mail.",
-      primaryCta: { label: "Direktfahrt anfragen", href: "/register" },
-      secondaryCta: { label: "Preise ansehen", page: "pricing" },
-      bullets: [
-        "Abholung in 15 Minuten startklar",
-        "Keine Umladung, kein Sortierzentrum",
-        "Digitale Unterschrift & GPS-Nachweis",
-        "Festpreis zzgl. 19 % MwSt.",
-      ],
-      note: "Erstkunden erhalten 20 % Rabatt auf die erste Direktfahrt.",
-      panel: {
-        eyebrow: "Heute bei soFlott",
-        title: "Ihre Sendung im Blick",
-        stats: [
-          { label: "Direktfahrten heute", value: "24", caption: "alle im Zeitfenster" },
-          { label: "Pünktlichkeit", value: "98,7 %", caption: "letzte 30 Tage" },
-        ],
-        liveLabel: "Nächste Abholung",
-        liveValue: "in 18 Min.",
-        routeFrom: "Werkstatt Mering",
-        routeTo: "Augsburg",
-        routeSeparator: "nach",
-      },
-    },
-
-    trustBar: [
-      { icon: "route", label: "0 Umladungen" },
-      { icon: "signature", label: "Digitale Übergabebestätigung" },
-      { icon: "euro", label: "Transparente Festpreise" },
-      { icon: "receipt", label: "B2B-Rechnung per E-Mail" },
-      { icon: "clock", label: "Sofortdisposition" },
-    ],
-
-    comparison: {
-      eyebrow: "Der Unterschied",
-      title: "Paketdienst oder Direktfahrt? Der Unterschied kostet Sie Stunden.",
-      intro:
-        "Klassische Paketdienste sind für Masse gebaut, nicht für Dringlichkeit. Ihre Sendung läuft über Sammelstellen, Sortierzentren und wechselnde Fahrer. Eine Direktfahrt kennt nur einen Fahrer, ein Fahrzeug und zwei Adressen.",
-      columnOther: "Klassischer Paketdienst",
-      columnSoFlott: "soFlott Direktfahrt",
-      rows: [
-        {
-          label: "Transportweg",
-          other: "Sammelstelle, Sortierzentrum, mehrere Umladungen",
-          soFlott: "Direkt vom Absender zum Empfänger, ohne Zwischenstopp",
-        },
-        {
-          label: "Laufzeit",
-          other: "1 bis 3 Werktage, ohne feste Zusage",
-          soFlott: "Noch heute – oft innerhalb von 40 bis 90 Minuten",
-        },
-        {
-          label: "Abholung",
-          other: "Feste Tour, einmal täglich",
-          soFlott: "Auf Abruf, in der Regel in 15 Minuten startklar",
-        },
-        {
-          label: "Nachweis",
-          other: "Sammelunterschrift oder Ablage ohne Beleg",
-          soFlott: "Namentliche digitale Unterschrift mit Zeitstempel und GPS",
-        },
-        {
-          label: "Risiko",
-          other: "Sortierschäden, Fehlleitungen, verlorene Sendungen",
-          soFlott: "Die Fracht verlässt das Fahrzeug nur beim Empfänger",
-        },
-        {
-          label: "Abrechnung",
-          other: "Pauschaltarife, Zuschläge im Kleingedruckten",
-          soFlott: "Festpreis vorab, GoBD-konforme Rechnung per E-Mail",
-        },
-      ],
-    },
-
-    usps: {
-      eyebrow: "Warum soFlott",
-      title: "Drei Gründe, warum Betriebe zu uns wechseln.",
-      intro:
-        "Wir sind kein weiterer Paketdienst. soFlott ist für den Moment gebaut, in dem etwas sofort ankommen muss – und in dem Sie hinterher beweisen können müssen, dass es angekommen ist.",
+  divisions: {
+    express: {
+      name: "soFlott Express",
+      tagline: "Kurier & Logistik",
+      ariaLabel: "Navigation soFlott Express",
       items: [
-        {
-          icon: "route",
-          title: "Null Sortierzentren",
-          description:
-            "Ihre Fracht geht direkt vom Absenderfahrzeug an die Empfängeradresse, ohne Umschlaglager und ohne Fahrerwechsel. Was eingeladen wird, wird genau so wieder ausgeladen.",
-          proof: "0 % Sortierschäden, 0 % Fehlleitungen",
-        },
-        {
-          icon: "smartphone",
-          title: "Digitale Transparenz",
-          description:
-            "Sie sehen den Status jeder Sendung in Echtzeit im Kundenportal. Bei der Übergabe unterschreibt der Empfänger digital auf dem Fahrergerät – inklusive Name, Uhrzeit und GPS-Position.",
-          proof: "Unterschrift, Zeitstempel und Standort in einem Beleg",
-        },
-        {
-          icon: "clock",
-          title: "Regionale Geschwindigkeit",
-          description:
-            "Wir disponieren sofort statt am nächsten Werktag. Für die gewerblichen Korridore im Raum Augsburg, Mering und München sagen wir Ihnen verbindlich zu, wann der Fahrer bei Ihnen ist.",
-          proof: "In der Regel in 15 Minuten abholbereit",
-        },
+        "express",
+        "express/direct-b2b-delivery",
+        "express/logistics-subcontracting",
+        "express/contracted-delivery-routes",
+        "express/service-areas",
+        "express/how-it-works",
+        "express/contact",
       ],
+      cta: { label: "Angebot anfragen", page: "express/request-a-quote" },
     },
-
-    segments: {
-      eyebrow: "Für wen wir fahren",
-      title: "Spezialisiert auf Branchen, in denen Verspätung richtig teuer wird.",
-      intro:
-        "Ein stehender Hebebühnenplatz, eine versäumte Gerichtsfrist oder ein zerbrochenes Zahnmodell kosten weit mehr als eine Direktfahrt. Genau dafür gibt es soFlott.",
-      painLabel: "Das Problem",
-      cargoLabel: "Typische Fracht",
+    digital: {
+      name: "soFlott Digital",
+      tagline: "IT-Beratung & Softwareentwicklung",
+      ariaLabel: "Navigation soFlott Digital",
       items: [
-        {
-          icon: "wrench",
-          name: "Werkstätten & Industrie",
-          pain:
-            "Jede Stunde, in der ein Fahrzeug auf der Hebebühne auf ein Teil wartet, kostet Sie abrechenbare Zeit und einen wartenden Kunden.",
-          cargo: "Lichtmaschinen, Dichtungen, Not-Ersatzteile, Diagnosegeräte, Werkzeuge",
-          hook:
-            "Schluss mit toter Hebebühnenzeit: Wir bringen Ihr Ersatzteil in unter 40 Minuten quer durch die Stadt.",
-        },
-        {
-          icon: "gavel",
-          name: "Kanzleien & Steuerberater",
-          pain:
-            "Fristen kennen keine Kulanz, und für Originale und beglaubigte Dokumente brauchen Sie eine lückenlose Übergabekette.",
-          cargo: "Originalverträge, Schriftsätze, notarielle Urkunden, Prüfungsakten",
-          hook:
-            "E-Mail ersetzt kein Original bei Gericht. Fristgerechte Zustellung mit beweisfähiger Unterschrift in Echtzeit.",
-        },
-        {
-          icon: "hospital",
-          name: "Dentallabore & Medizin",
-          pain:
-            "Unzuverlässige Fahrer verlieren empfindliche Einzelanfertigungen oder reißen das Zeitfenster für Proben.",
-          cargo: "Kronen, Abformungen, Prothetik, Laborproben, eilige Medizinprodukte",
-          hook:
-            "Medizintransport mit Fingerspitzengefühl – inklusive sofortiger Signaturbenachrichtigung an Ihre Laborleitung.",
-        },
-        {
-          icon: "printer",
-          name: "Druckereien & Eventagenturen",
-          pain:
-            "Nachdrucke in letzter Minute oder fehlendes Material vor Ort gefährden den gesamten Auftritt.",
-          cargo: "Baupläne, Messebanner, Eventbadges, Andrucke, Musterstücke",
-          hook:
-            "Notfall-Lieferungen für Druck und Event – direkt an den Messestand oder die Baustelle.",
-        },
+        "digital",
+        "digital/it-consulting",
+        "digital/software-development",
+        "digital/api-integration",
+        "digital/application-modernisation",
+        "digital/contract-software-engineering",
+        "digital/support-and-maintenance",
+        "digital/case-studies",
+        "digital/contact",
       ],
-      cta: { label: "Alle Branchenlösungen ansehen", page: "industries" },
-    },
-
-    cargo: {
-      eyebrow: "Was wir transportieren",
-      title: "Vom Dichtungssatz bis zur Gerichtsakte.",
-      intro:
-        "Wenn es in ein Fahrzeug passt, zeitkritisch ist und in der Region bleibt, ist es ein Fall für soFlott. Pro Fahrt kalkulieren wir bis 10 kg Standardfracht, größere Sendungen auf Anfrage.",
-      groups: [
-        {
-          icon: "wrench",
-          title: "Auto- & Ersatzteile",
-          items: [
-            "Werkstatt-Direktfahrt vom Großhändler zur Hebebühne",
-            "Not-Ersatzteile für stehende Fahrzeuge",
-            "Diagnosegeräte und Leihwerkzeug zwischen Filialen",
-          ],
-        },
-        {
-          icon: "gavel",
-          title: "Kanzlei- & Gerichtsunterlagen",
-          items: [
-            "Fristgebundene Schriftsätze an Gericht und Behörden",
-            "Originalverträge und beglaubigte Urkunden",
-            "Mandanten- und Prüfungsakten mit Übergabebestätigung",
-          ],
-        },
-        {
-          icon: "hospital",
-          title: "Medizin & Dentallabor",
-          items: [
-            "Kronen, Brücken und Abformungen zwischen Praxis und Labor",
-            "Eilige Laborproben im festen Zeitfenster",
-            "Dringend benötigte Medizin- und Praxisartikel",
-          ],
-        },
-        {
-          icon: "printer",
-          title: "Druck, Bau & Event",
-          items: [
-            "Baupläne und Revisionsunterlagen zur Baustelle",
-            "Messebanner, Badges und Eventmaterial",
-            "Muster, Andrucke und Farbabstimmungen",
-          ],
-        },
-      ],
-      note: "Gefahrgut, Lebendtiere und Wertsachen über 5.000 € transportieren wir nicht.",
-    },
-
-    process: {
-      eyebrow: "So läuft eine Direktfahrt",
-      title: "Von der Anfrage bis zur Rechnung in fünf Schritten.",
-      intro:
-        "Sie brauchen keine Schulung und keine Software-Einführung. Anfrage stellen, Festpreis bestätigen, fertig – den Rest erledigen Fahrer und System.",
-      steps: [
-        {
-          title: "Anfrage in zwei Minuten",
-          description:
-            "Abhol- und Zieladresse im Kundenportal eingeben oder anrufen. Sie sehen sofort Entfernung, geschätzte Fahrzeit und den Preis.",
-        },
-        {
-          title: "Festpreis bestätigen",
-          description:
-            "Netto, 19 % MwSt. und Bruttobetrag stehen vor der Buchung fest. Keine Treibstoffzuschläge, keine Überraschungen auf der Rechnung.",
-        },
-        {
-          title: "Abholung in der Regel in 15 Minuten",
-          description:
-            "Der nächste verfügbare Fahrer wird sofort disponiert und fährt direkt zu Ihnen. Sie sehen Name und Fahrzeug im Portal.",
-        },
-        {
-          title: "Direktfahrt ohne Zwischenstopp",
-          description:
-            "Ihre Sendung bleibt im Fahrzeug, bis sie beim Empfänger ist. Den Status verfolgen Sie live, ohne anzurufen.",
-        },
-        {
-          title: "Digitale Übergabe & Rechnung",
-          description:
-            "Der Empfänger unterschreibt digital. Sie erhalten die Bestätigung mit Name, Uhrzeit und GPS-Position – und die Rechnung automatisch per E-Mail.",
-        },
-      ],
-    },
-
-    platform: {
-      eyebrow: "Technologie",
-      title: "Jede Fahrt dokumentiert. Jede Rechnung automatisch.",
-      intro:
-        "soFlott ist ein Kurierdienst mit eigener Software. Das merken Sie nicht an der Fahrt, sondern an allem, was danach kommt: Nachweise, Historie und Buchhaltung sind fertig, bevor Sie danach fragen.",
-      items: [
-        {
-          icon: "map",
-          title: "Live-Status statt Rückrufe",
-          description:
-            "Angenommen, unterwegs, zugestellt: Jeder Schritt ist im Kundenportal sichtbar. Ihr Team muss nicht in der Disposition nachfragen.",
-        },
-        {
-          icon: "signature",
-          title: "Digitale Übergabebestätigung",
-          description:
-            "Unterschrift auf dem Fahrergerät, Name des Empfängers, Zeitstempel und GPS-Position – als beweisfähiger Beleg zu jedem Auftrag.",
-        },
-        {
-          icon: "receipt",
-          title: "Automatische B2B-Rechnung",
-          description:
-            "Zu jedem Auftrag entsteht automatisch eine fortlaufend nummerierte Rechnung mit ausgewiesener Umsatzsteuer – bereit für Ihre Buchhaltung.",
-        },
-        {
-          icon: "building",
-          title: "Kundenkonto mit Historie",
-          description:
-            "Alle Fahrten, Nachweise und Rechnungen Ihres Unternehmens an einem Ort. Ideal für Monatsabschluss und Prüfungen.",
-        },
-      ],
-      cta: { label: "Technologie im Detail", page: "platform" },
-    },
-
-    pricing: {
-      eyebrow: "Preise",
-      title: "Ein Festpreis. Vorab. Ohne Kleingedrucktes.",
-      intro:
-        "Unser Preis besteht aus einer Grundpauschale und einem Kilometersatz. Sie sehen den Betrag, bevor Sie buchen – und auf der Rechnung steht exakt derselbe.",
-      points: [
-        {
-          icon: "euro",
-          title: "Grundpreis plus Kilometer",
-          description:
-            "Eine transparente Pauschale pro Fahrt zuzüglich eines festen Kilometersatzes für die tatsächliche Strecke.",
-        },
-        {
-          icon: "check",
-          title: "Mindestpreis statt Zuschlagstabelle",
-          description:
-            "Sehr kurze Fahrten rechnen wir zum Mindestpreis ab. Keine Treibstoff-, Innenstadt- oder Wartezuschläge im Kleingedruckten.",
-        },
-        {
-          icon: "receipt",
-          title: "19 % MwSt. klar ausgewiesen",
-          description:
-            "Netto, Steuer und Brutto stehen auf Angebot und Rechnung getrennt – vorsteuerabzugsfähig und prüfungssicher.",
-        },
-        {
-          icon: "calendar",
-          title: "Rahmenverträge für Stammkunden",
-          description:
-            "Bei wiederkehrenden Strecken vereinbaren wir individuelle Konditionen und feste Zeitfenster.",
-        },
-      ],
-      example: {
-        title: "Beispielrechnung: 12 km Direktfahrt",
-        rows: [
-          { label: "Grundpreis", value: "19,50 €" },
-          { label: "12 km × 1,35 €", value: "16,20 €" },
-          { label: "Nettobetrag", value: "35,70 €" },
-          { label: "19 % MwSt.", value: "6,78 €" },
-        ],
-        totalLabel: "Gesamt brutto",
-        totalValue: "42,48 €",
-        note: "Beispielkonditionen zur Orientierung. Ihr verbindlicher Festpreis erscheint vor der Buchung im Portal.",
-      },
-      cta: { label: "Preise und Konditionen", page: "pricing" },
-    },
-
-    offer: {
-      eyebrow: "Erstkunden-Angebot",
-      title: "Testen Sie uns bei Ihrer nächsten dringenden Fahrt – mit 20 % Rabatt.",
-      description:
-        "Kein Vertrag, keine Mindestmenge, keine Einrichtungsgebühr. Sie buchen eine einzelne Direktfahrt, prüfen Tempo und Nachweis und entscheiden danach, ob wir Ihre Stammstrecken übernehmen.",
-      cta: { label: "Erstfahrt mit 20 % Rabatt sichern", href: "/register" },
-      note: "Gilt für die erste Direktfahrt neuer Gewerbekunden im Raum Augsburg, Mering und München.",
-    },
-
-    area: {
-      eyebrow: "Einsatzgebiet",
-      title: "Direktfahrten im Raum Augsburg, Mering und München.",
-      intro:
-        "Wir fahren die gewerblichen Korridore der Region: Gewerbegebiete, Industrieparks, Kanzleiviertel und Innenstadtlagen. Fahrten darüber hinaus organisieren wir als Sonderfahrt auf Anfrage.",
-      cities: [
-        "Augsburg",
-        "Mering",
-        "München",
-      ],
-      note: "Ihr Standort ist nicht dabei? Fragen Sie an – wir prüfen jede Strecke in der Region.",
-    },
-
-    faq: {
-      eyebrow: "Häufige Fragen",
-      title: "Antworten, bevor Sie fragen.",
-      intro:
-        "Die Fragen, die uns Werkstätten, Kanzleien und Labore vor der ersten Fahrt am häufigsten stellen.",
-      items: [
-        {
-          question: "Wie schnell kann ein Kurier bei mir sein?",
-          answer:
-            "Im Regelfall ist ein Fahrer innerhalb von 15 Minuten nach Auftragsbestätigung abholbereit. Für Strecken im Raum Augsburg, Mering und München liegt die typische Gesamtlaufzeit zwischen 40 und 90 Minuten, abhängig von Entfernung und Verkehrslage. Sie sehen die geschätzte Zeit bereits in der Preisanzeige.",
-        },
-        {
-          question: "Was kostet eine Direktfahrt?",
-          answer:
-            "Der Preis setzt sich aus einem Grundpreis und einem festen Kilometersatz für die tatsächlich gefahrene Strecke zusammen, mindestens jedoch der Mindestpreis. Sie erhalten den verbindlichen Festpreis vor der Buchung – netto, mit ausgewiesenen 19 % MwSt. und Bruttobetrag.",
-        },
-        {
-          question: "Was unterscheidet eine Direktfahrt von einem Expresspaket?",
-          answer:
-            "Ein Expresspaket läuft trotz des Namens über Sammelstellen und Sortierzentren und wechselt mehrfach den Fahrer. Bei einer Direktfahrt holt ein Fahrer Ihre Sendung ab und bringt sie ohne Zwischenstopp zum Empfänger. Dadurch entfallen Sortierschäden, Fehlleitungen und Wartezeiten.",
-        },
-        {
-          question: "Erhalte ich einen Zustellnachweis?",
-          answer:
-            "Ja. Der Empfänger unterschreibt digital auf dem Gerät des Fahrers. Der Nachweis enthält den Namen des Empfängers, Datum und Uhrzeit sowie die GPS-Position der Übergabe und ist in Ihrem Kundenkonto jederzeit abrufbar.",
-        },
-        {
-          question: "Transportieren Sie auch medizinische Proben und Dentalmodelle?",
-          answer:
-            "Ja. Dentallabore und medizinische Einrichtungen gehören zu unseren Kernkunden. Empfindliche Einzelanfertigungen und Proben fahren wir in gesicherter Einzelfahrt und benachrichtigen die zuständige Person sofort nach der Übergabe.",
-        },
-        {
-          question: "Wie läuft die Abrechnung für Geschäftskunden?",
-          answer:
-            "Zu jedem Auftrag entsteht automatisch eine fortlaufend nummerierte Rechnung mit allen Pflichtangaben und ausgewiesener Umsatzsteuer. Sie erhalten sie per E-Mail und finden sie zusätzlich in Ihrem Kundenkonto. Zahlung per Überweisung oder PayPal.",
-        },
-        {
-          question: "Kann ich feste Touren oder Zeitfenster vereinbaren?",
-          answer:
-            "Ja. Für wiederkehrende Strecken – etwa täglich zwischen Praxis und Labor oder zwischen Filialen – vereinbaren wir feste Zeitfenster und individuelle Konditionen im Rahmenvertrag.",
-        },
-        {
-          question: "Was transportieren Sie nicht?",
-          answer:
-            "Wir fahren kein Gefahrgut, keine Lebendtiere und keine Wertsachen über 5.000 €. Alles andere, was in ein Fahrzeug passt und in der Region bleibt, können Sie anfragen.",
-        },
-      ],
-    },
-
-    finalCta: {
-      title: "Die nächste dringende Fahrt muss kein Stress sein.",
-      description:
-        "Legen Sie in zwei Minuten ein Geschäftskonto an und buchen Sie Ihre erste Direktfahrt mit 20 % Erstkunden-Rabatt. Oder rufen Sie an – wir disponieren sofort.",
-      primaryCta: { label: "Geschäftskonto anlegen", href: "/register" },
-      secondaryCta: { label: "Kontakt aufnehmen", page: "contact" },
-      phoneLabel: "Direkt und ohne Warteschleife:",
+      cta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
     },
   },
 
   pages: {
-    services: {
+    // ----------------------------------------------------------------------
+    // Unternehmen
+    // ----------------------------------------------------------------------
+    home: {
+      label: "Startseite",
       meta: {
-        title: "Leistungen: Eiltransport, Direktfahrt & Sonderfahrt",
+        title: "soFlott UG – Kurier & Logistik sowie IT & Softwareentwicklung",
         description:
-          "Direktfahrt, Eiltransport, Sonderfahrt und feste Touren für Gewerbekunden im Raum Augsburg, Mering und München – ohne Umladung, mit digitalem Zustellnachweis und transparentem Festpreis.",
-        keywords: [
-          "Eiltransport",
-          "Direktfahrt buchen",
-          "Sonderfahrt Augsburg, Mering und München",
-          "Kurierdienst Gewerbe",
-          "Expresskurier",
-          "feste Kurierfahrten",
-        ],
+          "Die soFlott UG (haftungsbeschränkt) ist ein deutsches Unternehmen mit zwei Geschäftsbereichen: soFlott Express für B2B-Kurier- und Logistikleistungen und soFlott Digital für IT-Beratung und Softwareentwicklung.",
       },
-      eyebrow: "Leistungen",
-      title: "Vier Arten zu fahren. Immer direkt.",
-      intro:
-        "Ob einmaliger Notfall oder tägliche Stammstrecke: Wir bilden den gleichen Qualitätsstandard in vier Auftragsarten ab.",
-      lead: [
-        "soFlott ist auf zeitkritische B2B-Transporte in der Region spezialisiert. Wir betreiben keine Sammelstellen und keine Sortierzentren – jede Sendung ist eine eigene Fahrt mit einem verantwortlichen Fahrer.",
-        "Das macht uns bei großen Mengen teurer als einen Paketdienst und bei dringenden Einzelsendungen deutlich schneller, sicherer und nachweisbarer.",
-      ],
-      sections: [
+      hero: {
+        eyebrow: "soFlott UG (haftungsbeschränkt)",
+        title: "Ein Unternehmen. Zwei spezialisierte Geschäftsbereiche für Geschäftskunden.",
+        intro:
+          "soFlott bewegt Waren für Unternehmen und entwickelt Software für Unternehmen. Wählen Sie den Bereich, der zu Ihrem Anliegen passt – beide gehören zum selben Unternehmen und arbeiten nach denselben Standards.",
+        primaryCta: { label: "soFlott Express", page: "express" },
+        secondaryCta: { label: "soFlott Digital", page: "digital" },
+      },
+      blocks: [
         {
-          title: "Unsere Auftragsarten",
-          description:
-            "Alle Varianten enthalten Direktfahrt ohne Umladung, Live-Status und digitale Übergabebestätigung.",
+          kind: "divisions",
+          eyebrow: "Unsere Geschäftsbereiche",
+          title: "Was suchen Sie?",
+          intro:
+            "Jeder Geschäftsbereich hat eigene Leistungen, eigene Ansprechpartner und eine eigene Arbeitsweise.",
+          items: [
+            {
+              division: "express",
+              name: "soFlott Express",
+              summary:
+                "Kurier- und Logistikleistungen für Unternehmen – einzelne B2B-Zustellungen, wiederkehrende vertragliche Touren und Zustellkapazität für Logistikunternehmen.",
+              points: [
+                "Direkte B2B-Kurierzustellungen",
+                "Vertragliche, wiederkehrende Touren für Ihre eigenen regelmäßigen Zustellungen",
+                "Subunternehmerleistungen für Logistiker und Paketdienste",
+                "Digitaler Zustellnachweis und B2B-Rechnungen",
+              ],
+              cta: { label: "Zu soFlott Express", page: "express" },
+            },
+            {
+              division: "digital",
+              name: "soFlott Digital",
+              summary:
+                "IT-Beratung und Softwareentwicklung für Unternehmen – von der Architekturberatung bis zu Entwicklung, Integration und Wartung von Anwendungen.",
+              points: [
+                "IT-Beratung und technische Architektur",
+                "Individualsoftware und Full-Stack-Webanwendungen",
+                "API-Entwicklung und Systemintegration",
+                "Modernisierung und laufende Betreuung von Anwendungen",
+              ],
+              cta: { label: "Zu soFlott Digital", page: "digital" },
+            },
+          ],
+        },
+        {
+          kind: "cards",
+          eyebrow: "Arbeitsweise",
+          title: "Was beide Bereiche verbindet",
+          items: [
+            {
+              icon: "building",
+              title: "Ein verantwortliches Unternehmen",
+              description:
+                "Jeder Vertrag und jede Rechnung kommt von der soFlott UG (haftungsbeschränkt). Sie wissen immer, mit wem Sie Geschäfte machen.",
+            },
+            {
+              icon: "file",
+              title: "Klare Vereinbarungen",
+              description:
+                "Umfang, Preise und Leistungsniveau werden vor Beginn schriftlich vereinbart – pro Zustellung, pro Tour oder pro Projekt.",
+            },
+            {
+              icon: "shield",
+              title: "Dokumentierte Arbeit",
+              description:
+                "Zustellungen werden mit Zustellnachweis erfasst, Projekte mit vereinbarten Meilensteinen und Abnahmen.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Nicht sicher, welcher Bereich der richtige ist?",
+        description: "Beschreiben Sie kurz Ihr Vorhaben – wir verbinden Sie mit der richtigen Ansprechperson.",
+        primaryCta: { label: "Kontakt aufnehmen", page: "contact" },
+        secondaryCta: { label: "Über soFlott", page: "about" },
+      },
+    },
+
+    about: {
+      label: "Über uns",
+      meta: {
+        title: "Über die soFlott UG – Unternehmen und Geschäftsbereiche",
+        description:
+          "Wer hinter soFlott steht: die soFlott UG (haftungsbeschränkt), ein in Deutschland eingetragenes Unternehmen mit den Geschäftsbereichen soFlott Express und soFlott Digital.",
+      },
+      hero: {
+        eyebrow: "Über uns",
+        title: "soFlott UG (haftungsbeschränkt)",
+        intro:
+          "Ein deutsches Unternehmen für Geschäftskunden in zwei Bereichen: Kurier und Logistik sowie IT-Beratung und Softwareentwicklung.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          title: "Eine Gesellschaft, zwei Geschäftsbereiche",
+          paragraphs: [
+            "soFlott Express und soFlott Digital sind Geschäftsbereiche – Marken – der soFlott UG (haftungsbeschränkt), keine eigenständigen Gesellschaften. Alle Verträge, Rechnungen und Registrierungen laufen über die soFlott UG.",
+            "Wir trennen die beiden Bereiche, weil ihre Kunden unterschiedliche Bedürfnisse haben: Ein Unternehmen mit einer Sendung, ein Logistikunternehmen auf der Suche nach einem Zustellpartner und eine Organisation mit einem Softwareprojekt verdienen jeweils ein klares, fokussiertes Angebot.",
+          ],
+        },
+        {
+          kind: "text",
+          title: "Warum Logistik und Software?",
+          paragraphs: [
+            "Wir betreiben unseren eigenen Kurierdienst mit selbst entwickelter Software: Buchung, Disposition, Fahrer-App, Zustellnachweis und Rechnungsstellung. Diese Arbeit ist die Grundlage von soFlott Digital – wir wissen, was es braucht, um Geschäftssoftware zu entwerfen, zu entwickeln und zu betreiben, auf die sich Menschen täglich verlassen.",
+          ],
+        },
+        {
+          kind: "links",
+          title: "Die Geschäftsbereiche",
           items: [
             {
               icon: "truck",
-              title: "Direktfahrt",
-              description:
-                "Die Standardfahrt: Abholung auf Abruf, Fahrt ohne Zwischenstopp, Übergabe mit digitaler Unterschrift. Ideal für Ersatzteile, Dokumente und Proben.",
+              title: "soFlott Express",
+              description: "Direkte B2B-Kurierzustellungen und Logistik-Subunternehmerleistungen.",
+              page: "express",
             },
             {
-              icon: "alert",
-              title: "Notfall-Eiltransport",
-              description:
-                "Höchste Priorität bei Produktionsstillstand, Fristablauf oder wartendem Kunden. Wir disponieren sofort den nächstgelegenen verfügbaren Fahrer.",
-            },
-            {
-              icon: "map",
-              title: "Sonderfahrt über die Region hinaus",
-              description:
-                "Längere Strecken außerhalb des Kerngebiets planen wir individuell und nennen Festpreis und Ankunftszeit vorab.",
-            },
-            {
-              icon: "calendar",
-              title: "Feste Touren & Rahmenverträge",
-              description:
-                "Wiederkehrende Strecken zu festen Zeitfenstern, etwa Praxis zu Labor oder Zentrale zu Filiale, mit individuellen Konditionen.",
+              icon: "code",
+              title: "soFlott Digital",
+              description: "IT-Beratung, Softwareentwicklung, Integration und Modernisierung.",
+              page: "digital",
             },
           ],
         },
-        {
-          title: "In jeder Fahrt enthalten",
-          description: "Kein Aufpreis, keine Optionspakete – das ist der Standard.",
-          items: [
-            {
-              icon: "route",
-              title: "Keine Umladung",
-              description:
-                "Ihre Sendung verlässt das Fahrzeug erst beim Empfänger. Das schließt Sortierschäden und Fehlleitungen praktisch aus.",
-            },
-            {
-              icon: "signature",
-              title: "Digitaler Zustellnachweis",
-              description:
-                "Unterschrift des Empfängers, Name, Zeitstempel und GPS-Position – abrufbar in Ihrem Kundenkonto.",
-            },
-            {
-              icon: "euro",
-              title: "Festpreis vorab",
-              description:
-                "Netto, 19 % MwSt. und Brutto stehen vor der Buchung fest und erscheinen unverändert auf der Rechnung.",
-            },
-            {
-              icon: "receipt",
-              title: "Automatische Rechnung",
-              description:
-                "Fortlaufend nummeriert, mit allen Pflichtangaben, direkt per E-Mail und im Kundenkonto.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Abholung in der Regel in 15 Minuten startklar",
-        "Ein Fahrer von der Abholung bis zur Übergabe",
-        "Bis 10 kg Standardfracht, größere Sendungen auf Anfrage",
       ],
       cta: {
-        title: "Welche Fahrt brauchen Sie heute?",
-        description:
-          "Legen Sie ein Geschäftskonto an und sehen Sie den Festpreis sofort – oder sprechen Sie mit uns über feste Touren.",
-        primaryCta: { label: "Direktfahrt anfragen", href: "/register" },
-        secondaryCta: { label: "Preise ansehen", page: "pricing" },
-      },
-    },
-
-    industries: {
-      meta: {
-        title: "Branchen: Kurier für Werkstatt, Kanzlei, Dentallabor & Druckerei",
-        description:
-          "Branchenlösungen von soFlott: Werkstatt-Direktfahrt für Ersatzteile, fristgerechter Kanzleikurier, Medizin- und Dentaltransport sowie Eillieferungen für Druck und Event.",
-        keywords: [
-          "Kurier Werkstatt Ersatzteile",
-          "Kanzlei Kurierdienst",
-          "Dentallabor Kurier",
-          "medizinischer Kurierdienst",
-          "Kurier Druckerei Messe",
-          "Branchenkurier Augsburg, Mering und München",
-        ],
-      },
-      eyebrow: "Branchen",
-      title: "Vier Branchen, ein gemeinsamer Nenner: Zeitdruck.",
-      intro:
-        "Wir kennen die Abläufe unserer Kundengruppen genau genug, um mitzudenken statt nur zu fahren.",
-      lead: [
-        "Ein Kurierdienst, der jeden Tag dieselben Branchen bedient, weiß, worauf es ankommt: an welcher Rampe der Großhändler ausgibt, wie eine Gerichtsfrist läuft und warum ein Zahnmodell nicht umgepackt werden darf.",
-        "Deshalb konzentrieren wir uns auf vier Segmente, statt alles ein bisschen zu machen.",
-      ],
-      sections: [
-        {
-          title: "Werkstätten & Industrie",
-          description:
-            "Stillstand ist der teuerste Zustand in Ihrem Betrieb. Wir holen das fehlende Teil, während das Fahrzeug auf der Bühne bleibt.",
-          items: [
-            {
-              icon: "wrench",
-              title: "Ersatzteil-Direktfahrt",
-              description:
-                "Vom Großhändler oder der Partnerwerkstatt direkt an Ihre Rampe – ohne Wartezeit auf die nächste Sammeltour.",
-            },
-            {
-              icon: "alert",
-              title: "Notfall bei Produktionsstillstand",
-              description:
-                "Wenn die Linie steht, fahren wir sofort los. Höchste Dispositionspriorität ohne zusätzliche Abstimmung.",
-            },
-            {
-              icon: "package",
-              title: "Werkzeug und Leihgeräte",
-              description:
-                "Diagnosegeräte und Spezialwerkzeug zwischen Standorten tauschen, statt doppelt zu beschaffen.",
-            },
-          ],
-        },
-        {
-          title: "Kanzleien & Steuerberater",
-          description:
-            "Fristen und Originale vertragen keine Unsicherheit. Jede Übergabe ist bei uns namentlich dokumentiert.",
-          items: [
-            {
-              icon: "gavel",
-              title: "Fristgebundene Zustellung",
-              description:
-                "Schriftsätze und Anträge an Gericht, Behörde oder Mandant – mit Zeitstempel als Nachweis.",
-            },
-            {
-              icon: "file",
-              title: "Originale und Urkunden",
-              description:
-                "Notarielle Urkunden, Originalverträge und Prüfungsakten in ununterbrochener Einzelfahrt.",
-            },
-            {
-              icon: "lock",
-              title: "Lückenlose Übergabekette",
-              description:
-                "Ein Fahrer, eine Fahrt, eine namentliche Unterschrift – keine anonyme Sammelquittung.",
-            },
-          ],
-        },
-        {
-          title: "Dentallabore & medizinische Einrichtungen",
-          description:
-            "Einzelanfertigungen lassen sich nicht ersetzen und Proben nicht wiederholen. Wir fahren entsprechend sorgfältig.",
-          items: [
-            {
-              icon: "hospital",
-              title: "Praxis-Labor-Verbindung",
-              description:
-                "Kronen, Brücken, Abformungen und Prothetik im gesicherten Einzeltransport zwischen Praxis und Labor.",
-            },
-            {
-              icon: "clock",
-              title: "Verbindliche Zeitfenster",
-              description:
-                "Feste Abhol- und Lieferzeiten für Proben, damit Analyse- und Fertigungsfenster eingehalten werden.",
-            },
-            {
-              icon: "smartphone",
-              title: "Sofortige Signaturmeldung",
-              description:
-                "Ihre Laborleitung erhält die Übergabebestätigung unmittelbar nach der Zustellung.",
-            },
-          ],
-        },
-        {
-          title: "Druckereien & Eventagenturen",
-          description:
-            "Der Termin steht fest, auch wenn der Nachdruck erst morgens fertig wird.",
-          items: [
-            {
-              icon: "printer",
-              title: "Nachdruck in letzter Minute",
-              description:
-                "Frisch gedruckte Banner, Badges und Programme direkt an Messestand oder Veranstaltungsort.",
-            },
-            {
-              icon: "map",
-              title: "Lieferung an Baustelle und Stand",
-              description:
-                "Baupläne, Revisionsunterlagen und Musterstücke dorthin, wo gearbeitet wird – nicht in die Poststelle.",
-            },
-            {
-              icon: "sparkles",
-              title: "VIP- und Sonderlieferungen",
-              description:
-                "Kurzfristige Transporte für hochwertige Materialien und repräsentative Anlässe.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Feste Ansprechpartner statt wechselnder Hotline",
-        "Branchenübliche Zeitfenster von Anfang an eingeplant",
-        "Nachweise, die einer Prüfung standhalten",
-      ],
-      cta: {
-        title: "Ihre Branche ist nicht dabei?",
-        description:
-          "Wenn Ihre Sendung zeitkritisch ist und in der Region bleibt, passt sie zu uns. Schreiben Sie uns kurz, was Sie bewegen möchten.",
-        primaryCta: { label: "Anfrage senden", page: "contact" },
-        secondaryCta: { label: "Leistungen ansehen", page: "services" },
-      },
-    },
-
-    pricing: {
-      meta: {
-        title: "Preise: Transparenter Festpreis für Direktfahrten",
-        description:
-          "Transparente Kurierpreise: Grundpreis plus Kilometersatz, Mindestpreis, 19 % MwSt. klar ausgewiesen, keine versteckten Zuschläge. Rahmenverträge für wiederkehrende Strecken.",
-        keywords: [
-          "Kurier Preise",
-          "Direktfahrt Kosten",
-          "Eiltransport Preis",
-          "Kurierdienst Festpreis",
-          "Kurier Rahmenvertrag",
-        ],
-      },
-      eyebrow: "Preise",
-      title: "Sie sehen den Preis, bevor wir losfahren.",
-      intro:
-        "Zwei Komponenten, ein Mindestpreis, 19 % MwSt. – mehr gibt es bei uns nicht zu rechnen.",
-      lead: [
-        "Viele Transportangebote werden erst auf der Rechnung konkret. Bei soFlott ist es umgekehrt: Der Betrag, den Sie vor der Buchung sehen, ist der Betrag, den Sie bezahlen.",
-        "Grundlage sind eine Grundpauschale je Fahrt und ein fester Kilometersatz für die tatsächliche Strecke. Darunter greift ein Mindestpreis, damit auch sehr kurze Fahrten planbar bleiben.",
-      ],
-      sections: [
-        {
-          title: "So setzt sich Ihr Preis zusammen",
-          description: "Nachvollziehbar in drei Zeilen – auf dem Angebot wie auf der Rechnung.",
-          items: [
-            {
-              icon: "euro",
-              title: "Grundpreis je Fahrt",
-              description:
-                "Deckt Disposition, Anfahrt und Übergabedokumentation ab. Identisch für jede Direktfahrt im Kerngebiet.",
-            },
-            {
-              icon: "route",
-              title: "Kilometersatz",
-              description:
-                "Fester Betrag je Kilometer der tatsächlich gefahrenen Strecke. Keine Luftlinien-Schätzung zu Ihren Lasten.",
-            },
-            {
-              icon: "check",
-              title: "Mindestpreis",
-              description:
-                "Sehr kurze Strecken werden zum Mindestpreis abgerechnet, statt mit Zuschlägen aufgefüllt zu werden.",
-            },
-          ],
-        },
-        {
-          title: "Was Sie nicht bezahlen",
-          description: "Die üblichen Posten aus dem Kleingedruckten gibt es bei uns nicht.",
-          items: [
-            {
-              icon: "check",
-              title: "Keine Treibstoffzuschläge",
-              description: "Schwankende Spritpreise sind unser Risiko, nicht Ihre Position auf der Rechnung.",
-            },
-            {
-              icon: "check",
-              title: "Keine Innenstadt- oder Zonenzuschläge",
-              description: "Eine Strecke im Kerngebiet kostet überall dasselbe pro Kilometer.",
-            },
-            {
-              icon: "check",
-              title: "Keine Einrichtungs- oder Kontogebühr",
-              description: "Das Geschäftskonto und das Kundenportal sind kostenfrei.",
-            },
-          ],
-        },
-        {
-          title: "Abrechnung und Zahlung",
-          description: "Gebaut für die Anforderungen deutscher Buchhaltung.",
-          items: [
-            {
-              icon: "receipt",
-              title: "Rechnung je Auftrag",
-              description:
-                "Automatisch erstellt, fortlaufend nummeriert, mit ausgewiesener Umsatzsteuer und allen Pflichtangaben.",
-            },
-            {
-              icon: "banknote",
-              title: "Überweisung oder PayPal",
-              description:
-                "Sie wählen die Zahlungsart bei der Buchung. Zahlungsziel standardmäßig 14 Tage.",
-            },
-            {
-              icon: "calendar",
-              title: "Konditionen für Stammkunden",
-              description:
-                "Bei regelmäßigem Volumen vereinbaren wir individuelle Sätze und feste Zeitfenster.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Beispiel: 12 km Direktfahrt = 35,70 € netto, 42,48 € brutto",
-        "Alle Preise zzgl. 19 % MwSt.",
-        "Zahlungsziel 14 Tage, Rechnung per E-Mail",
-      ],
-      cta: {
-        title: "Preis für Ihre Strecke berechnen",
-        description:
-          "Im Kundenportal geben Sie Abhol- und Zieladresse ein und sehen sofort Entfernung, Fahrzeit und Festpreis.",
-        primaryCta: { label: "Konto anlegen und berechnen", href: "/register" },
-        secondaryCta: { label: "Rahmenvertrag besprechen", page: "contact" },
-      },
-    },
-
-    platform: {
-      meta: {
-        title: "Technologie: Live-Status, digitale Unterschrift & Rechnung",
-        description:
-          "Die soFlott-Plattform: Live-Sendungsverfolgung, digitale Empfangsunterschrift mit GPS-Nachweis, automatische B2B-Rechnungen und ein Kundenkonto mit vollständiger Auftragshistorie.",
-        keywords: [
-          "Sendungsverfolgung Kurier",
-          "digitale Unterschrift Zustellung",
-          "elektronischer Zustellnachweis",
-          "Kurier Software",
-          "Proof of Delivery",
-        ],
-      },
-      eyebrow: "Technologie",
-      title: "Ein Kurierdienst, der seine eigene Software fährt.",
-      intro:
-        "Die Plattform arbeitet im Hintergrund – und liefert Ihnen genau die Belege, die Sie sonst hinterhertelefonieren müssten.",
-      lead: [
-        "soFlottOS ist das System, mit dem wir disponieren, zustellen und abrechnen. Für Sie bedeutet das: Jeder Auftrag erzeugt automatisch einen vollständigen, prüfbaren Vorgang.",
-        "Sie brauchen dafür keine Installation. Das Kundenportal läuft im Browser und lässt sich auf dem Smartphone wie eine App speichern.",
-      ],
-      sections: [
-        {
-          title: "Was Sie im Kundenkonto sehen",
-          description: "Alles zu Ihren Fahrten an einem Ort, jederzeit abrufbar.",
-          items: [
-            {
-              icon: "map",
-              title: "Status in Echtzeit",
-              description:
-                "Angenommen, zugewiesen, unterwegs, zugestellt. Der Fortschritt aktualisiert sich automatisch.",
-            },
-            {
-              icon: "signature",
-              title: "Übergabebestätigung",
-              description:
-                "Name des Empfängers, Unterschrift, Zeitstempel und GPS-Position der Übergabe als Beleg zum Auftrag.",
-            },
-            {
-              icon: "receipt",
-              title: "Rechnungen und Belege",
-              description:
-                "Jede Rechnung ist direkt am Auftrag hinterlegt und lässt sich für die Buchhaltung drucken oder als PDF speichern.",
-            },
-            {
-              icon: "building",
-              title: "Vollständige Historie",
-              description:
-                "Alle Fahrten Ihres Unternehmens mit Strecke, Preis und Nachweis – ideal für Monatsabschluss und Prüfungen.",
-            },
-          ],
-        },
-        {
-          title: "Wie unsere Fahrer arbeiten",
-          description: "Dieselbe Plattform, nur für das Smartphone gebaut.",
-          items: [
-            {
-              icon: "smartphone",
-              title: "Auftrag auf dem Gerät",
-              description:
-                "Der Fahrer sieht Adressen, Fracht und Besonderheiten direkt im Auftrag, ohne Zettelwirtschaft.",
-            },
-            {
-              icon: "signature",
-              title: "Unterschrift auf dem Display",
-              description:
-                "Der Empfänger unterschreibt mit dem Finger. Die Unterschrift wird dem Auftrag fest zugeordnet.",
-            },
-            {
-              icon: "map",
-              title: "GPS-Nachweis der Übergabe",
-              description:
-                "Die Position bei der Zustellung wird mitgespeichert und belegt Ort und Zeitpunkt der Übergabe.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Kein Software-Rollout, keine Lizenzkosten",
-        "Als Web-App auf dem Smartphone installierbar",
-        "Nachweise bleiben dauerhaft im Kundenkonto",
-      ],
-      cta: {
-        title: "Sehen Sie es sich im Kundenkonto an.",
-        description:
-          "Konto anlegen, erste Fahrt buchen und Live-Status, Unterschrift und Rechnung im echten Vorgang erleben.",
-        primaryCta: { label: "Kostenloses Geschäftskonto", href: "/register" },
-        secondaryCta: { label: "Sicherheit und Zuverlässigkeit", page: "security" },
-      },
-    },
-
-    security: {
-      meta: {
-        title: "Sicherheit, Zuverlässigkeit & Datenschutz",
-        description:
-          "Wie soFlott Sendungen und Daten schützt: durchgehende Verantwortung beim Fahrer, beweisfähige Zustellnachweise, geschützte Anmeldung und Datenhaltung in der EU.",
-        keywords: [
-          "sicherer Kurierdienst",
-          "Zustellnachweis rechtssicher",
-          "Kurier Datenschutz DSGVO",
-          "vertrauliche Dokumente Kurier",
-        ],
-      },
-      eyebrow: "Sicherheit",
-      title: "Verlässlich mit Absicht, nicht aus Zufall.",
-      intro:
-        "Wer Originale, Patientenproben oder Prototypen übergibt, muss sich auf zwei Dinge verlassen können: die Fahrt und den Nachweis.",
-      lead: [
-        "Sicherheit beginnt bei uns in der Disposition: Eine Sendung, ein Fahrer, keine Zwischenlagerung. Je weniger Hände eine Sendung berührt, desto kleiner ist das Risiko.",
-        "Alles, was danach kommt – Dokumentation, Aufbewahrung, Zugriff – ist im System geregelt und nicht von einzelnen Personen abhängig.",
-      ],
-      sections: [
-        {
-          title: "Sicherheit auf der Straße",
-          description: "Organisatorische Maßnahmen, die Schäden von vornherein vermeiden.",
-          items: [
-            {
-              icon: "shield",
-              title: "Durchgehende Verantwortung",
-              description:
-                "Ein Fahrer übernimmt die Sendung und übergibt sie persönlich. Es gibt keinen anonymen Zwischenschritt.",
-            },
-            {
-              icon: "package",
-              title: "Keine Zwischenlagerung",
-              description:
-                "Ihre Fracht wird nicht umgepackt, nicht sortiert und nicht über Nacht eingelagert.",
-            },
-            {
-              icon: "signature",
-              title: "Beweisfähige Übergabe",
-              description:
-                "Namentliche digitale Unterschrift mit Zeitstempel und GPS-Position statt Sammelquittung.",
-            },
-          ],
-        },
-        {
-          title: "Sicherheit im System",
-          description: "Technische Maßnahmen rund um Ihr Kundenkonto.",
-          items: [
-            {
-              icon: "lock",
-              title: "Geschützte Anmeldung",
-              description:
-                "Zugangsdaten werden ausschließlich als starker Hash gespeichert. Das Anmeldetoken liegt in einem HTTP-only-Cookie und ist für Skripte im Browser nicht lesbar.",
-            },
-            {
-              icon: "building",
-              title: "Getrennte Rollen",
-              description:
-                "Auftraggeber, Fahrer und Verwaltung sehen jeweils nur die Daten, die sie für ihre Aufgabe benötigen.",
-            },
-            {
-              icon: "file",
-              title: "Nachvollziehbare Vorgänge",
-              description:
-                "Jede Statusänderung und jeder Nachweis bleibt dem Auftrag dauerhaft zugeordnet.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Eine Sendung, ein Fahrer, keine Umladung",
-        "Zustellnachweis mit Name, Zeit und Position",
-        "Datenhaltung in der EU, Auskunft auf Anfrage",
-      ],
-      cta: {
-        title: "Fragen zu Vertraulichkeit oder Auftragsverarbeitung?",
-        description:
-          "Für Kanzleien, Praxen und Labore klären wir Datenschutz- und Übergabeanforderungen gern vorab schriftlich.",
-        primaryCta: { label: "Kontakt aufnehmen", page: "contact" },
-        secondaryCta: { label: "Technologie ansehen", page: "platform" },
+        title: "Unternehmensangaben",
+        description: "Registerangaben und Kontaktdaten finden Sie in unserem Impressum.",
+        primaryCta: { label: "Impressum", page: "legal/imprint" },
+        secondaryCta: { label: "Kontakt", page: "contact" },
       },
     },
 
     contact: {
+      label: "Kontakt",
       meta: {
-        title: "Kontakt: Direktfahrt anfragen & 20 % Erstkunden-Rabatt",
+        title: "Kontakt soFlott – Express und Digital",
         description:
-          "Direktfahrt anfragen, Rahmenvertrag besprechen oder Testfahrt mit 20 % Erstkunden-Rabatt sichern. Telefonisch oder per E-Mail – wir disponieren sofort.",
-        keywords: [
-          "Kurier anfragen",
-          "Direktfahrt buchen Augsburg, Mering und München",
-          "Kurierdienst Kontakt",
-          "Expresskurier Angebot",
-        ],
+          "Kontakt zur soFlott UG: Kurier- und Logistikanfragen an soFlott Express, IT- und Softwareanfragen an soFlott Digital.",
       },
-      eyebrow: "Kontakt",
-      title: "Sagen Sie uns, was wohin muss.",
-      intro:
-        "Rufen Sie an, wenn es eilt. Schreiben Sie uns, wenn Sie Konditionen oder feste Touren besprechen möchten.",
-      lead: [
-        "Für dringende Fahrten ist das Telefon der schnellste Weg: Wir nehmen den Auftrag direkt auf und disponieren, während wir sprechen.",
-        "Für alles Planbare – Rahmenverträge, feste Touren, Datenschutzfragen – genügt eine kurze E-Mail. Wir antworten in der Regel am selben Werktag.",
-      ],
-      sections: [
+      hero: {
+        eyebrow: "Kontakt",
+        title: "Wie können wir helfen?",
+        intro:
+          "Am schnellsten erreichen Sie uns über die Kontaktseite des passenden Geschäftsbereichs. Für alles andere schreiben Sie uns hier.",
+      },
+      blocks: [
         {
-          title: "So erreichen Sie uns",
-          description: "Ein Ansprechpartner, keine Warteschleife.",
+          kind: "links",
+          title: "Direkt an einen Geschäftsbereich",
           items: [
             {
-              icon: "phone",
-              title: "Telefonisch für Eilfahrten",
-              description:
-                "Der schnellste Weg bei Stillstand, Frist oder wartendem Kunden. Wir disponieren während des Gesprächs.",
+              icon: "truck",
+              title: "soFlott Express",
+              description: "Zustellungen, Angebote, Subunternehmer- und Tourenanfragen.",
+              page: "express/contact",
             },
             {
-              icon: "mail",
-              title: "Per E-Mail für Angebote",
-              description:
-                "Strecke, Frachtart und gewünschtes Zeitfenster genügen für ein verbindliches Angebot.",
+              icon: "code",
+              title: "soFlott Digital",
+              description: "Beratung, Softwareprojekte, Angebote und Vertragseinsätze.",
+              page: "digital/contact",
+            },
+          ],
+        },
+        { kind: "contact", title: "Kontakt Unternehmen" },
+        { kind: "form", form: "contact", title: "Nachricht senden" },
+      ],
+    },
+
+    "legal/imprint": {
+      label: "Impressum",
+      meta: {
+        title: "Impressum",
+        description: "Angaben zur soFlott UG (haftungsbeschränkt) gemäß § 5 DDG.",
+      },
+      hero: {
+        eyebrow: "Rechtliches",
+        title: "Impressum",
+        intro: "Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz).",
+      },
+      blocks: [
+        { kind: "imprint", title: "Anbieter" },
+        {
+          kind: "text",
+          title: "Geschäftsbereiche",
+          paragraphs: [
+            "soFlott Express und soFlott Digital sind Geschäftsbereiche (Geschäftsbezeichnungen) der soFlott UG (haftungsbeschränkt) und keine eigenständigen juristischen Personen.",
+          ],
+        },
+      ],
+    },
+
+    "legal/privacy": {
+      label: "Datenschutz",
+      meta: {
+        title: "Datenschutzerklärung",
+        description:
+          "Wie die soFlott UG (haftungsbeschränkt) personenbezogene Daten auf dieser Website und im Kundenportal verarbeitet.",
+      },
+      hero: {
+        eyebrow: "Rechtliches",
+        title: "Datenschutzerklärung",
+        intro:
+          "Wie wir mit personenbezogenen Daten umgehen, wenn Sie diese Website besuchen, uns kontaktieren oder das Kundenportal nutzen.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          paragraphs: [
+            "Verantwortlich für die Datenverarbeitung auf dieser Website ist die soFlott UG (haftungsbeschränkt). Die Kontaktdaten finden Sie im Impressum.",
+          ],
+          sections: [
+            {
+              title: "Besuch der Website",
+              paragraphs: [
+                "Beim Aufruf einer Seite übermittelt Ihr Browser technische Daten wie IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite und den Browsertyp. Diese Daten sind für die sichere Bereitstellung der Website erforderlich und werden auf Grundlage unseres berechtigten Interesses verarbeitet (Art. 6 Abs. 1 lit. f DSGVO). Server-Logdateien werden nur so lange gespeichert, wie es aus Sicherheitsgründen erforderlich ist.",
+                "Schriftarten werden von unserem eigenen Server ausgeliefert. Beim Besuch dieser Website werden keine Inhalte von externen Schriftarten-Diensten geladen.",
+              ],
             },
             {
-              icon: "smartphone",
-              title: "Rund um die Uhr im Portal",
-              description:
-                "Mit einem Geschäftskonto buchen Sie jederzeit selbst und sehen den Festpreis sofort.",
+              title: "Cookies",
+              paragraphs: [
+                "Wir verwenden nur Cookies, die für den Betrieb der Website erforderlich sind. Das Cookie „soflott_locale“ speichert Ihre Sprachauswahl für bis zu ein Jahr. Wenn Sie sich im Kundenportal anmelden, hält das Cookie „soflott_session“ Sie angemeldet. Werbe- oder Tracking-Cookies setzen wir nicht ein.",
+              ],
+            },
+            {
+              title: "Anfrage- und Angebotsformulare",
+              paragraphs: [
+                "Unsere Anfrageformulare speichern keine Daten auf dieser Website. Beim Absenden öffnet sich Ihr eigenes E-Mail-Programm mit einer vorbereiteten Nachricht. Erst wenn Sie diese E-Mail senden, erhalten wir Ihre Angaben. Wir verwenden sie zur Beantwortung Ihrer Anfrage und zur Angebotserstellung (Art. 6 Abs. 1 lit. b DSGVO) und löschen sie, wenn sie nicht mehr benötigt werden, vorbehaltlich gesetzlicher Aufbewahrungsfristen.",
+              ],
+            },
+            {
+              title: "Kundenportal",
+              paragraphs: [
+                "Wenn Sie ein Geschäftskundenkonto anlegen, verarbeiten wir Konto-, Auftrags-, Zustell- und Rechnungsdaten zur Erfüllung unseres Vertrags mit Ihnen (Art. 6 Abs. 1 lit. b DSGVO) und zur Erfüllung gesetzlicher Buchführungs- und Aufbewahrungspflichten (Art. 6 Abs. 1 lit. c DSGVO).",
+              ],
+            },
+            {
+              title: "Ihre Rechte",
+              paragraphs: [
+                "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit sowie das Recht, einer auf berechtigtem Interesse beruhenden Verarbeitung zu widersprechen. Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren.",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ----------------------------------------------------------------------
+    // soFlott Express
+    // ----------------------------------------------------------------------
+    express: {
+      label: "Überblick",
+      meta: {
+        title: "soFlott Express – B2B-Kurierdienst und Logistik-Subunternehmer",
+        description:
+          "soFlott Express bietet direkte B2B-Kurierzustellungen, vertragliche wiederkehrende Zustelltouren für Unternehmen und Zustellkapazität für Logistikunternehmen, Paketdienste und Distributoren.",
+        keywords: [
+          "B2B Kurierdienst",
+          "Expresszustellung für Unternehmen",
+          "Logistik Subunternehmer",
+          "Zustellpartner für Logistikunternehmen",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Express",
+        title: "Kurier- und Logistikleistungen für Unternehmen.",
+        intro:
+          "Wir transportieren einzelne Sendungen für Unternehmen, fahren feste wiederkehrende Touren für Unternehmen mit regelmäßigen Zustellungen – und stellen Zustellkapazität für Logistikunternehmen bereit, die einen verlässlichen Partner brauchen. Jede Leistung hat ihre eigene Arbeitsweise.",
+        primaryCta: { label: "Ich brauche eine Zustellung", page: "express/direct-b2b-delivery" },
+        secondaryCta: { label: "Ich bin ein Logistikunternehmen", page: "express/logistics-subcontracting" },
+      },
+      blocks: [
+        {
+          kind: "compare",
+          eyebrow: "Welche Leistung passt?",
+          title: "Eine Zustellung, eine feste Tour oder Zustellkapazität?",
+          intro:
+            "Die drei Leistungen decken drei unterschiedliche Bedarfe ab. Sie unterscheiden sich darin, wer beauftragt, wessen Sendungen transportiert werden, wie Preise vereinbart und wie abgerechnet wird.",
+          columns: ["Direkte B2B-Kurierzustellung", "Vertragliche Zustelltouren", "B2B-Logistik-Subunternehmerleistung"],
+          rows: [
+            {
+              label: "Für",
+              values: [
+                "Unternehmen, die eine einzelne Sendung abholen und zustellen lassen möchten",
+                "Unternehmen, deren eigene Zustellungen einem regelmäßigen, planbaren Muster folgen",
+                "Logistikunternehmen, Paketdienste und Distributoren, die Zustellkapazität benötigen",
+              ],
+            },
+            {
+              label: "Wessen Sendungen",
+              values: [
+                "Ihre eigenen Waren oder Dokumente",
+                "Ihre eigenen Waren – zwischen Ihren Standorten, Lieferanten oder Stammkunden",
+                "Pakete Ihrer Kunden, zugestellt im Auftrag Ihres Logistiknetzes",
+              ],
+            },
+            {
+              label: "Beauftragung",
+              values: [
+                "Einzelner Zustellauftrag",
+                "Tourenvereinbarung – Stopps, Tage und Zeitfenster einmal festgelegt",
+                "Rahmenvertrag oder Dienstleistungsvertrag",
+              ],
+            },
+            {
+              label: "Preisgrundlage",
+              values: [
+                "Angebot pro Zustellung, nach Entfernung, Dringlichkeit, Wartezeit und Handling",
+                "Feste Pauschale pro Tourfahrt oder pro Stopp, im Voraus vereinbart",
+                "Wie vereinbart: pro Stopp, pro Paket, feste Tourenpauschale oder kombiniert",
+              ],
+            },
+            {
+              label: "Nachweis",
+              values: [
+                "Zustellnachweis für jeden Auftrag",
+                "Zustellnachweis für jeden Stopp und Protokoll jeder Fahrt",
+                "Tourenprotokolle, Zustellnachweise und Mengenabgleich",
+              ],
+            },
+            {
+              label: "Abrechnung",
+              values: [
+                "Pro Auftrag oder monatliche Sammelrechnung",
+                "Monatliche Rechnung mit Aufstellung der gefahrenen Touren",
+                "Periodische Rechnung mit Leistungsnachweis",
+              ],
+            },
+          ],
+          ctas: [
+            { label: "Zustellangebot anfragen", page: "express/request-a-quote" },
+            { label: "Tourenangebot anfragen", page: "express/request-a-quote", query: "type=routes" },
+            {
+              label: "Subunternehmer-Angebot anfragen",
+              page: "express/request-a-quote",
+              query: "type=subcontracting",
             },
           ],
         },
         {
-          title: "Ihr Einstieg ohne Risiko",
-          description: "Wir möchten die erste Fahrt gewinnen, nicht einen Jahresvertrag.",
+          kind: "links",
+          eyebrow: "Leistungen",
+          title: "soFlott Express im Überblick",
           items: [
             {
-              icon: "award",
-              title: "20 % Erstkunden-Rabatt",
-              description:
-                "Die erste Direktfahrt neuer Gewerbekunden rechnen wir mit 20 % Nachlass ab.",
+              icon: "package",
+              title: "Direkte B2B-Zustellung",
+              description: "Einzelne Zustellungen zwischen Geschäftsstandorten, mit Statusverfolgung und Zustellnachweis.",
+              page: "express/direct-b2b-delivery",
             },
             {
-              icon: "check",
-              title: "Keine Mindestmenge",
+              icon: "handshake",
+              title: "Logistik-Subunternehmer",
+              description: "Zustellkapazität und -betrieb für Logistikunternehmen im Rahmen eines Rahmenvertrags.",
+              page: "express/logistics-subcontracting",
+            },
+            {
+              icon: "route",
+              title: "Vertragliche Touren",
+              description: "Wiederkehrende Fahrten für Ihre eigenen regelmäßigen Zustellungen, an vereinbarten Tagen und Zeitfenstern.",
+              page: "express/contracted-delivery-routes",
+            },
+            {
+              icon: "map",
+              title: "Einsatzgebiete",
+              description: "Wo wir derzeit tätig sind und wie wir mit Strecken außerhalb der Region umgehen.",
+              page: "express/service-areas",
+            },
+            {
+              icon: "clipboard",
+              title: "So funktioniert’s",
+              description: "Von der Anfrage bis zu Zustellnachweis und Rechnung – Schritt für Schritt.",
+              page: "express/how-it-works",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Sagen Sie uns, was transportiert werden soll.",
+        description: "Senden Sie eine Zustellanfrage, planen Sie eine wiederkehrende Tour oder sprechen Sie mit uns über einen Subunternehmervertrag.",
+        primaryCta: { label: "Angebot anfragen", page: "express/request-a-quote" },
+        secondaryCta: { label: "soFlott Express kontaktieren", page: "express/contact" },
+      },
+    },
+
+    "express/direct-b2b-delivery": {
+      label: "Direkte B2B-Zustellung",
+      meta: {
+        title: "Direkte B2B-Kurierzustellung für Unternehmen",
+        description:
+          "Geschäftskurier von soFlott Express: Abholung und Zustellung zwischen Geschäftsstandorten, Preis vor der Buchung, Statusverfolgung, digitaler Zustellnachweis und B2B-Rechnungen.",
+        keywords: ["B2B Kurierdienst", "Geschäftskurier", "Expresszustellung für Unternehmen", "Kurier für Firmen"],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Direktzustellung",
+        title: "Direkte B2B-Kurierzustellungen.",
+        intro:
+          "Sie möchten eine Sendung an einem Geschäftsstandort abholen und an einen anderen zustellen lassen. Wir erstellen das Angebot, holen ab, stellen zu, dokumentieren – und senden Ihnen eine ordentliche B2B-Rechnung.",
+        primaryCta: { label: "Zustellangebot anfragen", page: "express/request-a-quote" },
+        secondaryCta: { label: "Geschäftskundenkonto eröffnen", href: "/register" },
+        points: [
+          "Preis vor der Buchung",
+          "Statusverfolgung im Kundenportal",
+          "Digitaler Zustellnachweis",
+          "Rechnung pro Auftrag oder monatlich",
+        ],
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Was enthalten ist",
+          items: [
+            {
+              icon: "package",
+              title: "Abholung und Zustellung",
               description:
-                "Keine Grundgebühr, keine Vertragsbindung, keine Mindestanzahl an Fahrten.",
+                "Abhol- und Zustelladresse, gewünschte Zeitfenster und Sendungsdetails werden mit jedem Auftrag vereinbart.",
+            },
+            {
+              icon: "receipt",
+              title: "Transparente Preise",
+              description:
+                "Der Preis richtet sich nach Entfernung, Dringlichkeit, Wartezeit und Handling. Sie erhalten ihn vor der Auftragsbestätigung, mit gesondert ausgewiesener Umsatzsteuer.",
+            },
+            {
+              icon: "search",
+              title: "Statusverfolgung",
+              description: "Verfolgen Sie den Status jedes Auftrags im Kundenportal, statt nachzutelefonieren.",
+            },
+            {
+              icon: "signature",
+              title: "Zustellnachweis",
+              description:
+                "Jede Zustellung wird mit Name des Empfängers und Übergabezeit erfasst, bei Bedarf zusätzlich mit Unterschrift.",
+            },
+            {
+              icon: "file",
+              title: "B2B-Rechnungen",
+              description:
+                "Rechnung pro Auftrag oder Sammelrechnung für den Abrechnungszeitraum, zusammen mit Ihrer Auftragsübersicht.",
+            },
+            {
+              icon: "users",
+              title: "Geschäftskundenkonten",
+              description:
+                "Mehrere Ansprechpartner und gespeicherte Adressen pro Unternehmen, damit Ihr Team ohne erneute Dateneingabe bestellen kann.",
+            },
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Dringende und zeitkritische Zustellungen",
+          text:
+            "Nennen Sie uns bei der Anfrage Ihr gewünschtes Abhol- und Zustellzeitfenster. Wir bestätigen vor der Buchung das früheste Zeitfenster, das wir verlässlich einhalten können – wir versprechen keine Zustellzeiten, die wir nicht bestätigt haben.",
+        },
+        {
+          kind: "checklist",
+          title: "Typische Anfragen",
+          items: [
+            "Bauteile oder Ersatzteile zwischen Produktionsstandorten, Lieferanten und Werkstätten",
+            "Dokumente und Originale, die persönlich übergeben werden müssen",
+            "Muster und Waren zwischen Filialen, Laboren und Kunden",
+            "Einzelzustellungen, die nicht in ein Paketnetz passen",
+          ],
+        },
+        {
+          kind: "faq",
+          title: "Fragen zur Direktzustellung",
+          items: [
+            {
+              question: "Wie wird der Preis berechnet?",
+              answer:
+                "Der Preis hängt von Entfernung, Dringlichkeit, erwarteter Wartezeit und besonderem Handling ab. Sie erhalten ihn vor der Auftragsbestätigung, und genau dieser vereinbarte Preis erscheint auf der Rechnung.",
+            },
+            {
+              question: "Brauche ich ein Konto, um zu bestellen?",
+              answer:
+                "Nein. Sie können ein Angebot auch ohne Konto anfragen. Stammkunden eröffnen in der Regel ein Geschäftskundenkonto, um im Kundenportal zu buchen, Aufträge zu verfolgen und Rechnungen herunterzuladen.",
+            },
+            {
+              question: "Was passiert, wenn eine Zustellung nicht möglich ist?",
+              answer:
+                "Fehlgeschlagene Zustellungen, Verzögerungen und andere Abweichungen werden erfasst und an Sie gemeldet, sodass Sie immer wissen, was passiert ist und was als Nächstes vereinbart wurde.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Etwas muss zugestellt werden?",
+        description: "Senden Sie uns Adressen, Zeitfenster und Sendungsdetails – wir antworten mit einem Angebot.",
+        primaryCta: { label: "Zustellangebot anfragen", page: "express/request-a-quote" },
+        secondaryCta: { label: "Kunden-Login", href: "/login" },
+      },
+    },
+
+    "express/logistics-subcontracting": {
+      label: "Logistik-Subunternehmer",
+      meta: {
+        title: "Logistik-Subunternehmer – Zustellpartner für Logistikunternehmen",
+        description:
+          "soFlott Express als Zustell-Subunternehmer für Logistikunternehmen, Paketdienste und Distributoren: vertragliche Kapazität, feste Touren, Zustellgebiete, Zustellnachweis und abgeglichene periodische Abrechnung.",
+        keywords: [
+          "Logistik Subunternehmer",
+          "Subunternehmer Paketzustellung",
+          "Zustellpartner für Logistikunternehmen",
+          "Subunternehmer letzte Meile",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Subunternehmer",
+        title: "Ein Zustellpartner für Logistikunternehmen.",
+        intro:
+          "Logistikunternehmen, Paketdienste und Distributoren beauftragen soFlott mit Zustellkapazität oder dem Betrieb definierter Zustellabläufe in ihrem Netz – zugestellt werden die Pakete ihrer Kunden. Wir arbeiten auf Basis eines Rahmenvertrags, dokumentieren jede Tour und rechnen genau das ab, was vereinbart wurde.",
+        primaryCta: {
+          label: "Subunternehmer-Angebot anfragen",
+          page: "express/request-a-quote",
+          query: "type=subcontracting",
+        },
+        secondaryCta: { label: "Rahmenvertrag besprechen", page: "express/contact" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Einsatzmodelle",
+          intro:
+            "Jeder Einsatz wird in einer eigenen Vereinbarung festgelegt und als Teil Ihres Logistiknetzes betrieben. Typische Modelle sind:",
+          items: [
+            {
+              icon: "route",
+              title: "Feste Touren",
+              description: "Eine Tour aus Ihrem Netz, von uns an vereinbarten Wochentagen und Zeitfenstern gefahren.",
+            },
+            {
+              icon: "map",
+              title: "Zustellgebiete",
+              description: "Verantwortung für ein definiertes Zustellgebiet oder eine Servicezone.",
+            },
+            {
+              icon: "package",
+              title: "Tägliche Touren mit variabler Menge",
+              description: "Tägliche Zustelltouren, bei denen die Paketmenge von Tag zu Tag schwankt.",
+            },
+            {
+              icon: "scale",
+              title: "Flexible Abrechnung",
+              description:
+                "Pro erledigtem Stopp oder Paket, feste Tourenpauschale oder Grundpauschale plus variable Menge – wie vertraglich vereinbart.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          title: "So läuft eine Subunternehmer-Zusammenarbeit ab",
+          steps: [
+            {
+              title: "Anforderungen und Angebot",
+              description:
+                "Sie beschreiben Touren, Gebiete, Mengen und Leistungsniveau. Wir antworten mit einem schriftlichen Angebot.",
+            },
+            {
+              title: "Rahmenvertrag",
+              description:
+                "Preise, Abrechnungseinheiten, Leistungsniveau und Regeln für Abweichungen werden vor Betriebsbeginn vertraglich festgelegt.",
+            },
+            {
+              title: "Tourenplanung und Zuweisung",
+              description: "Touren und Fahrzeuge werden nach dem vereinbarten Plan disponiert und zugewiesen.",
+            },
+            {
+              title: "Betrieb und Zustellnachweis",
+              description: "Ladelisten, Stopps, Zustellungen und Abweichungen werden für jede Tour erfasst.",
+            },
+            {
+              title: "Abgleich und Rechnung",
+              description:
+                "Zugestellte Mengen werden vor der periodischen Rechnung mit Ihren Daten abgeglichen; die Rechnung enthält einen Leistungsnachweis.",
+            },
+          ],
+        },
+        {
+          kind: "checklist",
+          title: "Was Sie erwarten können",
+          items: [
+            "Ein Vertragspartner: die soFlott UG (haftungsbeschränkt)",
+            "Schriftliche Vereinbarungen zu Preisen, Abrechnungseinheiten und Leistungsniveau",
+            "Berichte je Tour über erfolgreiche, fehlgeschlagene und zurückgeführte Zustellungen",
+            "Mengenabgleich vor der Rechnung – keine Überraschungen",
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Kein Logistikunternehmen?",
+          text:
+            "Wenn Ihr Unternehmen eigene Waren nach festem Plan versendet – zum Beispiel zwischen Ihren Filialen oder jede Woche an dieselben Kunden –, ist eine vertragliche Zustelltour die passendere Leistung.",
+        },
+      ],
+      cta: {
+        title: "Sie suchen zusätzliche Zustellkapazität?",
+        description: "Beschreiben Sie Ihre Touren, Gebiete und Mengen. Wir erstellen ein Subunternehmer-Angebot.",
+        primaryCta: {
+          label: "Subunternehmer-Angebot anfragen",
+          page: "express/request-a-quote",
+          query: "type=subcontracting",
+        },
+        secondaryCta: { label: "Rahmenvertrag besprechen", page: "express/contact" },
+      },
+    },
+
+    "express/contracted-delivery-routes": {
+      label: "Vertragliche Touren",
+      meta: {
+        title: "Vertragliche Zustelltouren und wiederkehrende Fahrten",
+        description:
+          "Feste, wiederkehrende Zustelltouren für Unternehmen mit regelmäßigen Zustellungen: soFlott Express fährt Ihre Tour an vereinbarten Tagen und Zeitfenstern, mit Zustellnachweis für jeden Stopp und einer monatlichen Rechnung.",
+        keywords: ["vertragliche Zustelltouren", "wiederkehrende Tour", "Festtour Kurier", "regelmäßige B2B-Zustellung"],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Vertragliche Touren",
+        title: "Ihre regelmäßigen Zustellungen, auf fester Tour.",
+        intro:
+          "Wenn Ihr Unternehmen regelmäßig gleichartige Zustellungen hat, ersetzt eine vertragliche Tour wiederholte Einzelaufträge. Stopps, Tage, Zeitfenster und Preise werden einmal vereinbart – und die Tour wird konsequent gefahren, ohne dass Sie jede Zustellung einzeln beauftragen.",
+        primaryCta: {
+          label: "Tourenangebot anfragen",
+          page: "express/request-a-quote",
+          query: "type=routes",
+        },
+        secondaryCta: { label: "So funktioniert’s", page: "express/how-it-works" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Typische vertragliche Touren",
+          intro: "Eine vertragliche Tour passt zu Unternehmen, deren eigene Zustellungen sich an bekannten Tagen wiederholen. Zum Beispiel:",
+          items: [
+            {
+              icon: "building",
+              title: "Zwischen Ihren Standorten",
+              description: "Regelmäßige Fahrten zwischen Filialen, Lagern, Büros oder Produktionsstandorten.",
+            },
+            {
+              icon: "package",
+              title: "Zu Stammkunden",
+              description: "Planmäßige Zustellungen an dieselben Kunden oder Verkaufsstellen jede Woche.",
+            },
+            {
+              icon: "route",
+              title: "Von Lieferanten oder Partnern",
+              description: "Wiederkehrende Abholungen bei Lieferanten oder Partnerunternehmen an vereinbarten Tagen.",
             },
             {
               icon: "calendar",
-              title: "Danach: feste Touren",
+              title: "Feste Fahrpläne",
+              description: "Vereinbarte Wochentage und Zeitfenster, im Voraus geplant und jedes Mal dokumentiert.",
+            },
+          ],
+        },
+        {
+          kind: "checklist",
+          title: "Schriftlich vereinbart",
+          items: [
+            "Stopps, Reihenfolge und Einsatztage",
+            "Zeitfenster und Handling-Anweisungen",
+            "Preisgrundlage: feste Pauschale pro Tourfahrt oder pro Stopp",
+            "Umgang mit und Berechnung von Abweichungen, fehlgeschlagenen Zustellungen und Retouren",
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Welche Leistung ist die richtige?",
+          text:
+            "Nur eine gelegentliche oder einmalige Sendung? Dann ist die direkte B2B-Zustellung richtig. Sie sind ein Logistikunternehmen, Paketdienst oder Distributor und brauchen Kapazität für die Pakete Ihrer Kunden? Das ist die Logistik-Subunternehmerleistung.",
+        },
+      ],
+      cta: {
+        title: "Eine vertragliche Tour planen.",
+        description: "Beschreiben Sie Stopps, Tage und Mengen – wir erstellen ein Angebot.",
+        primaryCta: {
+          label: "Tourenangebot anfragen",
+          page: "express/request-a-quote",
+          query: "type=routes",
+        },
+        secondaryCta: { label: "soFlott Express kontaktieren", page: "express/contact" },
+      },
+    },
+
+    "express/service-areas": {
+      label: "Einsatzgebiete",
+      meta: {
+        title: "Einsatzgebiete – Kurierdienst in Augsburg, Mering und München",
+        description:
+          "Wo soFlott Express tätig ist: B2B-Kurierzustellungen und vertragliche Touren im Raum Augsburg, Mering und München, Strecken außerhalb der Region auf Anfrage.",
+        keywords: ["Kurier Augsburg", "Kurier Mering", "Kurier München", "B2B Kurier Bayern"],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Einsatzgebiete",
+        title: "Wo wir tätig sind.",
+        intro:
+          "soFlott Express konzentriert sich auf den Raum Augsburg, Mering und München. Die Konzentration auf eine Region ermöglicht realistische Tourenplanung und verlässliche Zusagen.",
+        primaryCta: { label: "Strecke anfragen", page: "express/request-a-quote" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Unsere Kernregion",
+          items: [
+            {
+              icon: "map",
+              title: "Augsburg",
               description:
-                "Überzeugt? Dann übernehmen wir Ihre wiederkehrenden Strecken zu vereinbarten Konditionen.",
+                "Zustellungen in Augsburg und zu umliegenden Geschäftsstandorten sowie Strecken zwischen Augsburg und München.",
+            },
+            {
+              icon: "map",
+              title: "Mering",
+              description: "Mering und Umgebung, einschließlich Verbindungen Richtung Augsburg und München.",
+            },
+            {
+              icon: "map",
+              title: "München",
+              description: "Zustellungen von und nach München im Rahmen von Direktaufträgen und vertraglichen Touren.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Außerhalb der Region",
+          paragraphs: [
+            "Für Direktzustellungen außerhalb dieses Gebiets senden Sie uns die Strecke – wir sagen Ihnen ehrlich, ob und wann wir sie fahren können. Bei Subunternehmerleistungen werden Zustellgebiete in jedem Vertrag individuell festgelegt.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Wird Ihre Strecke abgedeckt?",
+        description: "Senden Sie Abhol- und Zustellorte – wir bestätigen die Verfügbarkeit mit dem Angebot.",
+        primaryCta: { label: "Angebot anfragen", page: "express/request-a-quote" },
+        secondaryCta: { label: "soFlott Express kontaktieren", page: "express/contact" },
+      },
+    },
+
+    "express/how-it-works": {
+      label: "So funktioniert’s",
+      meta: {
+        title: "So funktioniert soFlott Express – von der Anfrage bis zur Rechnung",
+        description:
+          "Ablauf von direkten B2B-Zustellungen, vertraglichen Zustelltouren und Subunternehmer-Einsätzen bei soFlott Express: Anfrage, Angebot, Disposition, Zustellnachweis, Abgleich und Rechnung.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · Ablauf",
+        title: "Von der Anfrage bis zur Rechnung.",
+        intro:
+          "Direktzustellungen, vertragliche Touren und Subunternehmerleistungen folgen unterschiedlichen Abläufen. Alle drei enden mit einer dokumentierten Zustellung und einer Rechnung, die dem Vereinbarten entspricht.",
+      },
+      blocks: [
+        {
+          kind: "steps",
+          eyebrow: "Direkte B2B-Zustellung",
+          title: "Eine einzelne Zustellung",
+          steps: [
+            {
+              title: "Anfrage",
+              description:
+                "Senden Sie Abhol- und Zustelladresse, gewünschtes Zeitfenster und Sendungsdetails – per Formular, Telefon oder im Kundenportal.",
+            },
+            {
+              title: "Angebot und Bestätigung",
+              description:
+                "Sie erhalten Preis und bestätigtes Zeitfenster. Mit Ihrer Zusage ist der Auftrag gebucht.",
+            },
+            {
+              title: "Abholung und Zustellung",
+              description:
+                "Ein Fahrer wird zugewiesen, holt die Sendung ab und stellt sie zu. Den Status verfolgen Sie im Portal.",
+            },
+            {
+              title: "Zustellnachweis",
+              description:
+                "Die Übergabe wird mit Empfängername und Uhrzeit erfasst; Abweichungen werden dokumentiert und gemeldet.",
+            },
+            {
+              title: "Rechnung",
+              description:
+                "Der erledigte Auftrag wird einzeln berechnet oder in Ihre Sammelrechnung für den Zeitraum aufgenommen.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          eyebrow: "Vertragliche Zustelltouren",
+          title: "Eine wiederkehrende Tour für Ihr Unternehmen",
+          steps: [
+            {
+              title: "Tourenaufnahme",
+              description:
+                "Sie beschreiben Stopps, Einsatztage, Zeitfenster und übliche Mengen Ihrer regelmäßigen Zustellungen.",
+            },
+            {
+              title: "Tourenvereinbarung",
+              description: "Fahrplan, Stopps, Preisgrundlage und der Umgang mit Abweichungen werden einmal schriftlich vereinbart.",
+            },
+            {
+              title: "Planmäßiger Betrieb",
+              description: "Die Tour wird an den vereinbarten Tagen gefahren, ohne dass Sie jede Zustellung einzeln beauftragen.",
+            },
+            {
+              title: "Zustellnachweis je Stopp",
+              description: "Jeder Stopp wird dokumentiert; ausgelassene Stopps und Abweichungen werden je Fahrt gemeldet.",
+            },
+            {
+              title: "Monatliche Rechnung",
+              description: "Gefahrene Touren werden monatlich zum vereinbarten Touren- oder Stopppreis abgerechnet.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          eyebrow: "Logistik-Subunternehmer",
+          title: "Ein Subunternehmer-Einsatz",
+          steps: [
+            {
+              title: "Angebot",
+              description:
+                "Wir prüfen Touren, Gebiete, Mengen und Leistungsniveau und senden ein schriftliches Angebot.",
+            },
+            {
+              title: "Vertrag",
+              description:
+                "Preise, Abrechnungseinheiten, Leistungsniveau und Regeln für Abweichungen werden im Rahmenvertrag festgelegt.",
+            },
+            {
+              title: "Betrieb",
+              description: "Touren werden geplant und zugewiesen; Ladelisten, Zustellungen und Abweichungen werden erfasst.",
+            },
+            {
+              title: "Abgleich",
+              description: "Erledigte Mengen werden mit Ihren Daten verglichen und Differenzen geklärt.",
+            },
+            {
+              title: "Periodische Rechnung",
+              description: "Wir rechnen den vereinbarten Zeitraum mit Leistungsnachweis ab.",
             },
           ],
         },
       ],
-      highlights: [
-        "Antwort in der Regel am selben Werktag",
-        "Angebot mit Festpreis vor der Fahrt",
-        "Geschäftskonto in zwei Minuten angelegt",
-      ],
       cta: {
-        title: "Direktfahrt jetzt anfragen",
-        description:
-          "Legen Sie ein kostenloses Geschäftskonto an und buchen Sie Ihre erste Fahrt mit 20 % Rabatt – oder rufen Sie uns einfach an.",
-        primaryCta: { label: "Geschäftskonto anlegen", href: "/register" },
-        secondaryCta: { label: "Leistungen ansehen", page: "services" },
+        title: "Bereit zu starten?",
+        description: "Fragen Sie ein Zustellangebot, ein Tourenangebot oder ein Subunternehmer-Angebot an – im Formular wählen Sie aus.",
+        primaryCta: { label: "Angebot anfragen", page: "express/request-a-quote" },
+        secondaryCta: { label: "soFlott Express kontaktieren", page: "express/contact" },
       },
     },
+
+    "express/request-a-quote": {
+      label: "Angebot anfragen",
+      meta: {
+        title: "Kurierangebot, Tourenangebot oder Subunternehmer-Angebot anfragen",
+        description:
+          "Fragen Sie bei soFlott Express ein Angebot für eine direkte B2B-Kurierzustellung, eine vertragliche Zustelltour oder Logistik-Subunternehmerleistungen an.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · Angebot anfragen",
+        title: "Angebot anfragen.",
+        intro:
+          "Wählen Sie, ob Sie eine einzelne Zustellung, eine wiederkehrende Tour für Ihre regelmäßigen Zustellungen oder einen Subunternehmer für Ihr Logistiknetz suchen. Wir antworten mit einem Preis oder einem schriftlichen Angebot.",
+      },
+      blocks: [
+        {
+          kind: "form",
+          form: "express-quote",
+          title: "Ihre Anfrage",
+          intro: "Optionale Felder können leer bleiben. Je mehr wir wissen, desto genauer unsere Antwort.",
+        },
+      ],
+    },
+
+    "express/contact": {
+      label: "Kontakt",
+      meta: {
+        title: "Kontakt soFlott Express – Kurier & Logistik",
+        description:
+          "Kontakt zu soFlott Express für B2B-Kurierzustellungen, Angebote, Logistik-Subunternehmerleistungen und vertragliche Touren.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · Kontakt",
+        title: "Sprechen Sie mit soFlott Express.",
+        intro: "Fragen zu einer Zustellung, einem Angebot oder einem Rahmenvertrag? Melden Sie sich direkt.",
+        primaryCta: { label: "Angebot anfragen", page: "express/request-a-quote" },
+      },
+      blocks: [
+        { kind: "contact", title: "Kontakt soFlott Express" },
+        { kind: "form", form: "contact", title: "Nachricht senden" },
+      ],
+    },
+
+    // ----------------------------------------------------------------------
+    // soFlott Digital
+    // ----------------------------------------------------------------------
+    digital: {
+      label: "Überblick",
+      meta: {
+        title: "soFlott Digital – IT-Beratung und Softwareentwicklung",
+        description:
+          "soFlott Digital bietet IT-Beratung, individuelle Softwareentwicklung, API-Integration, Anwendungsmodernisierung und Software-Engineering auf Vertragsbasis für Unternehmen in Deutschland und international.",
+        keywords: [
+          "IT-Beratung",
+          "Softwareentwicklung für Unternehmen",
+          "B2B Softwareentwicklung",
+          "Full-Stack-Entwicklung",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital",
+        title: "IT-Beratung und Softwareentwicklung für Unternehmen.",
+        intro:
+          "Wir unterstützen Unternehmen dabei, Software zu planen, zu entwickeln, zu integrieren und zu betreuen – als Projekt, als laufende Betreuung oder als Engineering-Kapazität in Ihrem Team. Wir arbeiten auf Deutsch und Englisch.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Vertragseinsatz besprechen", page: "digital/contract-software-engineering" },
+      },
+      blocks: [
+        {
+          kind: "links",
+          eyebrow: "Leistungen",
+          title: "Was wir tun",
+          items: [
+            {
+              icon: "search",
+              title: "IT-Beratung",
+              description: "Technische Beratung, Architektur-Reviews und Planung vor der Investition.",
+              page: "digital/it-consulting",
+            },
+            {
+              icon: "code",
+              title: "Softwareentwicklung",
+              description: "Individuelle Geschäftsanwendungen und Full-Stack-Webentwicklung.",
+              page: "digital/software-development",
+            },
+            {
+              icon: "plug",
+              title: "API & Systemintegration",
+              description: "APIs und Schnittstellen, die Ihre Systeme und Partner verbinden.",
+              page: "digital/api-integration",
+            },
+            {
+              icon: "refresh",
+              title: "Anwendungsmodernisierung",
+              description: "Schrittweise Modernisierung von Altanwendungen.",
+              page: "digital/application-modernisation",
+            },
+            {
+              icon: "users",
+              title: "Software-Engineering auf Vertragsbasis",
+              description: "Erfahrene Engineering-Kapazität für Ihr Team und Ihre Projekte.",
+              page: "digital/contract-software-engineering",
+            },
+            {
+              icon: "lifebuoy",
+              title: "Support & Wartung",
+              description: "Laufende Wartung, Fehlerbehebung und Verbesserungen für produktive Anwendungen.",
+              page: "digital/support-and-maintenance",
+            },
+          ],
+        },
+        {
+          kind: "compare",
+          eyebrow: "Zusammenarbeitsmodelle",
+          title: "Wie wir zusammenarbeiten können",
+          columns: ["Einsatz", "Abrechnungsgrundlage"],
+          rows: [
+            { label: "Beratung", values: ["Beratung, Reviews, Workshops", "Stunden- oder Tagessatz"] },
+            { label: "Nach Aufwand", values: ["Flexible Entwicklungsarbeit", "Freigegebene Zeit × vereinbarter Satz"] },
+            { label: "Festpreisprojekt", values: ["Klar definierter Umfang", "Vertraglicher Projektpreis"] },
+            {
+              label: "Meilensteinprojekt",
+              values: ["Größere Projekte in Phasen", "Vereinbarte Beträge je abgenommenem Meilenstein"],
+            },
+            { label: "Retainer / Support", values: ["Laufende Wartung und Betreuung", "Wiederkehrende Monatspauschale"] },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Aus dem echten Betrieb heraus",
+          paragraphs: [
+            "soFlott betreibt seinen eigenen Kurierdienst auf einer selbst entworfenen und entwickelten Plattform: eine ASP.NET-Core-API, Next.js-Webanwendungen, eine Fahrer-App, Zustellnachweis und Rechnungsstellung. Diesen praxisnahen, betriebsorientierten Ansatz bringen wir in Kundenprojekte ein.",
+            "Wir arbeiten mit Kunden in Deutschland und sind offen für Projekte mit Unternehmen in Großbritannien, Irland, den VAE und anderswo – remote und auf Englisch.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Sie haben ein Projekt im Kopf?",
+        description: "Beschreiben Sie, was Sie erreichen möchten. Wir antworten mit Rückfragen oder einem Angebot.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "soFlott Digital kontaktieren", page: "digital/contact" },
+      },
+    },
+
+    "digital/it-consulting": {
+      label: "IT-Beratung",
+      meta: {
+        title: "IT-Beratung und technische Architektur",
+        description:
+          "IT-Beratung von soFlott Digital: technische Beratung, Architektur- und Code-Reviews, Technologieauswahl und Projektplanung für Unternehmen.",
+        keywords: ["IT-Beratung", "Architekturberatung", "Software-Architektur-Review"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · IT-Beratung",
+        title: "Technische Entscheidungen mit Sicherheit treffen.",
+        intro:
+          "Bevor Sie entwickeln, kaufen oder neu schreiben: Holen Sie sich eine unabhängige technische Einschätzung. Wir prüfen den Bestand, klären den Bedarf und empfehlen einen realistischen Weg.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Typische Beratungsthemen",
+          items: [
+            {
+              icon: "layers",
+              title: "Architektur",
+              description: "Entwurf oder Review von Anwendungs- und Systemarchitektur.",
+            },
+            {
+              icon: "search",
+              title: "Code- und System-Reviews",
+              description: "Bewertung von Qualität, Risiken und Wartbarkeit bestehender Software.",
+            },
+            {
+              icon: "clipboard",
+              title: "Projektplanung",
+              description: "Umfang, Prioritäten, Phasen und realistische Aufwandsschätzungen.",
+            },
+            {
+              icon: "scale",
+              title: "Technologieauswahl",
+              description: "Vergleich der Optionen – entwickeln, kaufen oder integrieren – für Ihre Situation.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Abrechnung der Beratung",
+          paragraphs: [
+            "Beratung wird zu einem vereinbarten Stunden- oder Tagessatz abgerechnet. Umfangreichere Analysen können zum Festpreis mit definiertem Ergebnis angeboten werden, etwa als schriftliches Review oder Architekturvorschlag.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Sie brauchen eine zweite Meinung?",
+        description: "Beschreiben Sie Ihre Situation und die anstehende Entscheidung.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Softwareentwicklung", page: "digital/software-development" },
+      },
+    },
+
+    "digital/software-development": {
+      label: "Softwareentwicklung",
+      meta: {
+        title: "Individuelle Softwareentwicklung und Full-Stack-Webanwendungen",
+        description:
+          "Individuelle B2B-Softwareentwicklung von soFlott Digital: Full-Stack-Webanwendungen mit ASP.NET Core / .NET und modernen Webtechnologien – als Festpreis-, Meilenstein- oder Aufwandsprojekt.",
+        keywords: [
+          "Softwareentwicklung",
+          "Individualsoftware",
+          "B2B Softwareentwicklung",
+          "ASP.NET Core Entwicklung",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Softwareentwicklung",
+        title: "Individuelle Software für die Arbeitsweise Ihres Unternehmens.",
+        intro:
+          "Wir konzipieren und entwickeln Geschäftsanwendungen – Webportale, interne Werkzeuge und Workflow-Systeme –, die zu Ihren Prozessen passen, statt Sie an Standardsoftware anzupassen.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Was wir entwickeln",
+          items: [
+            {
+              icon: "code",
+              title: "Webanwendungen",
+              description: "Full-Stack-Geschäftsanwendungen sowie Kunden- und Partnerportale.",
+            },
+            {
+              icon: "layers",
+              title: "Backend-Services",
+              description: "APIs und Services mit ASP.NET Core / .NET und relationalen Datenbanken.",
+            },
+            {
+              icon: "clipboard",
+              title: "Interne Werkzeuge",
+              description: "Verwaltungs-, Betriebs- und Reporting-Werkzeuge für Ihr Team.",
+            },
+            {
+              icon: "lock",
+              title: "Sicherheit von Anfang an",
+              description: "Authentifizierung, Rollen und Berechtigungen sowie Audit-Trails, wo es darauf ankommt.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          title: "So läuft ein Projekt ab",
+          steps: [
+            {
+              title: "Anfrage und Angebot",
+              description: "Wir klären Ziele und Umfang und senden ein schriftliches Angebot.",
+            },
+            {
+              title: "Vertrag und Umfang",
+              description: "Leistungen, Abnahmekriterien, Meilensteine und Preise werden vereinbart.",
+            },
+            {
+              title: "Iterative Umsetzung",
+              description: "Arbeit in kurzen Iterationen mit regelmäßigen Demos und Feedback.",
+            },
+            {
+              title: "Abnahme und Übergabe",
+              description:
+                "Meilensteine werden anhand der vereinbarten Kriterien abgenommen; Code und Dokumentation werden übergeben.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Sprechen wir über Ihre Anwendung.",
+        description: "Senden Sie eine kurze Beschreibung des Problems, das Sie lösen möchten.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Projektbeispiele", page: "digital/case-studies" },
+      },
+    },
+
+    "digital/api-integration": {
+      label: "API-Integration",
+      meta: {
+        title: "API-Entwicklung und Systemintegration",
+        description:
+          "API-Integration von soFlott Digital: Konzeption und Entwicklung von REST-APIs und Schnittstellen zwischen Geschäftssystemen, Partnern und Drittanbietern.",
+        keywords: ["API-Integration", "Systemintegration", "REST-API-Entwicklung", "Schnittstellenentwicklung"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · API & Integration",
+        title: "Verbinden Sie die Systeme, auf die Ihr Unternehmen angewiesen ist.",
+        intro:
+          "Daten, die von Hand zwischen Systemen übertragen werden, kosten Zeit und verursachen Fehler. Wir konzipieren und entwickeln APIs und Schnittstellen, damit Ihre Systeme, Partner und Dienste zusammenarbeiten.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Integrationsleistungen",
+          items: [
+            {
+              icon: "plug",
+              title: "API-Design und -Entwicklung",
+              description: "Gut dokumentierte REST-APIs für Ihre Anwendungen und Partner.",
+            },
+            {
+              icon: "refresh",
+              title: "System-zu-System-Integration",
+              description: "Anbindung von Geschäftssoftware, Datenbanken und Drittanbieterdiensten.",
+            },
+            {
+              icon: "shield",
+              title: "Sicherer Zugriff",
+              description: "Authentifizierung, Autorisierung und Validierung für jede Schnittstelle.",
+            },
+            {
+              icon: "file",
+              title: "Dokumentation",
+              description: "Klare Dokumentation, damit Ihr Team und Ihre Partner mit der API arbeiten können.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Welche Systeme sollen miteinander sprechen?",
+        description: "Beschreiben Sie die beteiligten Systeme und Datenflüsse.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Anwendungsmodernisierung", page: "digital/application-modernisation" },
+      },
+    },
+
+    "digital/application-modernisation": {
+      label: "Modernisierung",
+      meta: {
+        title: "Modernisierung von Altanwendungen",
+        description:
+          "Modernisierung von Legacy-Anwendungen durch soFlott Digital: Analyse, schrittweise Migration und Neuentwicklung alternder Geschäftssoftware ohne Unterbrechung des Tagesgeschäfts.",
+        keywords: ["Legacy-Modernisierung", "Softwaremodernisierung", ".NET-Migration"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Modernisierung",
+        title: "Altanwendungen modernisieren – Schritt für Schritt.",
+        intro:
+          "Ältere Software ist oft geschäftskritisch und schwer zu ändern. Wir analysieren sie, definieren einen realistischen Migrationspfad und modernisieren in Etappen, während Ihr Geschäft weiterläuft.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "steps",
+          title: "Unser Vorgehen",
+          steps: [
+            {
+              title: "Analyse",
+              description: "Bestehendes System, Risiken, Abhängigkeiten und Geschäftsregeln verstehen.",
+            },
+            {
+              title: "Zielbild und Fahrplan",
+              description: "Zielarchitektur und einen etappenweisen Migrationsplan vereinbaren.",
+            },
+            {
+              title: "Schrittweise Migration",
+              description: "Teile einzeln ersetzen oder neu entwickeln, abgesichert durch Tests für das bestehende Verhalten.",
+            },
+            {
+              title: "Übergabe und Betreuung",
+              description: "Ergebnis dokumentieren und bei Bedarf im Betrieb betreuen.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Bremst Sie ein altes System?",
+        description: "Beschreiben Sie, was es tut und was schwierig geworden ist.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "IT-Beratung", page: "digital/it-consulting" },
+      },
+    },
+
+    "digital/contract-software-engineering": {
+      label: "Vertragseinsätze",
+      meta: {
+        title: "Software-Engineering auf Vertragsbasis – Kapazität für Ihr Team",
+        description:
+          "Software-Engineering auf Vertragsbasis von soFlott Digital: erfahrene Full-Stack-Kapazität für Ihre Projekte, beauftragt über die soFlott UG und nach Aufwand abgerechnet.",
+        keywords: [
+          "Softwareentwickler auf Vertragsbasis",
+          "externer Entwickler",
+          "Full-Stack-Entwickler extern",
+          "Software-Engineering Dienstleister",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Vertragseinsätze",
+        title: "Engineering-Kapazität für Ihr Team.",
+        intro:
+          "Wenn Ihr Team für ein Projekt oder einen Zeitraum zusätzliche erfahrene Entwickler braucht, bietet soFlott Digital Software-Engineering auf Vertragsbasis – als B2B-Vertrag mit der soFlott UG.",
+        primaryCta: { label: "Vertragseinsatz besprechen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "checklist",
+          title: "So sieht ein Vertragseinsatz aus",
+          items: [
+            "B2B-Vertrag mit der soFlott UG (haftungsbeschränkt)",
+            "Definierter Umfang, Laufzeit und Arbeitsweise",
+            "Abrechnung freigegebener Zeit zum vereinbarten Stunden- oder Tagessatz",
+            "Remote auf Deutsch oder Englisch; vor Ort nach Absprache",
+          ],
+        },
+        {
+          kind: "cards",
+          title: "Typische Bereiche",
+          items: [
+            {
+              icon: "code",
+              title: "Full-Stack-Entwicklung",
+              description: "Web-Frontends und Backend-Services in Ihrer bestehenden Codebasis.",
+            },
+            { icon: "layers", title: ".NET-Backends", description: "ASP.NET-Core-APIs, Services und Datenzugriff." },
+            {
+              icon: "plug",
+              title: "Integrationen",
+              description: "APIs und Anbindungen an interne und externe Systeme.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Sie brauchen zusätzliche Entwickler?",
+        description: "Beschreiben Sie Rolle, Technologie und voraussichtliche Dauer.",
+        primaryCta: { label: "Vertragseinsatz besprechen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "soFlott Digital kontaktieren", page: "digital/contact" },
+      },
+    },
+
+    "digital/support-and-maintenance": {
+      label: "Support & Wartung",
+      meta: {
+        title: "Software-Support und Wartung",
+        description:
+          "Laufender Software-Support und Wartung von soFlott Digital: Fehlerbehebung, Updates, Sicherheitspatches und kontinuierliche Verbesserung für Geschäftsanwendungen, auf Retainer-Basis.",
+        keywords: ["Softwarewartung", "Anwendungsbetreuung", "Software-Support"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Support",
+        title: "Damit Ihre Anwendungen gesund bleiben.",
+        intro:
+          "Software braucht auch nach dem Livegang Pflege: Updates, Korrekturen und kleine Verbesserungen. Wir betreuen von uns entwickelte Anwendungen und – nach einer Analyse – auch Anwendungen anderer Entwickler.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Was Support umfasst",
+          items: [
+            { icon: "wrench", title: "Fehlerbehebung", description: "Analyse und Korrektur von Fehlern." },
+            {
+              icon: "shield",
+              title: "Updates und Sicherheit",
+              description: "Framework- und Abhängigkeits-Updates sowie Sicherheitspatches.",
+            },
+            {
+              icon: "refresh",
+              title: "Verbesserungen",
+              description: "Kleine Erweiterungen im Rahmen eines vereinbarten Monatsbudgets.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Retainer-Vereinbarungen",
+          paragraphs: [
+            "Support wird in der Regel als monatlicher Retainer mit definiertem Umfang und Reaktionsregeln vereinbart. Arbeiten außerhalb des vereinbarten Umfangs werden als Änderungsanfrage behandelt.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Sie brauchen laufende Betreuung?",
+        description: "Beschreiben Sie die Anwendung und den benötigten Support.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "soFlott Digital kontaktieren", page: "digital/contact" },
+      },
+    },
+
+    "digital/case-studies": {
+      label: "Projektbeispiele",
+      meta: {
+        title: "Projektbeispiele und Referenzen",
+        description: "Projektbeispiele von soFlott Digital, veröffentlicht nur mit Freigabe.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Projektbeispiele",
+        title: "Projektbeispiele.",
+        intro:
+          "Kundenprojekte veröffentlichen wir nur mit Zustimmung des Kunden. Bis dahin zeigen wir das Projekt, das wir am besten kennen: unsere eigene Plattform.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          title: "soFlottOS – die Plattform hinter soFlott Express",
+          paragraphs: [
+            "soFlott Express arbeitet mit soFlottOS, einer von soFlott selbst entwickelten Plattform. Sie deckt den Kurierablauf von der Kundenbuchung bis zur Rechnung ab.",
+          ],
+          sections: [
+            {
+              title: "Umfang",
+              paragraphs: [
+                "Ein Kundenportal für Geschäftskundenkonten, Aufträge und Rechnungen; eine mobile Web-App für Fahrer; digitaler Zustellnachweis; und eine separate interne Verwaltungsanwendung.",
+              ],
+            },
+            {
+              title: "Technologie",
+              paragraphs: [
+                "Eine ASP.NET-Core-REST-API mit MySQL-Datenbank sowie Next.js-/React-Webanwendungen für die öffentliche Website, das Kunden- und Fahrerportal und die Verwaltungskonsole.",
+              ],
+            },
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Referenzen",
+          text: "Weitere Referenzen besprechen wir gern persönlich, vorbehaltlich der Zustimmung unserer Kunden.",
+        },
+      ],
+      cta: {
+        title: "Sie möchten etwas Ähnliches umsetzen?",
+        description: "Sprechen wir über Ihr Projekt.",
+        primaryCta: { label: "Projekt besprechen", page: "digital/request-a-proposal" },
+      },
+    },
+
+    "digital/request-a-proposal": {
+      label: "Projektanfrage",
+      meta: {
+        title: "Projektanfrage – Softwareprojekt oder Vertragseinsatz",
+        description:
+          "Fragen Sie bei soFlott Digital ein Angebot für IT-Beratung, ein Softwareprojekt, API-Integration, Modernisierung, Support oder einen Vertragseinsatz an.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Projektanfrage",
+        title: "Erzählen Sie uns von Ihrem Projekt.",
+        intro:
+          "Beschreiben Sie, was Sie erreichen möchten. Wir antworten mit Rückfragen oder einem Angebot, meist inklusive eines Vorschlags für das passende Zusammenarbeitsmodell.",
+      },
+      blocks: [
+        {
+          kind: "form",
+          form: "digital-proposal",
+          title: "Ihr Projekt",
+          intro: "Grobe Angaben genügen – die Details klären wir gemeinsam.",
+        },
+      ],
+    },
+
+    "digital/contact": {
+      label: "Kontakt",
+      meta: {
+        title: "Kontakt soFlott Digital – IT-Beratung & Software",
+        description:
+          "Kontakt zu soFlott Digital zu IT-Beratung, Softwareprojekten, Angeboten und Vertragseinsätzen.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Kontakt",
+        title: "Sprechen Sie mit soFlott Digital.",
+        intro: "Fragen zu einem Projekt, einem Angebot oder einem Vertragseinsatz? Melden Sie sich.",
+        primaryCta: { label: "Projektanfrage stellen", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        { kind: "contact", title: "Kontakt soFlott Digital" },
+        { kind: "form", form: "contact", title: "Nachricht senden" },
+      ],
+    },
+  },
+
+  forms: {
+    required: "Pflichtfeld",
+    optional: "optional",
+    submit: "E-Mail vorbereiten",
+    submitting: "Wird vorbereitet…",
+    successTitle: "Ihre E-Mail ist bereit zum Senden",
+    successText:
+      "Ihr E-Mail-Programm sollte jetzt die vorbereitete Nachricht anzeigen. Bitte senden Sie sie ab, um Ihre Anfrage abzuschließen. Falls sich nichts geöffnet hat, schreiben Sie uns direkt an {email}.",
+    privacyConsent: "Ich bin einverstanden, dass die soFlott UG meine Angaben zur Beantwortung dieser Anfrage verwendet.",
+    privacyLink: "Datenschutzerklärung",
+    errors: {
+      required: "Bitte füllen Sie dieses Feld aus.",
+      email: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      consent: "Bitte bestätigen Sie, damit wir Ihre Anfrage beantworten können.",
+      summary: "Bitte prüfen Sie die markierten Felder.",
+    },
+    fields: {
+      company: { label: "Unternehmen" },
+      name: { label: "Ihr Name" },
+      email: { label: "E-Mail" },
+      phone: { label: "Telefon" },
+      country: { label: "Land" },
+      message: { label: "Nachricht" },
+      topic: { label: "Thema" },
+      pickup: { label: "Abholort", hint: "PLZ und Ort oder vollständige Adresse" },
+      delivery: { label: "Zustellort", hint: "PLZ und Ort oder vollständige Adresse" },
+      date: { label: "Gewünschtes Datum und Zeitfenster" },
+      shipment: { label: "Sendung", hint: "Was wird versendet, Anzahl, ungefähre Größe und Gewicht" },
+      area: { label: "Touren oder Zustellgebiet", hint: "Wo die Zustellungen stattfinden" },
+      volume: { label: "Erwartete Menge", hint: "z. B. Stopps oder Pakete pro Tag, Tage pro Woche" },
+      startDate: { label: "Geplanter Start" },
+      engagement: { label: "Art des Einsatzes" },
+      timeline: { label: "Zeitrahmen" },
+      budget: { label: "Budget oder Satzvorstellung" },
+      stops: {
+        label: "Stopps",
+        hint: "Abhol- und Zustelladressen der Tour, in der üblichen Reihenfolge",
+      },
+      schedule: { label: "Einsatztage und Zeitfenster", hint: "z. B. Mo, Mi, Fr, 8–10 Uhr" },
+    },
+    expressQuote: {
+      typeLegend: "Was benötigen Sie?",
+      types: {
+        direct: "Eine einzelne Zustellung für mein Unternehmen",
+        routes: "Eine wiederkehrende Tour für die regelmäßigen Zustellungen meines Unternehmens",
+        subcontracting: "Zustellkapazität für mein Logistiknetz (Logistikunternehmen)",
+      },
+      engagementOptions: ["Feste Tour", "Zustellgebiet", "Tägliche Touren mit variabler Menge", "Noch offen"],
+      subject: {
+        direct: "Anfrage Zustellangebot",
+        routes: "Anfrage Tourenangebot",
+        subcontracting: "Anfrage Subunternehmer-Angebot",
+      },
+    },
+    digitalProposal: {
+      engagementOptions: [
+        "IT-Beratung",
+        "Softwareprojekt",
+        "API / Systemintegration",
+        "Anwendungsmodernisierung",
+        "Vertragseinsatz",
+        "Support und Wartung",
+        "Noch offen",
+      ],
+      subject: "Projektanfrage",
+    },
+    contact: {
+      topicOptions: {
+        express: "soFlott Express – Kurier & Logistik",
+        digital: "soFlott Digital – IT & Software",
+        general: "Allgemeine Anfrage",
+      },
+      subject: "Anfrage über die Website",
+    },
+  },
+
+  imprint: {
+    company: "Unternehmen",
+    address: "Anschrift",
+    managingDirectors: "Geschäftsführung",
+    register: "Handelsregister",
+    vatId: "Umsatzsteuer-Identifikationsnummer",
+    contact: "Kontakt",
+    divisions: "Geschäftsbereiche",
   },
 
   footer: {
     tagline:
-      "soFlott ist der regionale Direktkurier für Gewerbekunden: Eiltransporte ohne Umladung, digitale Übergabebestätigung und transparente Festpreise.",
+      "Kurier & Logistik sowie IT & Softwareentwicklung für Geschäftskunden – aus einem verantwortlichen Unternehmen.",
     columns: [
       {
-        title: "Leistungen",
+        title: "soFlott Express",
         links: [
-          { page: "services", label: "Direktfahrt & Eiltransport" },
-          { page: "industries", label: "Branchenlösungen" },
-          { page: "pricing", label: "Preise & Konditionen" },
+          "express",
+          "express/direct-b2b-delivery",
+          "express/logistics-subcontracting",
+          "express/contracted-delivery-routes",
+          "express/service-areas",
+          "express/request-a-quote",
+        ],
+      },
+      {
+        title: "soFlott Digital",
+        links: [
+          "digital",
+          "digital/it-consulting",
+          "digital/software-development",
+          "digital/api-integration",
+          "digital/application-modernisation",
+          "digital/request-a-proposal",
         ],
       },
       {
         title: "Unternehmen",
-        links: [
-          { page: "platform", label: "Technologie" },
-          { page: "security", label: "Sicherheit" },
-          { page: "contact", label: "Kontakt" },
-        ],
+        links: ["about", "contact", "legal/imprint", "legal/privacy"],
       },
     ],
-    contactTitle: "Direkter Draht",
-    serviceAreaTitle: "Einsatzgebiet",
-    serviceAreaText: "Augsburg, Mering und München; Sonderfahrten auf Anfrage.",
-    legalNote: "Alle Preise zzgl. 19 % MwSt. Es gelten unsere Geschäftsbedingungen.",
-    copyright: (year, company) => `© ${year} ${company}. soFlott. Schnell für Unternehmen.`,
+    contactTitle: "Kontakt",
+    legalNote: "soFlott Express und soFlott Digital sind Geschäftsbereiche der soFlott UG (haftungsbeschränkt).",
+    copyright: (year, company) => `© ${year} ${company}. Alle Rechte vorbehalten.`,
   },
 };

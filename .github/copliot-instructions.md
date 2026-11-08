@@ -21,10 +21,10 @@
 
 ### Frontend Architecture
 - **Framework:** Next.js 14+ (App Router, React Server Components, TypeScript, Tailwind CSS).
-- **Portals:**
-    - `/app/client-portal` — Booking, route quoting, invoice downloads, and IT consulting client area.
-    - `/app/driver` — Mobile PWA interface with HTML5 Canvas signature pad for Proof of Delivery (PoD) + GPS geotagging.
-    - `/app/admin` — Operations dispatch, driver availability state machine, revenue, and invoice manager.
+- **Apps (one shared API + MySQL database):**
+    - `apps/web` (public) — marketing site, `/client` portal (booking, route quoting, invoices) and `/driver` mobile PWA with signature pad for Proof of Delivery (PoD).
+    - `apps/admin` (internal, deployed separately, Admin role only) — operations dispatch, driver management, booking availability, CRM, revenue and invoice manager.
+    - `apps/api` — ASP.NET Core REST API used by both frontends.
 
 ---
 

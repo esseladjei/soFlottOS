@@ -4,22 +4,31 @@ A B2B courier platform for a small German operator: customers book deliveries,
 an admin dispatches drivers, drivers deliver and capture a signature, and every
 order produces a VAT-compliant invoice automatically.
 
-Two applications, one repository:
+Three applications, one repository, one shared MySQL database:
 
-| Folder | What it is |
-|---|---|
-| `apps/api` | ASP.NET Core 10 backend (MySQL, JWT, EF Core) |
-| `apps/web` | Next.js 16 frontend (App Router, TypeScript, Tailwind, TanStack Query) |
+| Folder | What it is | Local URL |
+|---|---|---|
+| `apps/api` | ASP.NET Core 10 backend (MySQL, JWT, EF Core) | `http://localhost:5235` |
+| `apps/web` | public Next.js 16 site + customer/driver courier portal | `http://localhost:3000` |
+| `apps/admin` | internal Next.js 16 administration console, **not public**, deployed separately | `http://localhost:3001` |
 | `docs/API-CONTRACT.md` | the single contract both apps follow |
 | `compose.yml` | local MySQL |
 | `scripts/dotnetw.mjs` | finds `dotnet` on `PATH` or in `~/.dotnet` |
 
-## How the two apps talk
+## How the apps talk
 
 ```
-browser ──► Next.js route handlers ──► ASP.NET Core API ──► MySQL
-            (/api/auth/*, /api/proxy/*)
+customer/driver ──► apps/web   (Next.js route handlers) ──┐
+                                                          ├──► ASP.NET Core API ──► MySQL
+admin ───────────► apps/admin (Next.js route handlers) ──┘
+                   (/api/auth/*, /api/proxy/*)
 ```
+
+Both frontends use the same API, so they always see the same data. They are
+deliberately separate deployments: `apps/admin` only accepts `Admin` accounts
+(session cookie `soflott_admin_session`, `noindex`, no public links) and should
+live on a private hostname such as `admin.soflott.de`, ideally behind VPN/IP
+allow-listing or SSO. `apps/web` rejects `Admin` logins with `403`.
 
 The browser never sees the JWT. Logging in stores it in an **HTTP-only cookie**;
 every data call goes to `/api/proxy/...` on the Next.js server, which attaches the
@@ -28,11 +37,11 @@ same-origin and keeps the token out of reach of JavaScript.
 
 ## Roles
 
-| Role | Can do |
-|---|---|
-| `Admin` | dashboard, CRM, book for clients, add drivers, dispatch orders, invoices |
-| `Client` | book deliveries, track them, read and print own invoices |
-| `Driver` | go online/offline, see assigned jobs, start transit, capture proof of delivery |
+| Role | App | Can do |
+|---|---|---|
+| `Admin` | `apps/admin` | dashboard, CRM, book for clients, add drivers, dispatch orders, invoices |
+| `Client` | `apps/web` | book deliveries, track them, read and print own invoices |
+| `Driver` | `apps/web` | go online/offline, see assigned jobs, start transit, capture proof of delivery |
 
 ## Getting started
 
@@ -52,7 +61,11 @@ npm run dev:api               # 2. backend on http://localhost:5235
 
 cp apps/web/.env.example apps/web/.env.local
 npm run install:web           # 3. frontend dependencies
-npm run dev:web               # 4. frontend on http://localhost:3000
+npm run dev:web               # 4. portal on http://localhost:3000
+
+cp apps/admin/.env.example apps/admin/.env.local
+npm run install:admin         # 5. admin console dependencies
+npm run dev:admin             # 6. admin console on http://localhost:3001
 ```
 
 ### Creating development accounts
@@ -76,14 +89,13 @@ already be configured as described above. If you run the API in Rider, restart
 `soFlottOS.Api: http` instead of running `npm run dev:api`.
 
 On successful creation, the API logs `Seeded development accounts: ...`.
-Open the frontend at `http://localhost:3000` and log in with one of these emails
-and the password you chose:
+Log in with one of these emails and the password you chose:
 
-| Role | Email |
-|---|---|
-| Admin | `admin@soflott.local` |
-| Client | `client@soflott.local` |
-| Driver | `driver@soflott.local` |
+| Role | Email | Where |
+|---|---|---|
+| Admin | `admin@soflott.local` | `http://localhost:3001` |
+| Client | `client@soflott.local` | `http://localhost:3000` |
+| Driver | `driver@soflott.local` | `http://localhost:3000` |
 
 **Seeding only runs in Development and when the database has no users.**
 If any user already exists, all three accounts are skipped. Changing the seed
@@ -101,8 +113,8 @@ not delete the accounts.
 | `npm run tools:api` | restore the `dotnet-ef` CLI |
 | `npm run seed:password -- 'YOUR_PASSWORD'` | save the development accounts' password in local User Secrets |
 | `npm run seed:enable` / `seed:disable` | enable / disable development account creation on API startup |
-| `npm run dev:web` | run the frontend |
-| `npm run check:web` | lint + typecheck + build the frontend |
+| `npm run dev:web` / `dev:admin` | run the portal / admin console |
+| `npm run check:web` / `check:admin` | lint + typecheck + build the portal / admin console |
 
 ## The business flow end to end
 
@@ -122,10 +134,12 @@ Passwords must be at least 12 characters and include uppercase and lowercase
 letters, a number and a symbol; reset links expire after 30 minutes and can be
 used once. Signed-in UI messages and transactional email/SMS use the account's
 German or English language preference.
+Reset e-mails link to `Email:FrontendBaseUrl` (the portal), also for admins who
+start recovery in the admin console; the new password then works in both apps.
 
 ### Customer booking availability
 
-Admins manage **Availability** at `/admin/availability`: recurring weekday/time
+Admins manage **Availability** at `/availability` in the admin console: recurring weekday/time
 windows (including split shifts) and a **busy** switch that pauses customer
 bookings immediately. Outside enabled windows, customers see a soFlott
 unavailable notice and cannot quote or book; the API also rejects both operations
@@ -166,4 +180,5 @@ See [email configuration and extension guide](apps/api/src/soFlottOS.Api/Service
 
 * [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md) — every endpoint, role and enum.
 * [`apps/api/README.md`](apps/api/README.md) — backend layers and configuration.
-* [`apps/web/README.md`](apps/web/README.md) — frontend structure and conventions.
+* [`apps/web/README.md`](apps/web/README.md) — portal structure and conventions.
+* [`apps/admin/README.md`](apps/admin/README.md) — admin console, access control and deployment.

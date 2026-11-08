@@ -109,6 +109,7 @@ export interface AppContent {
       passwordLabel: string;
       submit: string;
       submitting: string;
+      adminConsole: string;
       noAccount: string;
       createAccount: string;
       welcomeBack: (name: string) => string;
@@ -167,10 +168,6 @@ export interface AppContent {
   };
 
   shell: {
-    admin: {
-      title: string;
-      nav: { dashboard: string; clients: string; drivers: string; invoices: string; bookingAvailability: string };
-    };
     client: {
       title: string;
       nav: { dashboard: string; newOrder: string; orders: string; invoices: string };
@@ -178,81 +175,6 @@ export interface AppContent {
     driver: { title: string; nav: { jobs: string } };
   };
 
-  admin: {
-    dashboard: {
-      title: string;
-      description: string;
-      kpis: {
-        pendingOrders: string;
-        activeOrders: string;
-        deliveredToday: string;
-        onlineDrivers: string;
-        busyDrivers: string;
-        totalClients: string;
-        revenueNet: string;
-        outstanding: string;
-      };
-      activeOrdersTitle: string;
-      assignDriver: string;
-      assignDriverFor: (orderId: number) => string;
-    };
-    newOrder: {
-      title: string;
-      description: string;
-      selectClient: string;
-    };
-    clients: {
-      title: string;
-      description: string;
-      createTitle: string;
-      listTitle: string;
-      activeOrders: (count: number) => string;
-      editTitle: string;
-      detailDescription: (created: string, totalOrders: number) => string;
-    };
-    drivers: {
-      title: string;
-      description: string;
-      noPhone: string;
-      noVehicle: string;
-      workload: (active: number, completed: number) => string;
-      revenue: string;
-      createTitle: string;
-      create: string;
-      fields: {
-        fullName: string;
-        email: string;
-        password: string;
-        phone: string;
-        vehicleDescription: string;
-      };
-    };
-    invoices: {
-      title: string;
-      description: string;
-      listTitle: string;
-      due: (date: string) => string;
-      statusFor: (invoiceNumber: string) => string;
-    };
-    clientForm: {
-      fields: {
-        companyName: string;
-        contactPerson: string;
-        email: string;
-        phone: string;
-        street: string;
-        city: string;
-        postalCode: string;
-        country: string;
-        taxIdNumber: string;
-        defaultBaseFee: string;
-        defaultRatePerKilometer: string;
-        specialDeliveryInstructions: string;
-      };
-      save: string;
-      create: string;
-    };
-  };
 
   client: {
     dashboard: {

@@ -1,10 +1,12 @@
 // ---------------------------------------------------------------------------
 // ENGLISH marketing copy.
 //
-// This is a translation of `de.ts`, not a different website: both files must
-// contain exactly the same fields, which TypeScript enforces through the shared
-// `MarketingContent` type. If you add a section to the German copy, add it here
-// too - otherwise the build fails, which is exactly what we want.
+// English serves international prospects (UK, Ireland, UAE and others) and is
+// the main language for soFlott Digital. It must contain exactly the same
+// pages and fields as `de.ts` - TypeScript enforces this.
+//
+// Before editing, read the content rules at the top of `types.ts`: no invented
+// numbers, clients, certifications or service promises.
 // ---------------------------------------------------------------------------
 
 import type { MarketingContent } from "@/content/marketing/types";
@@ -13,1074 +15,1613 @@ export const en: MarketingContent = {
   common: {
     skipToContent: "Skip to content",
     languageLabel: "Choose language",
+    breadcrumbLabel: "Breadcrumb",
     phone: "Phone",
     email: "Email",
-    callNow: "Call now",
-    moreInfo: "Learn more",
-    vatNote: "All prices plus 19% German VAT.",
+    address: "Address",
+    divisionOf: "A division of soFlott UG (haftungsbeschränkt)",
+    legalDraft:
+      "Draft – this page is pending review by a legal adviser and will be finalised before launch.",
+    toBeCompleted: "to be completed",
   },
 
   nav: {
     ariaLabel: "Main navigation",
-    items: [
-      { page: "services", label: "Services" },
-      { page: "industries", label: "Industries" },
-      { page: "pricing", label: "Pricing" },
-      { page: "platform", label: "Technology" },
-      { page: "security", label: "Security" },
-      { page: "contact", label: "Contact" },
-    ],
-    login: "Client login",
-    cta: "Request a direct run",
+    menuLabel: "Open menu",
+    items: ["express", "digital", "about", "contact"],
+    login: "Customer login",
+    cta: { label: "Get in touch", page: "contact" },
   },
 
-  home: {
-    meta: {
-      title: "Courier Service Augsburg & Munich | Same-Day Business Delivery",
-      description:
-        "soFlott is the regional direct courier for B2B customers in Augsburg, Mering and Munich: urgent point-to-point transport with no sorting hubs, pickup ready in 15 minutes, real-time digital signatures and transparent fixed prices plus 19% VAT.",
-      keywords: [
-        "courier service Augsburg",
-        "courier service Mering",
-        "courier service Munich",
-        "same day courier Germany",
-        "direct delivery business",
-        "urgent B2B transport",
-        "express courier Augsburg",
-        "emergency courier service",
-        "medical courier Augsburg",
-        "legal document courier",
-        "spare parts courier",
-        "proof of delivery courier",
-      ],
-    },
-    hero: {
-      eyebrow: "soFlott. Business Delivered.",
-      headlineLead: "The regional direct courier",
-      headlineHighlight: "for business.",
-      subheadline:
-        "When a spare part is missing, a court deadline is running or a customer is waiting, every minute counts. soFlott drives your shipment point to point with no transfer depot and no sorting hub – with a digital recipient signature, live status and a B2B invoice by email.",
-      primaryCta: { label: "Request a direct run", href: "/register" },
-      secondaryCta: { label: "See pricing", page: "pricing" },
-      bullets: [
-        "Pickup ready in 15 minutes",
-        "No transfers, no sorting hubs",
-        "Digital signature and GPS record",
-        "Fixed price plus 19% VAT",
-      ],
-      note: "New business customers get 20% off their first direct run.",
-      panel: {
-        eyebrow: "Today at soFlott",
-        title: "Your shipment in view",
-        stats: [
-          { label: "Direct runs today", value: "24", caption: "all inside the window" },
-          { label: "On-time rate", value: "98.7%", caption: "last 30 days" },
-        ],
-        liveLabel: "Next pickup",
-        liveValue: "in 18 min",
-        routeFrom: "Workshop Mering",
-        routeTo: "Augsburg",
-        routeSeparator: "to",
-      },
-    },
-
-    trustBar: [
-      { icon: "route", label: "Zero transfers" },
-      { icon: "signature", label: "Digital proof of delivery" },
-      { icon: "euro", label: "Transparent fixed prices" },
-      { icon: "receipt", label: "B2B invoice by email" },
-      { icon: "clock", label: "Immediate dispatch" },
-    ],
-
-    comparison: {
-      eyebrow: "The difference",
-      title: "Parcel service or direct run? The difference costs you hours.",
-      intro:
-        "Classic parcel networks are built for volume, not for urgency. Your shipment passes through collection points, sorting hubs and changing drivers. A direct run involves one driver, one vehicle and two addresses.",
-      columnOther: "Classic parcel service",
-      columnSoFlott: "soFlott direct run",
-      rows: [
-        {
-          label: "Route",
-          other: "Collection point, sorting hub, several transfers",
-          soFlott: "Straight from sender to recipient, no intermediate stop",
-        },
-        {
-          label: "Transit time",
-          other: "One to three working days, no firm commitment",
-          soFlott: "Today – often within 40 to 90 minutes",
-        },
-        {
-          label: "Pickup",
-          other: "Fixed tour, once a day",
-          soFlott: "On demand, usually ready within 15 minutes",
-        },
-        {
-          label: "Delivery record",
-          other: "Collective signature or drop-off without a record",
-          soFlott: "Named digital signature with timestamp and GPS position",
-        },
-        {
-          label: "Risk",
-          other: "Sorting damage, misrouting, lost shipments",
-          soFlott: "Cargo only leaves the vehicle at the recipient",
-        },
-        {
-          label: "Billing",
-          other: "Flat tariffs with surcharges in the small print",
-          soFlott: "Fixed price up front, compliant invoice by email",
-        },
-      ],
-    },
-
-    usps: {
-      eyebrow: "Why soFlott",
-      title: "Three reasons businesses switch to us.",
-      intro:
-        "We are not another parcel service. soFlott is built for the moment something has to arrive immediately – and for the moment you have to prove afterwards that it did.",
+  divisions: {
+    express: {
+      name: "soFlott Express",
+      tagline: "Courier & logistics",
+      ariaLabel: "soFlott Express navigation",
       items: [
-        {
-          icon: "route",
-          title: "Zero sorting hubs",
-          description:
-            "Your cargo goes directly from the sender's vehicle to the recipient address, with no transfer depot and no driver change. What is loaded is exactly what is unloaded.",
-          proof: "0% sorting damage, 0% misrouting",
-        },
-        {
-          icon: "smartphone",
-          title: "Digital visibility",
-          description:
-            "You see the status of every shipment in real time in the client portal. On hand-over the recipient signs digitally on the driver's device – including name, time and GPS position.",
-          proof: "Signature, timestamp and location in one record",
-        },
-        {
-          icon: "clock",
-          title: "Regional speed",
-          description:
-            "We dispatch immediately instead of on the next working day. Across the commercial corridors around Augsburg, Mering and Munich we commit to a firm pickup time.",
-          proof: "Usually ready for pickup in 15 minutes",
-        },
+        "express",
+        "express/direct-b2b-delivery",
+        "express/logistics-subcontracting",
+        "express/contracted-delivery-routes",
+        "express/service-areas",
+        "express/how-it-works",
+        "express/contact",
       ],
+      cta: { label: "Request a quote", page: "express/request-a-quote" },
     },
-
-    segments: {
-      eyebrow: "Who we drive for",
-      title: "Specialised in industries where being late gets expensive fast.",
-      intro:
-        "An idle vehicle lift, a missed court deadline or a broken dental model all cost far more than a direct run. That is exactly what soFlott is for.",
-      painLabel: "The problem",
-      cargoLabel: "Typical cargo",
+    digital: {
+      name: "soFlott Digital",
+      tagline: "IT consulting & software engineering",
+      ariaLabel: "soFlott Digital navigation",
       items: [
-        {
-          icon: "wrench",
-          name: "Workshops & industry",
-          pain:
-            "Every hour a vehicle sits on the lift waiting for a part costs you billable time and leaves a customer waiting.",
-          cargo: "Alternators, gaskets, emergency spare parts, diagnostic tools, specialist tooling",
-          hook:
-            "Stop losing billable lift time: we bring your spare part across town in under 40 minutes.",
-        },
-        {
-          icon: "gavel",
-          name: "Law & tax firms",
-          pain:
-            "Deadlines allow no leeway, and originals and notarised documents require an unbroken chain of custody.",
-          cargo: "Original contracts, court filings, notarised deeds, audit files",
-          hook:
-            "Email is not legally valid for court originals. Guaranteed deadline delivery with real-time signature proof.",
-        },
-        {
-          icon: "hospital",
-          name: "Dental & medical labs",
-          pain:
-            "Unreliable drivers lose fragile custom work or miss the delivery window for time-critical samples.",
-          cargo: "Crowns, impressions, prosthetics, lab samples, urgent medical supplies",
-          hook:
-            "White-glove medical transport with instant digital signature alerts sent straight to your lab manager.",
-        },
-        {
-          icon: "printer",
-          name: "Printers & event agencies",
-          pain:
-            "A last-minute reprint or missing material on site puts the whole appearance at risk.",
-          cargo: "Architectural blueprints, trade show banners, event badges, proofs, samples",
-          hook:
-            "Emergency print and event deliveries straight to the booth or the job site.",
-        },
+        "digital",
+        "digital/it-consulting",
+        "digital/software-development",
+        "digital/api-integration",
+        "digital/application-modernisation",
+        "digital/contract-software-engineering",
+        "digital/support-and-maintenance",
+        "digital/case-studies",
+        "digital/contact",
       ],
-      cta: { label: "See all industry solutions", page: "industries" },
-    },
-
-    cargo: {
-      eyebrow: "What we transport",
-      title: "From a gasket set to a court file.",
-      intro:
-        "If it fits in a vehicle, is time critical and stays in the region, it is a job for soFlott. Standard pricing covers up to 10 kg per run; larger shipments on request.",
-      groups: [
-        {
-          icon: "wrench",
-          title: "Automotive & spare parts",
-          items: [
-            "Workshop direct run from the wholesaler to your lift",
-            "Emergency parts for vehicles that are standing still",
-            "Diagnostic devices and loan tools between branches",
-          ],
-        },
-        {
-          icon: "gavel",
-          title: "Legal & tax documents",
-          items: [
-            "Deadline-bound filings for courts and authorities",
-            "Original contracts and notarised deeds",
-            "Client and audit files with proof of hand-over",
-          ],
-        },
-        {
-          icon: "hospital",
-          title: "Medical & dental",
-          items: [
-            "Crowns, bridges and impressions between practice and lab",
-            "Urgent lab samples inside a fixed time window",
-            "Medical and practice supplies needed the same day",
-          ],
-        },
-        {
-          icon: "printer",
-          title: "Print, construction & events",
-          items: [
-            "Blueprints and as-built documents to the site",
-            "Trade show banners, badges and event material",
-            "Samples, proofs and colour approvals",
-          ],
-        },
-      ],
-      note: "We do not carry dangerous goods, live animals or valuables above €5,000.",
-    },
-
-    process: {
-      eyebrow: "How a direct run works",
-      title: "From request to invoice in five steps.",
-      intro:
-        "No training and no software rollout required. Send the request, confirm the fixed price – the driver and the system take care of the rest.",
-      steps: [
-        {
-          title: "Request in two minutes",
-          description:
-            "Enter the pickup and destination address in the client portal, or simply call. You immediately see distance, estimated driving time and price.",
-        },
-        {
-          title: "Confirm the fixed price",
-          description:
-            "Net amount, 19% VAT and gross total are fixed before you book. No fuel surcharges and no surprises on the invoice.",
-        },
-        {
-          title: "Pickup usually within 15 minutes",
-          description:
-            "The next available driver is dispatched straight away and drives directly to you. You see the driver name and vehicle in the portal.",
-        },
-        {
-          title: "Direct run, no intermediate stop",
-          description:
-            "Your shipment stays in the vehicle until it reaches the recipient. Follow the status live instead of calling dispatch.",
-        },
-        {
-          title: "Digital hand-over and invoice",
-          description:
-            "The recipient signs digitally. You receive the confirmation with name, time and GPS position – and the invoice automatically by email.",
-        },
-      ],
-    },
-
-    platform: {
-      eyebrow: "Technology",
-      title: "Every run documented. Every invoice automatic.",
-      intro:
-        "soFlott is a courier company that runs its own software. You notice it less during the drive than afterwards: records, history and bookkeeping are ready before you ask for them.",
-      items: [
-        {
-          icon: "map",
-          title: "Live status instead of callbacks",
-          description:
-            "Accepted, in transit, delivered: every step is visible in the client portal, so your team never has to chase dispatch.",
-        },
-        {
-          icon: "signature",
-          title: "Digital proof of delivery",
-          description:
-            "Signature on the driver's device, recipient name, timestamp and GPS position – an evidence-grade record attached to every job.",
-        },
-        {
-          icon: "receipt",
-          title: "Automatic B2B invoice",
-          description:
-            "Every job automatically creates a consecutively numbered invoice with VAT shown separately, ready for your accounting.",
-        },
-        {
-          icon: "building",
-          title: "Client account with full history",
-          description:
-            "All of your company's runs, delivery records and invoices in one place – ideal for month-end and audits.",
-        },
-      ],
-      cta: { label: "Technology in detail", page: "platform" },
-    },
-
-    pricing: {
-      eyebrow: "Pricing",
-      title: "One fixed price. Up front. No small print.",
-      intro:
-        "Our price is a base fee plus a rate per kilometre. You see the amount before you book – and the invoice shows exactly the same figure.",
-      points: [
-        {
-          icon: "euro",
-          title: "Base fee plus kilometres",
-          description:
-            "A transparent flat fee per run plus a fixed rate per kilometre for the distance actually driven.",
-        },
-        {
-          icon: "check",
-          title: "Minimum charge instead of surcharge tables",
-          description:
-            "Very short runs are billed at the minimum charge. No fuel, inner-city or waiting surcharges hidden in the small print.",
-        },
-        {
-          icon: "receipt",
-          title: "19% VAT clearly stated",
-          description:
-            "Net, tax and gross appear separately on the quote and on the invoice – deductible and audit-proof.",
-        },
-        {
-          icon: "calendar",
-          title: "Retainers for regular customers",
-          description:
-            "For recurring routes we agree individual rates and fixed time windows.",
-        },
-      ],
-      example: {
-        title: "Example: a 12 km direct run",
-        rows: [
-          { label: "Base fee", value: "€19.50" },
-          { label: "12 km × €1.35", value: "€16.20" },
-          { label: "Net amount", value: "€35.70" },
-          { label: "19% VAT", value: "€6.78" },
-        ],
-        totalLabel: "Total gross",
-        totalValue: "€42.48",
-        note: "Example rates for orientation. Your binding fixed price appears in the portal before you book.",
-      },
-      cta: { label: "Pricing and terms", page: "pricing" },
-    },
-
-    offer: {
-      eyebrow: "New customer offer",
-      title: "Try us on your next urgent run – with 20% off.",
-      description:
-        "No contract, no minimum volume, no setup fee. Book a single direct run, judge the speed and the delivery record, and then decide whether we should take over your regular routes.",
-      cta: { label: "Claim 20% off the first run", href: "/register" },
-      note: "Valid for the first direct run of new business customers in the Augsburg, Mering and Munich area.",
-    },
-
-    area: {
-      eyebrow: "Service area",
-      title: "Direct runs around Augsburg, Mering and Munich.",
-      intro:
-        "We cover the commercial corridors of the region: business parks, industrial zones, law firm districts and city centre locations. Longer trips are arranged as a special run on request.",
-      cities: [
-        "Augsburg",
-        "Mering",
-        "Munich",
-      ],
-      note: "Your location is not listed? Ask us – we review every route in the region.",
-    },
-
-    faq: {
-      eyebrow: "Frequently asked questions",
-      title: "Answers before you ask.",
-      intro:
-        "The questions workshops, law firms and labs ask us most often before their first run.",
-      items: [
-        {
-          question: "How quickly can a courier be with me?",
-          answer:
-            "As a rule a driver is ready for pickup within 15 minutes of order confirmation. For routes around Augsburg, Mering and Munich the typical end-to-end time is 40 to 90 minutes, depending on distance and traffic. The estimated time is shown together with the price.",
-        },
-        {
-          question: "What does a direct run cost?",
-          answer:
-            "The price consists of a base fee plus a fixed rate per kilometre for the distance actually driven, with a minimum charge as the floor. You receive the binding fixed price before booking – net, with 19% VAT shown separately, plus the gross total.",
-        },
-        {
-          question: "How is a direct run different from an express parcel?",
-          answer:
-            "Despite the name, an express parcel still travels through collection points and sorting hubs and changes driver several times. On a direct run one driver collects your shipment and brings it to the recipient without any intermediate stop, which removes sorting damage, misrouting and waiting time.",
-        },
-        {
-          question: "Do I get proof of delivery?",
-          answer:
-            "Yes. The recipient signs digitally on the driver's device. The record contains the recipient name, date and time and the GPS position of the hand-over, and is available in your client account at any time.",
-        },
-        {
-          question: "Do you also carry medical samples and dental models?",
-          answer:
-            "Yes. Dental labs and medical facilities are among our core customers. Fragile custom work and samples travel as a secured single run, and we notify the responsible person immediately after hand-over.",
-        },
-        {
-          question: "How does billing work for business customers?",
-          answer:
-            "Every job automatically creates a consecutively numbered invoice containing all legally required details with VAT shown separately. You receive it by email and also find it in your client account. Payment by bank transfer or PayPal.",
-        },
-        {
-          question: "Can I arrange fixed routes or time windows?",
-          answer:
-            "Yes. For recurring routes – for example daily between a practice and a lab, or between branches – we agree fixed time windows and individual rates in a retainer agreement.",
-        },
-        {
-          question: "What do you not transport?",
-          answer:
-            "We do not carry dangerous goods, live animals or valuables above €5,000. Anything else that fits in a vehicle and stays in the region can be requested.",
-        },
-      ],
-    },
-
-    finalCta: {
-      title: "The next urgent run does not have to be stressful.",
-      description:
-        "Create a business account in two minutes and book your first direct run with 20% off. Or simply call – we dispatch immediately.",
-      primaryCta: { label: "Create a business account", href: "/register" },
-      secondaryCta: { label: "Get in touch", page: "contact" },
-      phoneLabel: "Direct line, no hold music:",
+      cta: { label: "Request a proposal", page: "digital/request-a-proposal" },
     },
   },
 
   pages: {
-    services: {
+    // ----------------------------------------------------------------------
+    // Corporate
+    // ----------------------------------------------------------------------
+    home: {
+      label: "Home",
       meta: {
-        title: "Services: Express Transport, Direct Runs & Special Trips",
+        title: "soFlott UG – Courier & Logistics and IT & Software Engineering",
         description:
-          "Direct runs, emergency express transport, special trips and scheduled routes for business customers around Augsburg, Mering and Munich – no transfers, digital proof of delivery and a transparent fixed price.",
-        keywords: [
-          "express transport",
-          "book a direct run",
-          "special trip Augsburg, Mering and Munich",
-          "business courier service",
-          "express courier",
-          "scheduled courier routes",
-        ],
+          "soFlott UG (haftungsbeschränkt) is a German company with two divisions: soFlott Express for B2B courier and logistics services, and soFlott Digital for IT consulting and software engineering.",
       },
-      eyebrow: "Services",
-      title: "Four ways to drive. Always direct.",
-      intro:
-        "Whether it is a one-off emergency or a daily recurring route, the same quality standard applies across all four job types.",
-      lead: [
-        "soFlott specialises in time-critical B2B transport within the region. We operate no collection points and no sorting hubs – every shipment is its own run with one accountable driver.",
-        "That makes us more expensive than a parcel service for bulk volume, and considerably faster, safer and better documented for urgent single shipments.",
-      ],
-      sections: [
+      hero: {
+        eyebrow: "soFlott UG (haftungsbeschränkt)",
+        title: "One company. Two specialist divisions for business customers.",
+        intro:
+          "soFlott moves goods for businesses and builds software for businesses. Choose the division that fits what you need – both belong to the same company and work to the same standards.",
+        primaryCta: { label: "soFlott Express", page: "express" },
+        secondaryCta: { label: "soFlott Digital", page: "digital" },
+      },
+      blocks: [
         {
-          title: "Our job types",
-          description:
-            "All variants include a direct run without transfers, live status and digital proof of delivery.",
+          kind: "divisions",
+          eyebrow: "Our divisions",
+          title: "What are you looking for?",
+          intro:
+            "Each division has its own services, its own contacts and its own way of working with you.",
+          items: [
+            {
+              division: "express",
+              name: "soFlott Express",
+              summary:
+                "Courier and logistics services for businesses – individual B2B deliveries, recurring contracted routes and delivery capacity for logistics companies.",
+              points: [
+                "Direct B2B courier deliveries",
+                "Contracted, recurring routes for your own regular deliveries",
+                "Subcontracting for logistics companies and carriers",
+                "Digital proof of delivery and B2B invoicing",
+              ],
+              cta: { label: "Go to soFlott Express", page: "express" },
+            },
+            {
+              division: "digital",
+              name: "soFlott Digital",
+              summary:
+                "IT consulting and software engineering for businesses – from architecture advice to building, integrating and maintaining applications.",
+              points: [
+                "IT consulting and technical architecture",
+                "Custom software and full-stack web applications",
+                "API development and system integration",
+                "Application modernisation and ongoing support",
+              ],
+              cta: { label: "Go to soFlott Digital", page: "digital" },
+            },
+          ],
+        },
+        {
+          kind: "cards",
+          eyebrow: "How we work",
+          title: "What both divisions have in common",
+          items: [
+            {
+              icon: "building",
+              title: "One accountable company",
+              description:
+                "Every contract and every invoice is issued by soFlott UG (haftungsbeschränkt). You always know who you are doing business with.",
+            },
+            {
+              icon: "file",
+              title: "Clear agreements",
+              description:
+                "Scope, prices and service levels are agreed in writing before work starts – per delivery, per route or per project.",
+            },
+            {
+              icon: "shield",
+              title: "Documented work",
+              description:
+                "Deliveries are recorded with proof of delivery; projects with agreed milestones and approvals.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Not sure which division you need?",
+        description: "Tell us briefly what you are planning and we will put you in touch with the right person.",
+        primaryCta: { label: "Contact us", page: "contact" },
+        secondaryCta: { label: "About soFlott", page: "about" },
+      },
+    },
+
+    about: {
+      label: "About",
+      meta: {
+        title: "About soFlott UG – Company and Divisions",
+        description:
+          "Who is behind soFlott: soFlott UG (haftungsbeschränkt), a company registered in Germany, operating the divisions soFlott Express and soFlott Digital.",
+      },
+      hero: {
+        eyebrow: "About us",
+        title: "soFlott UG (haftungsbeschränkt)",
+        intro:
+          "A German company serving business customers in two fields: courier and logistics, and IT consulting and software engineering.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          title: "One legal entity, two divisions",
+          paragraphs: [
+            "soFlott Express and soFlott Digital are commercial divisions – brands – of soFlott UG (haftungsbeschränkt). They are not separate companies. All contracts, invoices and registrations belong to soFlott UG.",
+            "We keep the two divisions separate because their customers have different needs: a business that needs a shipment moved, a logistics company looking for a delivery partner and an organisation planning a software project each deserve a clear, focused offer.",
+          ],
+        },
+        {
+          kind: "text",
+          title: "Why logistics and software?",
+          paragraphs: [
+            "We run our own courier operation on software we built ourselves: booking, dispatch, driver app, proof of delivery and invoicing. That work is the foundation of soFlott Digital – we know what it takes to design, build and operate business software that people rely on every day.",
+          ],
+        },
+        {
+          kind: "links",
+          title: "Explore the divisions",
           items: [
             {
               icon: "truck",
-              title: "Direct run",
-              description:
-                "The standard job: pickup on demand, drive without an intermediate stop, hand-over with a digital signature. Ideal for spare parts, documents and samples.",
+              title: "soFlott Express",
+              description: "Direct B2B courier deliveries and logistics subcontracting.",
+              page: "express",
             },
             {
-              icon: "alert",
-              title: "Emergency express transport",
-              description:
-                "Top priority when production has stopped, a deadline is expiring or a customer is waiting. We dispatch the nearest available driver immediately.",
-            },
-            {
-              icon: "map",
-              title: "Special trips beyond the region",
-              description:
-                "Longer distances outside the core area are planned individually, with the fixed price and arrival time confirmed in advance.",
-            },
-            {
-              icon: "calendar",
-              title: "Scheduled routes and retainers",
-              description:
-                "Recurring routes in fixed time windows, for example practice to lab or head office to branch, with individual rates.",
+              icon: "code",
+              title: "soFlott Digital",
+              description: "IT consulting, software development, integration and modernisation.",
+              page: "digital",
             },
           ],
         },
-        {
-          title: "Included in every run",
-          description: "No add-ons and no option packages – this is the standard.",
-          items: [
-            {
-              icon: "route",
-              title: "No transfers",
-              description:
-                "Your shipment only leaves the vehicle at the recipient, which practically rules out sorting damage and misrouting.",
-            },
-            {
-              icon: "signature",
-              title: "Digital proof of delivery",
-              description:
-                "Recipient signature, name, timestamp and GPS position – available in your client account.",
-            },
-            {
-              icon: "euro",
-              title: "Fixed price up front",
-              description:
-                "Net, 19% VAT and gross are fixed before booking and appear unchanged on the invoice.",
-            },
-            {
-              icon: "receipt",
-              title: "Automatic invoice",
-              description:
-                "Consecutively numbered, with all legally required details, delivered by email and stored in your account.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Pickup usually ready within 15 minutes",
-        "One driver from collection to hand-over",
-        "Up to 10 kg standard cargo, larger shipments on request",
       ],
       cta: {
-        title: "Which run do you need today?",
-        description:
-          "Create a business account and see the fixed price straight away – or talk to us about scheduled routes.",
-        primaryCta: { label: "Request a direct run", href: "/register" },
-        secondaryCta: { label: "See pricing", page: "pricing" },
-      },
-    },
-
-    industries: {
-      meta: {
-        title: "Industries: Courier for Workshops, Law Firms, Labs & Printers",
-        description:
-          "Industry solutions from soFlott: workshop direct runs for spare parts, deadline-safe legal courier service, medical and dental transport, and emergency deliveries for print and events.",
-        keywords: [
-          "spare parts courier workshop",
-          "legal courier service",
-          "dental lab courier",
-          "medical courier service",
-          "print and event courier",
-          "industry courier Augsburg, Mering and Munich",
-        ],
-      },
-      eyebrow: "Industries",
-      title: "Four industries with one thing in common: time pressure.",
-      intro:
-        "We know our customers' workflows well enough to think ahead instead of only driving.",
-      lead: [
-        "A courier that serves the same industries every day knows what matters: which ramp the wholesaler uses, how a court deadline runs and why a dental model must never be repacked.",
-        "That is why we focus on four segments instead of doing a little of everything.",
-      ],
-      sections: [
-        {
-          title: "Workshops & industry",
-          description:
-            "Standstill is the most expensive state in your business. We collect the missing part while the vehicle stays on the lift.",
-          items: [
-            {
-              icon: "wrench",
-              title: "Spare part direct run",
-              description:
-                "From the wholesaler or partner workshop straight to your ramp – without waiting for the next collective tour.",
-            },
-            {
-              icon: "alert",
-              title: "Emergency during production stops",
-              description:
-                "When the line is down we leave immediately, at top dispatch priority and without extra coordination.",
-            },
-            {
-              icon: "package",
-              title: "Tools and loan equipment",
-              description:
-                "Swap diagnostic devices and specialist tools between sites instead of buying twice.",
-            },
-          ],
-        },
-        {
-          title: "Law firms & tax advisors",
-          description:
-            "Deadlines and originals tolerate no uncertainty. Every hand-over is documented by name.",
-          items: [
-            {
-              icon: "gavel",
-              title: "Deadline-bound delivery",
-              description:
-                "Filings and applications to courts, authorities or clients – with a timestamp as evidence.",
-            },
-            {
-              icon: "file",
-              title: "Originals and deeds",
-              description:
-                "Notarised deeds, original contracts and audit files in one uninterrupted run.",
-            },
-            {
-              icon: "lock",
-              title: "Unbroken chain of custody",
-              description:
-                "One driver, one run, one named signature – never an anonymous collective receipt.",
-            },
-          ],
-        },
-        {
-          title: "Dental labs & medical facilities",
-          description:
-            "Custom work cannot be replaced and samples cannot be repeated. We drive accordingly.",
-          items: [
-            {
-              icon: "hospital",
-              title: "Practice to lab link",
-              description:
-                "Crowns, bridges, impressions and prosthetics in a secured single transport between practice and lab.",
-            },
-            {
-              icon: "clock",
-              title: "Committed time windows",
-              description:
-                "Fixed collection and delivery times for samples so analysis and production windows are met.",
-            },
-            {
-              icon: "smartphone",
-              title: "Instant signature alert",
-              description:
-                "Your lab manager receives the hand-over confirmation immediately after delivery.",
-            },
-          ],
-        },
-        {
-          title: "Printers & event agencies",
-          description:
-            "The date is fixed, even when the reprint is only finished in the morning.",
-          items: [
-            {
-              icon: "printer",
-              title: "Last-minute reprints",
-              description:
-                "Freshly printed banners, badges and programmes delivered straight to the booth or venue.",
-            },
-            {
-              icon: "map",
-              title: "Delivery to site and stand",
-              description:
-                "Blueprints, as-built documents and samples where the work happens – not in the mail room.",
-            },
-            {
-              icon: "sparkles",
-              title: "VIP and special deliveries",
-              description:
-                "Short-notice transport for high-value materials and representative occasions.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "A named contact instead of a rotating hotline",
-        "Industry time windows planned in from the start",
-        "Delivery records that stand up to an audit",
-      ],
-      cta: {
-        title: "Your industry is not listed?",
-        description:
-          "If your shipment is time critical and stays in the region, it suits us. Tell us briefly what you need to move.",
-        primaryCta: { label: "Send a request", page: "contact" },
-        secondaryCta: { label: "See services", page: "services" },
-      },
-    },
-
-    pricing: {
-      meta: {
-        title: "Pricing: Transparent Fixed Rates for Direct Runs",
-        description:
-          "Transparent courier pricing: base fee plus rate per kilometre, a minimum charge, 19% VAT clearly stated and no hidden surcharges. Retainer rates for recurring routes.",
-        keywords: [
-          "courier prices",
-          "direct run cost",
-          "express transport price",
-          "courier fixed price",
-          "courier retainer",
-        ],
-      },
-      eyebrow: "Pricing",
-      title: "You see the price before we set off.",
-      intro:
-        "Two components, one minimum charge, 19% VAT – there is nothing else to calculate.",
-      lead: [
-        "Many transport offers only become concrete on the invoice. At soFlott it is the other way round: the amount you see before booking is the amount you pay.",
-        "It is based on a flat base fee per run plus a fixed rate per kilometre for the real distance, with a minimum charge underneath so that even very short runs stay predictable.",
-      ],
-      sections: [
-        {
-          title: "How your price is calculated",
-          description: "Three transparent lines, on the quote and on the invoice.",
-          items: [
-            {
-              icon: "euro",
-              title: "Base fee per run",
-              description:
-                "Covers dispatch, approach and hand-over documentation. Identical for every direct run inside the core area.",
-            },
-            {
-              icon: "route",
-              title: "Rate per kilometre",
-              description:
-                "A fixed amount per kilometre of the distance actually driven. No straight-line estimate at your expense.",
-            },
-            {
-              icon: "check",
-              title: "Minimum charge",
-              description:
-                "Very short distances are billed at the minimum charge instead of being padded with surcharges.",
-            },
-          ],
-        },
-        {
-          title: "What you never pay",
-          description: "The usual small-print items simply do not exist here.",
-          items: [
-            {
-              icon: "check",
-              title: "No fuel surcharges",
-              description: "Fluctuating fuel prices are our risk, not a line on your invoice.",
-            },
-            {
-              icon: "check",
-              title: "No inner-city or zone surcharges",
-              description: "A route inside the core area costs the same per kilometre everywhere.",
-            },
-            {
-              icon: "check",
-              title: "No setup or account fee",
-              description: "The business account and the client portal are free of charge.",
-            },
-          ],
-        },
-        {
-          title: "Billing and payment",
-          description: "Built for the requirements of German accounting.",
-          items: [
-            {
-              icon: "receipt",
-              title: "One invoice per job",
-              description:
-                "Created automatically, consecutively numbered, with VAT shown separately and all legally required details.",
-            },
-            {
-              icon: "banknote",
-              title: "Bank transfer or PayPal",
-              description:
-                "You choose the payment method when booking. Payment terms are 14 days by default.",
-            },
-            {
-              icon: "calendar",
-              title: "Rates for regular customers",
-              description:
-                "With regular volume we agree individual rates and fixed time windows.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "Example: a 12 km direct run = €35.70 net, €42.48 gross",
-        "All prices plus 19% German VAT",
-        "14-day payment terms, invoice by email",
-      ],
-      cta: {
-        title: "Calculate the price for your route",
-        description:
-          "In the client portal you enter the pickup and destination address and immediately see distance, driving time and the fixed price.",
-        primaryCta: { label: "Create an account and calculate", href: "/register" },
-        secondaryCta: { label: "Discuss a retainer", page: "contact" },
-      },
-    },
-
-    platform: {
-      meta: {
-        title: "Technology: Live Status, Digital Signature & Invoicing",
-        description:
-          "The soFlott platform: live shipment tracking, digital recipient signature with GPS record, automatic B2B invoicing and a client account with the complete order history.",
-        keywords: [
-          "courier tracking",
-          "digital delivery signature",
-          "electronic proof of delivery",
-          "courier software",
-          "proof of delivery",
-        ],
-      },
-      eyebrow: "Technology",
-      title: "A courier company that drives its own software.",
-      intro:
-        "The platform works in the background – and hands you exactly the records you would otherwise have to chase by phone.",
-      lead: [
-        "soFlottOS is the system we use to dispatch, deliver and bill. For you that means every job automatically produces a complete, verifiable record.",
-        "Nothing needs to be installed. The client portal runs in the browser and can be saved to a smartphone like an app.",
-      ],
-      sections: [
-        {
-          title: "What you see in your client account",
-          description: "Everything about your runs in one place, available at any time.",
-          items: [
-            {
-              icon: "map",
-              title: "Real-time status",
-              description:
-                "Accepted, assigned, in transit, delivered. Progress updates automatically.",
-            },
-            {
-              icon: "signature",
-              title: "Proof of hand-over",
-              description:
-                "Recipient name, signature, timestamp and GPS position of the hand-over, attached to the job as evidence.",
-            },
-            {
-              icon: "receipt",
-              title: "Invoices and records",
-              description:
-                "Every invoice sits directly on the job and can be printed or saved as a PDF for accounting.",
-            },
-            {
-              icon: "building",
-              title: "Complete history",
-              description:
-                "All of your company's runs with route, price and delivery record – ideal for month-end and audits.",
-            },
-          ],
-        },
-        {
-          title: "How our drivers work",
-          description: "The same platform, built for the phone.",
-          items: [
-            {
-              icon: "smartphone",
-              title: "The job on the device",
-              description:
-                "The driver sees addresses, cargo and special instructions in the job itself, with no paper shuffling.",
-            },
-            {
-              icon: "signature",
-              title: "Signature on the screen",
-              description:
-                "The recipient signs with a finger, and the signature is permanently attached to the job.",
-            },
-            {
-              icon: "map",
-              title: "GPS record of the hand-over",
-              description:
-                "The position at delivery is stored alongside it and documents where and when the hand-over happened.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "No software rollout, no licence costs",
-        "Installable as a web app on a smartphone",
-        "Delivery records stay in your client account",
-      ],
-      cta: {
-        title: "See it inside your client account.",
-        description:
-          "Create an account, book a first run and experience live status, signature and invoicing on a real job.",
-        primaryCta: { label: "Free business account", href: "/register" },
-        secondaryCta: { label: "Security and reliability", page: "security" },
-      },
-    },
-
-    security: {
-      meta: {
-        title: "Security, Reliability & Data Protection",
-        description:
-          "How soFlott protects shipments and data: continuous driver accountability, evidence-grade proof of delivery, protected sign-in and data stored in the EU.",
-        keywords: [
-          "secure courier service",
-          "legally sound proof of delivery",
-          "courier GDPR data protection",
-          "confidential document courier",
-        ],
-      },
-      eyebrow: "Security",
-      title: "Dependable by design, not by accident.",
-      intro:
-        "Anyone handing over originals, patient samples or prototypes must be able to rely on two things: the run and the record.",
-      lead: [
-        "For us security starts in dispatch: one shipment, one driver, no intermediate storage. The fewer hands touch a shipment, the smaller the risk.",
-        "Everything that follows – documentation, retention, access – is governed by the system rather than by individual people.",
-      ],
-      sections: [
-        {
-          title: "Security on the road",
-          description: "Organisational measures that prevent damage in the first place.",
-          items: [
-            {
-              icon: "shield",
-              title: "Continuous accountability",
-              description:
-                "One driver takes the shipment and hands it over in person. There is no anonymous intermediate step.",
-            },
-            {
-              icon: "package",
-              title: "No intermediate storage",
-              description:
-                "Your cargo is not repacked, not sorted and never stored overnight.",
-            },
-            {
-              icon: "signature",
-              title: "Evidence-grade hand-over",
-              description:
-                "A named digital signature with timestamp and GPS position instead of a collective receipt.",
-            },
-          ],
-        },
-        {
-          title: "Security in the system",
-          description: "Technical measures around your client account.",
-          items: [
-            {
-              icon: "lock",
-              title: "Protected sign-in",
-              description:
-                "Credentials are only ever stored as a strong hash. The session token lives in an HTTP-only cookie and cannot be read by scripts in the browser.",
-            },
-            {
-              icon: "building",
-              title: "Separated roles",
-              description:
-                "Clients, drivers and administration each see only the data they need for their task.",
-            },
-            {
-              icon: "file",
-              title: "Traceable records",
-              description:
-                "Every status change and every delivery record stays permanently attached to its job.",
-            },
-          ],
-        },
-      ],
-      highlights: [
-        "One shipment, one driver, no transfers",
-        "Delivery record with name, time and position",
-        "Data stored in the EU, information on request",
-      ],
-      cta: {
-        title: "Questions about confidentiality or data processing?",
-        description:
-          "For law firms, practices and labs we are happy to confirm data protection and hand-over requirements in writing in advance.",
-        primaryCta: { label: "Get in touch", page: "contact" },
-        secondaryCta: { label: "See the technology", page: "platform" },
+        title: "Company details",
+        description: "Registration details and contact information are listed in our imprint.",
+        primaryCta: { label: "Imprint", page: "legal/imprint" },
+        secondaryCta: { label: "Contact", page: "contact" },
       },
     },
 
     contact: {
+      label: "Contact",
       meta: {
-        title: "Contact: Request a Direct Run & Get 20% Off",
+        title: "Contact soFlott – Express and Digital",
         description:
-          "Request a direct run, discuss a retainer or claim a trial run with 20% off for new customers. By phone or email – we dispatch immediately.",
-        keywords: [
-          "request a courier",
-          "book a direct run Augsburg, Mering and Munich",
-          "courier service contact",
-          "express courier quote",
-        ],
+          "Contact soFlott UG: courier and logistics enquiries for soFlott Express, IT consulting and software enquiries for soFlott Digital.",
       },
-      eyebrow: "Contact",
-      title: "Tell us what needs to go where.",
-      intro:
-        "Call us when it is urgent. Write to us when you want to discuss rates or scheduled routes.",
-      lead: [
-        "For urgent runs the phone is the fastest route: we take the job directly and dispatch while we are still talking.",
-        "For anything you can plan – retainers, scheduled routes, data protection questions – a short email is enough. We usually reply the same working day.",
-      ],
-      sections: [
+      hero: {
+        eyebrow: "Contact",
+        title: "How can we help?",
+        intro:
+          "For the fastest answer, use the contact page of the division you need. For anything else, send us a message here.",
+      },
+      blocks: [
         {
-          title: "How to reach us",
-          description: "One contact person, no hold music.",
+          kind: "links",
+          title: "Contact a division directly",
           items: [
             {
-              icon: "phone",
-              title: "By phone for urgent runs",
-              description:
-                "The fastest route when production stops, a deadline is running or a customer is waiting. We dispatch during the call.",
+              icon: "truck",
+              title: "soFlott Express",
+              description: "Deliveries, quotes, subcontracting and route enquiries.",
+              page: "express/contact",
             },
             {
-              icon: "mail",
-              title: "By email for quotes",
-              description:
-                "Route, cargo type and the preferred time window are enough for a binding quote.",
+              icon: "code",
+              title: "soFlott Digital",
+              description: "Consulting, software projects, proposals and contract engagements.",
+              page: "digital/contact",
+            },
+          ],
+        },
+        { kind: "contact", title: "Company contact" },
+        { kind: "form", form: "contact", title: "Send us a message" },
+      ],
+    },
+
+    "legal/imprint": {
+      label: "Imprint",
+      meta: {
+        title: "Imprint (Impressum)",
+        description: "Legal information about soFlott UG (haftungsbeschränkt) according to § 5 DDG.",
+      },
+      hero: {
+        eyebrow: "Legal",
+        title: "Imprint",
+        intro: "Information according to § 5 DDG (German Digital Services Act).",
+      },
+      blocks: [
+        { kind: "imprint", title: "Provider" },
+        {
+          kind: "text",
+          title: "Divisions",
+          paragraphs: [
+            "soFlott Express and soFlott Digital are divisions (trading names) of soFlott UG (haftungsbeschränkt) and not separate legal entities.",
+          ],
+        },
+      ],
+    },
+
+    "legal/privacy": {
+      label: "Privacy",
+      meta: {
+        title: "Privacy Notice",
+        description:
+          "How soFlott UG (haftungsbeschränkt) processes personal data on this website and in the customer portal.",
+      },
+      hero: {
+        eyebrow: "Legal",
+        title: "Privacy notice",
+        intro: "How we handle personal data when you visit this website, contact us or use the customer portal.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          paragraphs: [
+            "The controller responsible for data processing on this website is soFlott UG (haftungsbeschränkt). Contact details are listed in the imprint.",
+          ],
+          sections: [
+            {
+              title: "Visiting the website",
+              paragraphs: [
+                "When you open a page, your browser transmits technical data such as your IP address, date and time, the requested page and your browser type. This data is needed to deliver the website securely and is processed on the basis of our legitimate interest (Art. 6(1)(f) GDPR). Server log files are kept only as long as necessary for security purposes.",
+                "Fonts are served from our own server. No content is loaded from third-party font services when you visit this website.",
+              ],
             },
             {
-              icon: "smartphone",
-              title: "Around the clock in the portal",
-              description:
-                "With a business account you book whenever you like and see the fixed price immediately.",
+              title: "Cookies",
+              paragraphs: [
+                "We only use cookies that are needed for the website to work. The cookie “soflott_locale” remembers your language choice for up to one year. When you sign in to the customer portal, the cookie “soflott_session” keeps you signed in. We do not use advertising or tracking cookies.",
+              ],
+            },
+            {
+              title: "Enquiry and quote forms",
+              paragraphs: [
+                "Our enquiry forms do not store any data on this website. When you submit a form, your own email program opens with a prepared message. Only when you send that email do we receive your details. We use them to answer your enquiry and prepare an offer (Art. 6(1)(b) GDPR) and delete them when they are no longer needed, subject to statutory retention periods.",
+              ],
+            },
+            {
+              title: "Customer portal",
+              paragraphs: [
+                "If you create a business account, we process your account, order, delivery and invoice data to perform our contract with you (Art. 6(1)(b) GDPR) and to meet statutory accounting and retention obligations (Art. 6(1)(c) GDPR).",
+              ],
+            },
+            {
+              title: "Your rights",
+              paragraphs: [
+                "You have the right to access, rectification, erasure, restriction of processing and data portability, and the right to object to processing based on legitimate interest. You can also lodge a complaint with a data protection supervisory authority.",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ----------------------------------------------------------------------
+    // soFlott Express
+    // ----------------------------------------------------------------------
+    express: {
+      label: "Overview",
+      meta: {
+        title: "soFlott Express – B2B Courier Services and Logistics Subcontracting",
+        description:
+          "soFlott Express provides direct B2B courier deliveries, contracted recurring delivery routes for businesses and delivery capacity for logistics companies, carriers and distributors.",
+        keywords: [
+          "B2B courier services",
+          "business express delivery",
+          "logistics subcontractor",
+          "delivery partner for logistics companies",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Express",
+        title: "Courier and logistics services for business.",
+        intro:
+          "We move individual shipments for businesses, run fixed recurring routes for businesses with regular deliveries – and provide delivery capacity for logistics companies that need a reliable partner. Each service has its own way of working.",
+        primaryCta: { label: "I need a delivery", page: "express/direct-b2b-delivery" },
+        secondaryCta: { label: "I am a logistics company", page: "express/logistics-subcontracting" },
+      },
+      blocks: [
+        {
+          kind: "compare",
+          eyebrow: "Which service fits?",
+          title: "One delivery, a regular route, or delivery capacity?",
+          intro:
+            "The three services answer three different needs. They differ in who orders, whose shipments are carried, how prices are agreed and how work is billed.",
+          columns: ["Direct B2B courier delivery", "Contracted delivery routes", "B2B logistics subcontracting"],
+          rows: [
+            {
+              label: "For",
+              values: [
+                "Businesses that need an individual shipment collected and delivered",
+                "Businesses whose own deliveries follow a regular, predictable pattern",
+                "Logistics companies, parcel carriers and distributors that need delivery capacity",
+              ],
+            },
+            {
+              label: "Whose shipments",
+              values: [
+                "Your own goods or documents",
+                "Your own goods – between your sites, suppliers or regular customers",
+                "Your customers’ parcels, delivered on behalf of your logistics network",
+              ],
+            },
+            {
+              label: "Ordered as",
+              values: [
+                "An individual delivery request",
+                "A route agreement – stops, days and time windows fixed once",
+                "A framework agreement or service contract",
+              ],
+            },
+            {
+              label: "Price basis",
+              values: [
+                "Quote per delivery, based on distance, urgency, waiting time and handling",
+                "Fixed fee per route run or per stop, agreed in advance",
+                "As agreed: per stop, per parcel, fixed route fee or a combination",
+              ],
+            },
+            {
+              label: "Evidence",
+              values: [
+                "Proof of delivery for every order",
+                "Proof of delivery for every stop and a record of every run",
+                "Route records, proof of delivery and volume reconciliation",
+              ],
+            },
+            {
+              label: "Billing",
+              values: [
+                "Per order or consolidated monthly invoice",
+                "Monthly invoice listing the completed runs",
+                "Periodic invoice with supporting statement",
+              ],
+            },
+          ],
+          ctas: [
+            { label: "Request a delivery quote", page: "express/request-a-quote" },
+            { label: "Request a route proposal", page: "express/request-a-quote", query: "type=routes" },
+            {
+              label: "Request a subcontracting proposal",
+              page: "express/request-a-quote",
+              query: "type=subcontracting",
             },
           ],
         },
         {
-          title: "A risk-free start",
-          description: "We want to win the first run, not a yearly contract.",
+          kind: "links",
+          eyebrow: "Services",
+          title: "Explore soFlott Express",
           items: [
             {
-              icon: "award",
-              title: "20% new customer discount",
-              description:
-                "The first direct run for new business customers is billed with a 20% discount.",
+              icon: "package",
+              title: "Direct B2B delivery",
+              description: "Individual deliveries between business locations, with tracking and proof of delivery.",
+              page: "express/direct-b2b-delivery",
             },
             {
-              icon: "check",
-              title: "No minimum volume",
+              icon: "handshake",
+              title: "Logistics subcontracting",
+              description: "Delivery capacity and operations for logistics companies under a framework agreement.",
+              page: "express/logistics-subcontracting",
+            },
+            {
+              icon: "route",
+              title: "Contracted delivery routes",
+              description: "Recurring runs for your own regular deliveries, on agreed days and time windows.",
+              page: "express/contracted-delivery-routes",
+            },
+            {
+              icon: "map",
+              title: "Service areas",
+              description: "Where we currently operate and how we handle routes outside the region.",
+              page: "express/service-areas",
+            },
+            {
+              icon: "clipboard",
+              title: "How it works",
+              description: "From request to proof of delivery and invoice – step by step.",
+              page: "express/how-it-works",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Tell us what needs to move.",
+        description: "Send a delivery request, plan a recurring route or start a conversation about a subcontracting agreement.",
+        primaryCta: { label: "Request a quote", page: "express/request-a-quote" },
+        secondaryCta: { label: "Contact soFlott Express", page: "express/contact" },
+      },
+    },
+
+    "express/direct-b2b-delivery": {
+      label: "Direct B2B delivery",
+      meta: {
+        title: "Direct B2B Courier Delivery for Businesses",
+        description:
+          "Business courier deliveries from soFlott Express: collection and delivery between business locations, price before booking, tracking, digital proof of delivery and B2B invoices.",
+        keywords: ["B2B courier service", "business courier", "business express delivery", "courier for companies"],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Direct delivery",
+        title: "Direct B2B courier deliveries.",
+        intro:
+          "You need a shipment collected at one business location and delivered to another. We quote, collect, deliver and document – and send you a proper B2B invoice.",
+        primaryCta: { label: "Request a delivery quote", page: "express/request-a-quote" },
+        secondaryCta: { label: "Open a business account", href: "/register" },
+        points: [
+          "Price before you book",
+          "Status tracking in the customer portal",
+          "Digital proof of delivery",
+          "Per-order or monthly invoice",
+        ],
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "What is included",
+          items: [
+            {
+              icon: "package",
+              title: "Collection and delivery",
               description:
-                "No base fee, no contractual lock-in and no minimum number of runs.",
+                "Pickup and delivery addresses, requested time windows and shipment details are agreed with each order.",
+            },
+            {
+              icon: "receipt",
+              title: "Transparent pricing",
+              description:
+                "Prices are based on distance, urgency, waiting time and handling. You receive the price before the job is confirmed, with VAT shown separately.",
+            },
+            {
+              icon: "search",
+              title: "Tracking",
+              description: "Follow the status of each order in the customer portal instead of calling for updates.",
+            },
+            {
+              icon: "signature",
+              title: "Proof of delivery",
+              description:
+                "Every delivery is recorded with the recipient’s name and the time of hand-over, plus a signature where appropriate.",
+            },
+            {
+              icon: "file",
+              title: "B2B invoicing",
+              description:
+                "Receive an invoice per order or a consolidated invoice for the billing period, together with your order history.",
+            },
+            {
+              icon: "users",
+              title: "Business accounts",
+              description:
+                "Several contacts and saved addresses per company, so your team can order without re-entering data.",
+            },
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Urgent and time-critical deliveries",
+          text:
+            "Tell us your required pickup and delivery window when you request a quote. We confirm the earliest window we can reliably meet before you book – we do not promise delivery times we have not confirmed.",
+        },
+        {
+          kind: "checklist",
+          title: "Typical requests",
+          items: [
+            "Components or spare parts between production sites, suppliers and workshops",
+            "Documents and originals that must be handed over in person",
+            "Samples and goods between branches, labs and customers",
+            "Single deliveries that do not fit a parcel network",
+          ],
+        },
+        {
+          kind: "faq",
+          title: "Questions about direct delivery",
+          items: [
+            {
+              question: "How is the price calculated?",
+              answer:
+                "The price depends on the distance, the urgency, expected waiting time and any special handling. You receive the price before the order is confirmed, and that agreed price is what appears on the invoice.",
+            },
+            {
+              question: "Do I need an account to order?",
+              answer:
+                "No. You can request a quote without an account. Regular customers usually open a business account to book, track orders and download invoices in the customer portal.",
+            },
+            {
+              question: "What if a delivery cannot be completed?",
+              answer:
+                "Failed deliveries, delays and other exceptions are recorded and reported to you, so you always know what happened and what was agreed next.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Need something delivered?",
+        description: "Send us the addresses, time window and shipment details and we will reply with a quote.",
+        primaryCta: { label: "Request a delivery quote", page: "express/request-a-quote" },
+        secondaryCta: { label: "Customer login", href: "/login" },
+      },
+    },
+
+    "express/logistics-subcontracting": {
+      label: "Logistics subcontracting",
+      meta: {
+        title: "Logistics Subcontracting – Delivery Partner for Logistics Companies",
+        description:
+          "soFlott Express as a delivery subcontractor for logistics companies, parcel carriers and distributors: contracted capacity, fixed routes, delivery areas, proof of delivery and reconciled periodic invoicing.",
+        keywords: [
+          "logistics subcontractor",
+          "parcel delivery subcontracting",
+          "delivery partner for logistics companies",
+          "last mile subcontractor",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Subcontracting",
+        title: "A delivery partner for logistics companies.",
+        intro:
+          "Logistics companies, parcel carriers and distributors contract soFlott to provide delivery capacity or run defined delivery operations within their network – delivering their customers’ parcels. We work under a framework agreement, report every route and invoice exactly what was agreed.",
+        primaryCta: {
+          label: "Request a subcontracting proposal",
+          page: "express/request-a-quote",
+          query: "type=subcontracting",
+        },
+        secondaryCta: { label: "Discuss a framework agreement", page: "express/contact" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Engagement models",
+          intro:
+            "Each engagement is defined in its own agreement and operated as part of your logistics network. Typical arrangements include:",
+          items: [
+            {
+              icon: "route",
+              title: "Fixed routes",
+              description: "A route from your network operated by us on agreed weekdays and time windows.",
+            },
+            {
+              icon: "map",
+              title: "Delivery areas",
+              description: "Responsibility for a defined delivery area or service zone.",
+            },
+            {
+              icon: "package",
+              title: "Daily runs with variable volume",
+              description: "Daily delivery runs where the parcel volume changes from day to day.",
+            },
+            {
+              icon: "scale",
+              title: "Flexible billing",
+              description:
+                "Per completed stop or parcel, a fixed route fee, or a base fee plus variable volume – as agreed in the contract.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          title: "How a subcontracting engagement works",
+          steps: [
+            {
+              title: "Requirements and proposal",
+              description: "You describe routes, areas, volumes and service levels. We reply with a written proposal.",
+            },
+            {
+              title: "Framework agreement",
+              description:
+                "Prices, billing units, service levels and exception rules are fixed in a contract before operations start.",
+            },
+            {
+              title: "Route planning and assignment",
+              description: "Routes and vehicles are planned and assigned according to the agreed schedule.",
+            },
+            {
+              title: "Operations and proof of delivery",
+              description: "Manifests, stops, deliveries and exceptions are recorded for each route.",
+            },
+            {
+              title: "Reconciliation and invoice",
+              description:
+                "Delivered volumes are reconciled with your records before we issue the periodic invoice with a supporting statement.",
+            },
+          ],
+        },
+        {
+          kind: "checklist",
+          title: "What you can expect",
+          items: [
+            "One contracting partner: soFlott UG (haftungsbeschränkt)",
+            "Written agreements for prices, billing units and service levels",
+            "Route-level reporting of completed, failed and returned deliveries",
+            "Volume reconciliation before invoicing – no surprises on the invoice",
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Not a logistics company?",
+          text:
+            "If you are a business that ships its own goods on a regular schedule – for example between your branches or to the same customers every week – a contracted delivery route is the better fit.",
+        },
+      ],
+      cta: {
+        title: "Looking for additional delivery capacity?",
+        description: "Tell us about your routes, areas and volumes. We will prepare a subcontracting proposal.",
+        primaryCta: {
+          label: "Request a subcontracting proposal",
+          page: "express/request-a-quote",
+          query: "type=subcontracting",
+        },
+        secondaryCta: { label: "Discuss a framework agreement", page: "express/contact" },
+      },
+    },
+
+    "express/contracted-delivery-routes": {
+      label: "Contracted routes",
+      meta: {
+        title: "Contracted Delivery Routes and Recurring Runs",
+        description:
+          "Fixed, recurring delivery routes for businesses with regular deliveries: soFlott Express runs your route on agreed days and time windows, with proof of delivery for every stop and one monthly invoice.",
+        keywords: [
+          "contracted delivery routes",
+          "recurring delivery route",
+          "fixed route courier",
+          "scheduled B2B delivery",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Contracted routes",
+        title: "Your regular deliveries, on a fixed route.",
+        intro:
+          "When your business ships the same kind of deliveries on a regular pattern, a contracted route replaces repeated individual orders. We agree stops, days, time windows and pricing once – and run the route consistently, without you having to book each delivery.",
+        primaryCta: {
+          label: "Request a route proposal",
+          page: "express/request-a-quote",
+          query: "type=routes",
+        },
+        secondaryCta: { label: "How it works", page: "express/how-it-works" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Typical contracted routes",
+          intro: "A contracted route suits a business whose own deliveries repeat on known days. For example:",
+          items: [
+            {
+              icon: "building",
+              title: "Between your own sites",
+              description: "Regular runs between branches, warehouses, offices or production sites.",
+            },
+            {
+              icon: "package",
+              title: "To regular customers",
+              description: "Scheduled deliveries to the same customers or outlets every week.",
+            },
+            {
+              icon: "route",
+              title: "From suppliers or partners",
+              description: "Recurring collections from suppliers or partner companies on agreed days.",
             },
             {
               icon: "calendar",
-              title: "Then: scheduled routes",
+              title: "Fixed schedules",
+              description: "Agreed weekdays and time windows, planned in advance and documented every time.",
+            },
+          ],
+        },
+        {
+          kind: "checklist",
+          title: "Agreed in writing",
+          items: [
+            "Stops, sequence and service days",
+            "Time windows and handling instructions",
+            "Price basis: fixed fee per route run or per stop",
+            "How exceptions, failed deliveries and returns are handled and charged",
+          ],
+        },
+        {
+          kind: "notice",
+          title: "Which service is right?",
+          text:
+            "Only an occasional or one-off shipment? Use a direct B2B delivery. Are you a logistics company, carrier or distributor that needs capacity to deliver your customers’ parcels? That is logistics subcontracting.",
+        },
+      ],
+      cta: {
+        title: "Plan a contracted route.",
+        description: "Describe the stops, days and volumes and we will prepare a proposal.",
+        primaryCta: {
+          label: "Request a route proposal",
+          page: "express/request-a-quote",
+          query: "type=routes",
+        },
+        secondaryCta: { label: "Contact soFlott Express", page: "express/contact" },
+      },
+    },
+
+    "express/service-areas": {
+      label: "Service areas",
+      meta: {
+        title: "Service Areas – Courier Services in Augsburg, Mering and Munich",
+        description:
+          "Where soFlott Express operates: B2B courier deliveries and contracted routes in the Augsburg, Mering and Munich area in Bavaria, with routes outside the region on request.",
+        keywords: ["courier Augsburg", "courier Mering", "courier Munich", "B2B courier Bavaria"],
+      },
+      hero: {
+        eyebrow: "soFlott Express · Service areas",
+        title: "Where we operate.",
+        intro:
+          "soFlott Express focuses on the Augsburg, Mering and Munich area in Bavaria. Concentrating on one region lets us plan routes realistically and keep the commitments we make.",
+        primaryCta: { label: "Check your route", page: "express/request-a-quote" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Our focus region",
+          items: [
+            {
+              icon: "map",
+              title: "Augsburg",
               description:
-                "Convinced? We will take over your recurring routes at agreed rates.",
+                "Deliveries within Augsburg and to surrounding business locations, and routes between Augsburg and Munich.",
+            },
+            {
+              icon: "map",
+              title: "Mering",
+              description: "Mering and the surrounding area, including connections towards Augsburg and Munich.",
+            },
+            {
+              icon: "map",
+              title: "Munich",
+              description: "Deliveries to and from the Munich area as part of direct orders and contracted routes.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Outside the region",
+          paragraphs: [
+            "For direct deliveries outside this area, send us the route – we will tell you honestly whether and when we can do it. For subcontracting, delivery areas are defined individually in each agreement.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Is your route covered?",
+        description: "Send pickup and delivery locations and we will confirm availability with the quote.",
+        primaryCta: { label: "Request a quote", page: "express/request-a-quote" },
+        secondaryCta: { label: "Contact soFlott Express", page: "express/contact" },
+      },
+    },
+
+    "express/how-it-works": {
+      label: "How it works",
+      meta: {
+        title: "How soFlott Express Works – From Request to Invoice",
+        description:
+          "How direct B2B deliveries, contracted delivery routes and subcontracting engagements work at soFlott Express: request, quote, dispatch, proof of delivery, reconciliation and invoicing.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · How it works",
+        title: "From request to invoice.",
+        intro:
+          "Direct deliveries, contracted routes and subcontracting follow different processes. All three end with a documented delivery and an invoice that matches what was agreed.",
+      },
+      blocks: [
+        {
+          kind: "steps",
+          eyebrow: "Direct B2B delivery",
+          title: "An individual delivery",
+          steps: [
+            {
+              title: "Request",
+              description:
+                "Send pickup and delivery addresses, the requested time window and shipment details – via the form, by phone or in the customer portal.",
+            },
+            {
+              title: "Quote and confirmation",
+              description: "You receive the price and the confirmed time window. The job is booked once you accept.",
+            },
+            {
+              title: "Collection and delivery",
+              description:
+                "A driver is assigned, collects the shipment and delivers it. You can follow the status in the portal.",
+            },
+            {
+              title: "Proof of delivery",
+              description:
+                "The hand-over is recorded with recipient name and time; exceptions are documented and reported.",
+            },
+            {
+              title: "Invoice",
+              description:
+                "The completed order is invoiced individually or included in your consolidated invoice for the period.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          eyebrow: "Contracted delivery routes",
+          title: "A recurring route for your business",
+          steps: [
+            {
+              title: "Route assessment",
+              description:
+                "You describe the stops, service days, time windows and typical volumes of your regular deliveries.",
+            },
+            {
+              title: "Route agreement",
+              description:
+                "Schedule, stops, price basis and the handling of exceptions are agreed once in writing.",
+            },
+            {
+              title: "Scheduled operation",
+              description: "The route runs on the agreed days without you having to book each delivery.",
+            },
+            {
+              title: "Proof of delivery per stop",
+              description: "Every stop is documented; missed stops and exceptions are reported for each run.",
+            },
+            {
+              title: "Monthly invoice",
+              description: "Completed runs are invoiced monthly at the agreed route or stop price.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          eyebrow: "Logistics subcontracting",
+          title: "A subcontracting engagement",
+          steps: [
+            {
+              title: "Proposal",
+              description: "We assess your routes, areas, volumes and service levels and send a written proposal.",
+            },
+            {
+              title: "Agreement",
+              description:
+                "Prices, billing units, service levels and exception rules are fixed in a framework agreement.",
+            },
+            {
+              title: "Operations",
+              description: "Routes are planned and assigned; manifests, deliveries and exceptions are recorded.",
+            },
+            {
+              title: "Reconciliation",
+              description: "Completed volumes are compared with your records and differences are resolved.",
+            },
+            {
+              title: "Periodic invoice",
+              description: "We invoice the agreed billing period with a supporting statement.",
             },
           ],
         },
       ],
-      highlights: [
-        "Usually answered the same working day",
-        "Quote with a fixed price before the run",
-        "Business account created in two minutes",
-      ],
       cta: {
-        title: "Request a direct run now",
-        description:
-          "Create a free business account and book your first run with 20% off – or simply give us a call.",
-        primaryCta: { label: "Create a business account", href: "/register" },
-        secondaryCta: { label: "See services", page: "services" },
+        title: "Ready to start?",
+        description: "Request a delivery quote, a route proposal or a subcontracting proposal – the form lets you choose.",
+        primaryCta: { label: "Request a quote", page: "express/request-a-quote" },
+        secondaryCta: { label: "Contact soFlott Express", page: "express/contact" },
       },
     },
+
+    "express/request-a-quote": {
+      label: "Request a quote",
+      meta: {
+        title: "Request a Courier Quote, Route or Subcontracting Proposal",
+        description:
+          "Request a quote for a direct B2B courier delivery, a proposal for a contracted delivery route or a logistics subcontracting proposal from soFlott Express.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · Request a quote",
+        title: "Request a quote or proposal.",
+        intro:
+          "Choose whether you need an individual delivery, a recurring route for your regular deliveries, or a subcontracting partner for your logistics network. We reply with a quote or a written proposal.",
+      },
+      blocks: [
+        {
+          kind: "form",
+          form: "express-quote",
+          title: "Your request",
+          intro: "Fields marked as optional can be left empty. The more we know, the more precise our reply.",
+        },
+      ],
+    },
+
+    "express/contact": {
+      label: "Contact",
+      meta: {
+        title: "Contact soFlott Express – Courier & Logistics",
+        description:
+          "Contact soFlott Express for B2B courier deliveries, quotes, logistics subcontracting and contracted delivery routes.",
+      },
+      hero: {
+        eyebrow: "soFlott Express · Contact",
+        title: "Talk to soFlott Express.",
+        intro: "Questions about a delivery, a quote or a framework agreement? Get in touch directly.",
+        primaryCta: { label: "Request a quote", page: "express/request-a-quote" },
+      },
+      blocks: [
+        { kind: "contact", title: "soFlott Express contact" },
+        { kind: "form", form: "contact", title: "Send a message" },
+      ],
+    },
+
+    // ----------------------------------------------------------------------
+    // soFlott Digital
+    // ----------------------------------------------------------------------
+    digital: {
+      label: "Overview",
+      meta: {
+        title: "soFlott Digital – IT Consulting and Software Engineering",
+        description:
+          "soFlott Digital provides IT consulting, custom software development, API integration, application modernisation and contract software engineering for businesses in Germany and internationally.",
+        keywords: [
+          "IT consulting Germany",
+          "software development services",
+          "B2B software development",
+          "full-stack software engineering",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital",
+        title: "IT consulting and software engineering for business.",
+        intro:
+          "We help businesses plan, build, integrate and maintain software – as a project, as ongoing support or as contract engineering capacity in your team. We work in English and German.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Discuss a contract engagement", page: "digital/contract-software-engineering" },
+      },
+      blocks: [
+        {
+          kind: "links",
+          eyebrow: "Services",
+          title: "What we do",
+          items: [
+            {
+              icon: "search",
+              title: "IT consulting",
+              description: "Technical advice, architecture reviews and planning before you invest.",
+              page: "digital/it-consulting",
+            },
+            {
+              icon: "code",
+              title: "Software development",
+              description: "Custom business applications and full-stack web development.",
+              page: "digital/software-development",
+            },
+            {
+              icon: "plug",
+              title: "API & system integration",
+              description: "APIs and integrations that connect your systems and partners.",
+              page: "digital/api-integration",
+            },
+            {
+              icon: "refresh",
+              title: "Application modernisation",
+              description: "Step-by-step modernisation of legacy applications.",
+              page: "digital/application-modernisation",
+            },
+            {
+              icon: "users",
+              title: "Contract software engineering",
+              description: "Experienced engineering capacity for your own team and projects.",
+              page: "digital/contract-software-engineering",
+            },
+            {
+              icon: "lifebuoy",
+              title: "Support & maintenance",
+              description: "Ongoing maintenance, fixes and improvements for live applications.",
+              page: "digital/support-and-maintenance",
+            },
+          ],
+        },
+        {
+          kind: "compare",
+          eyebrow: "Engagement models",
+          title: "How we can work together",
+          columns: ["Engagement", "Billing basis"],
+          rows: [
+            { label: "Consulting", values: ["Advice, reviews, workshops", "Hourly or daily rate"] },
+            { label: "Time and materials", values: ["Flexible development work", "Approved time × agreed rate"] },
+            { label: "Fixed-price project", values: ["Clearly defined scope", "Contracted project price"] },
+            {
+              label: "Milestone project",
+              values: ["Larger projects in phases", "Agreed amounts per accepted milestone"],
+            },
+            { label: "Retainer / support", values: ["Ongoing maintenance and support", "Recurring monthly fee"] },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Built on real operations",
+          paragraphs: [
+            "soFlott runs its own courier business on a platform we designed and built: an ASP.NET Core API, Next.js web applications, a driver app, proof of delivery and invoicing. We bring the same practical, production-minded approach to client work.",
+            "We work with clients in Germany and are open to engagements with businesses in the UK, Ireland, the UAE and elsewhere, delivered remotely in English.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Have a project in mind?",
+        description: "Tell us what you want to achieve. We will reply with questions or a proposal.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Contact soFlott Digital", page: "digital/contact" },
+      },
+    },
+
+    "digital/it-consulting": {
+      label: "IT consulting",
+      meta: {
+        title: "IT Consulting and Technical Architecture",
+        description:
+          "IT consulting from soFlott Digital: technical advice, architecture and code reviews, technology selection and project planning for businesses.",
+        keywords: ["IT consulting Germany", "technical architecture consulting", "software architecture review"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · IT consulting",
+        title: "Technical decisions, made with confidence.",
+        intro:
+          "Before you build, buy or rewrite, get an independent technical view. We review what you have, clarify what you need and recommend a realistic way forward.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Typical consulting topics",
+          items: [
+            {
+              icon: "layers",
+              title: "Architecture",
+              description: "Design or review of application and system architecture.",
+            },
+            {
+              icon: "search",
+              title: "Code and system reviews",
+              description: "Assessment of quality, risks and maintainability of existing software.",
+            },
+            {
+              icon: "clipboard",
+              title: "Project planning",
+              description: "Scope, priorities, phases and realistic effort estimates.",
+            },
+            {
+              icon: "scale",
+              title: "Technology selection",
+              description: "Comparison of options – build, buy or integrate – for your situation.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "How consulting is billed",
+          paragraphs: [
+            "Consulting is billed at an agreed hourly or daily rate. Larger assessments can be offered at a fixed price with a defined result, such as a written review or architecture proposal.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Need a second opinion?",
+        description: "Describe your situation and the decision in front of you.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Software development", page: "digital/software-development" },
+      },
+    },
+
+    "digital/software-development": {
+      label: "Software development",
+      meta: {
+        title: "Custom Software Development and Full-Stack Web Applications",
+        description:
+          "Custom B2B software development by soFlott Digital: full-stack web applications with ASP.NET Core / .NET and modern web technologies, delivered as fixed-price, milestone or time-and-materials projects.",
+        keywords: [
+          "software development services",
+          "B2B software development",
+          "full-stack software engineering",
+          "ASP.NET Core development",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Software development",
+        title: "Custom software for the way your business works.",
+        intro:
+          "We design and build business applications – web portals, internal tools and workflow systems – that fit your processes instead of forcing you to adapt to generic software.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "What we build",
+          items: [
+            {
+              icon: "code",
+              title: "Web applications",
+              description: "Full-stack business applications and customer or partner portals.",
+            },
+            {
+              icon: "layers",
+              title: "Back-end services",
+              description: "APIs and services with ASP.NET Core / .NET and relational databases.",
+            },
+            {
+              icon: "clipboard",
+              title: "Internal tools",
+              description: "Administration, operations and reporting tools for your team.",
+            },
+            {
+              icon: "lock",
+              title: "Security by design",
+              description: "Authentication, roles and permissions, and audit trails where they matter.",
+            },
+          ],
+        },
+        {
+          kind: "steps",
+          title: "How a project runs",
+          steps: [
+            { title: "Enquiry and proposal", description: "We clarify goals and scope and send a written proposal." },
+            {
+              title: "Contract and scope",
+              description: "Deliverables, acceptance criteria, milestones and prices are agreed.",
+            },
+            { title: "Iterative delivery", description: "Work in short iterations with regular demos and feedback." },
+            {
+              title: "Acceptance and handover",
+              description:
+                "Milestones are accepted against the agreed criteria; code and documentation are handed over.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Let’s talk about your application.",
+        description: "Send a short description of the problem you want to solve.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Case studies", page: "digital/case-studies" },
+      },
+    },
+
+    "digital/api-integration": {
+      label: "API integration",
+      meta: {
+        title: "API Development and System Integration Services",
+        description:
+          "API integration services from soFlott Digital: design and development of REST APIs and integrations between business systems, partners and third-party services.",
+        keywords: ["API integration services", "system integration", "REST API development"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · API & integration",
+        title: "Connect the systems your business relies on.",
+        intro:
+          "Data that has to be copied by hand between systems costs time and causes errors. We design and build APIs and integrations so your systems, partners and services work together.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "Integration work",
+          items: [
+            {
+              icon: "plug",
+              title: "API design and development",
+              description: "Well-documented REST APIs for your applications and partners.",
+            },
+            {
+              icon: "refresh",
+              title: "System-to-system integration",
+              description: "Connecting business software, databases and third-party services.",
+            },
+            {
+              icon: "shield",
+              title: "Secure access",
+              description: "Authentication, authorisation and validation for every integration.",
+            },
+            {
+              icon: "file",
+              title: "Documentation",
+              description: "Clear documentation so your team and partners can work with the API.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Which systems need to talk to each other?",
+        description: "Tell us about the systems and the data flows involved.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Application modernisation", page: "digital/application-modernisation" },
+      },
+    },
+
+    "digital/application-modernisation": {
+      label: "Modernisation",
+      meta: {
+        title: "Legacy Application Modernisation",
+        description:
+          "Legacy application modernisation by soFlott Digital: assessment, step-by-step migration and re-engineering of ageing business software without stopping daily operations.",
+        keywords: ["legacy application modernisation", "software modernisation", ".NET migration"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Modernisation",
+        title: "Modernise legacy applications – step by step.",
+        intro:
+          "Ageing software is often business-critical and hard to change. We assess it, define a realistic migration path and modernise it in stages while your business keeps running.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "steps",
+          title: "Our approach",
+          steps: [
+            {
+              title: "Assessment",
+              description: "Understand the current system, its risks, dependencies and business rules.",
+            },
+            {
+              title: "Target and roadmap",
+              description: "Agree the target architecture and a staged migration plan.",
+            },
+            {
+              title: "Incremental migration",
+              description: "Replace or re-engineer parts one at a time, with tests protecting existing behaviour.",
+            },
+            {
+              title: "Handover and support",
+              description: "Document the result and support it in operation if required.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Is an old system holding you back?",
+        description: "Tell us what it does and what is getting difficult.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "IT consulting", page: "digital/it-consulting" },
+      },
+    },
+
+    "digital/contract-software-engineering": {
+      label: "Contract engineering",
+      meta: {
+        title: "Contract Software Engineering – Engineering Capacity for Your Team",
+        description:
+          "Contract software engineering from soFlott Digital: experienced full-stack engineering capacity for your projects, contracted through soFlott UG on a time-and-materials basis.",
+        keywords: [
+          "contract software engineer",
+          "contract developer",
+          "full-stack engineering contractor",
+          "software engineering contractor",
+        ],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Contract engineering",
+        title: "Engineering capacity for your team.",
+        intro:
+          "When your team needs additional experienced engineers for a project or a period of time, soFlott Digital provides contract software engineering – contracted business-to-business through soFlott UG.",
+        primaryCta: { label: "Discuss a contract engagement", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "checklist",
+          title: "What a contract engagement looks like",
+          items: [
+            "B2B contract with soFlott UG (haftungsbeschränkt)",
+            "Defined scope, duration and working arrangement",
+            "Billing on approved time at an agreed hourly or daily rate",
+            "Remote work in English or German; on-site by arrangement",
+          ],
+        },
+        {
+          kind: "cards",
+          title: "Typical areas",
+          items: [
+            {
+              icon: "code",
+              title: "Full-stack development",
+              description: "Web front ends and back-end services within your existing codebase.",
+            },
+            { icon: "layers", title: ".NET back ends", description: "ASP.NET Core APIs, services and data access." },
+            {
+              icon: "plug",
+              title: "Integrations",
+              description: "APIs and connections to internal and external systems.",
+            },
+          ],
+        },
+      ],
+      cta: {
+        title: "Need an extra engineer?",
+        description: "Tell us about the role, the technology and the expected duration.",
+        primaryCta: { label: "Discuss a contract engagement", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Contact soFlott Digital", page: "digital/contact" },
+      },
+    },
+
+    "digital/support-and-maintenance": {
+      label: "Support & maintenance",
+      meta: {
+        title: "Software Support and Maintenance",
+        description:
+          "Ongoing software support and maintenance from soFlott Digital: fixes, updates, security patches and continuous improvement for business applications, on a retainer basis.",
+        keywords: ["software maintenance", "application support", "software support retainer"],
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Support",
+        title: "Keep your applications healthy.",
+        intro:
+          "Software needs care after go-live: updates, fixes and small improvements. We support applications we built and, after an assessment, applications built by others.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        {
+          kind: "cards",
+          title: "What support covers",
+          items: [
+            { icon: "wrench", title: "Fixes", description: "Investigation and correction of defects." },
+            {
+              icon: "shield",
+              title: "Updates and security",
+              description: "Framework and dependency updates and security patches.",
+            },
+            {
+              icon: "refresh",
+              title: "Improvements",
+              description: "Small enhancements within an agreed monthly budget.",
+            },
+          ],
+        },
+        {
+          kind: "text",
+          title: "Retainer agreements",
+          paragraphs: [
+            "Support is usually agreed as a monthly retainer with defined scope and response arrangements. Work outside the agreed scope is handled as a change request.",
+          ],
+        },
+      ],
+      cta: {
+        title: "Need ongoing support?",
+        description: "Tell us about the application and what support you need.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+        secondaryCta: { label: "Contact soFlott Digital", page: "digital/contact" },
+      },
+    },
+
+    "digital/case-studies": {
+      label: "Case studies",
+      meta: {
+        title: "Case Studies and Project Examples",
+        description: "Project examples from soFlott Digital, published only with approval.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Case studies",
+        title: "Project examples.",
+        intro:
+          "We only publish client projects with the client’s approval. Until then, here is the project we know best: our own platform.",
+      },
+      blocks: [
+        {
+          kind: "text",
+          title: "soFlottOS – the platform behind soFlott Express",
+          paragraphs: [
+            "soFlott Express runs on soFlottOS, a platform developed in-house by soFlott. It covers the courier workflow from customer booking to invoice.",
+          ],
+          sections: [
+            {
+              title: "Scope",
+              paragraphs: [
+                "A customer portal for business accounts, orders and invoices; a mobile web app for drivers; proof of delivery; and a separate internal administration application.",
+              ],
+            },
+            {
+              title: "Technology",
+              paragraphs: [
+                "An ASP.NET Core REST API with a MySQL database, and Next.js / React web applications for the public website, the customer and driver portal, and the administration console.",
+              ],
+            },
+          ],
+        },
+        {
+          kind: "notice",
+          title: "References",
+          text: "Further references can be discussed in a personal conversation, subject to client consent.",
+        },
+      ],
+      cta: {
+        title: "Want to build something similar?",
+        description: "Let’s talk about your project.",
+        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+      },
+    },
+
+    "digital/request-a-proposal": {
+      label: "Request a proposal",
+      meta: {
+        title: "Request a Proposal – Software Project or Contract Engagement",
+        description:
+          "Request a proposal from soFlott Digital for IT consulting, a software project, API integration, modernisation, support or a contract engineering engagement.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Request a proposal",
+        title: "Tell us about your project.",
+        intro:
+          "Describe what you want to achieve. We will reply with questions or a proposal, usually including the suggested engagement model.",
+      },
+      blocks: [
+        {
+          kind: "form",
+          form: "digital-proposal",
+          title: "Your project",
+          intro: "Rough information is fine – we will clarify the details together.",
+        },
+      ],
+    },
+
+    "digital/contact": {
+      label: "Contact",
+      meta: {
+        title: "Contact soFlott Digital – IT Consulting & Software",
+        description:
+          "Contact soFlott Digital about IT consulting, software projects, proposals and contract engineering engagements.",
+      },
+      hero: {
+        eyebrow: "soFlott Digital · Contact",
+        title: "Talk to soFlott Digital.",
+        intro: "Questions about a project, a proposal or a contract engagement? Get in touch.",
+        primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
+      },
+      blocks: [
+        { kind: "contact", title: "soFlott Digital contact" },
+        { kind: "form", form: "contact", title: "Send a message" },
+      ],
+    },
+  },
+
+  forms: {
+    required: "required",
+    optional: "optional",
+    submit: "Prepare email",
+    submitting: "Preparing…",
+    successTitle: "Your email is ready to send",
+    successText:
+      "Your email program should now show the prepared message. Please send it to complete your request. If nothing opened, write to us directly at {email}.",
+    privacyConsent: "I agree that soFlott UG may use my details to answer this enquiry.",
+    privacyLink: "Privacy notice",
+    errors: {
+      required: "Please fill in this field.",
+      email: "Please enter a valid email address.",
+      consent: "Please confirm so we can answer your enquiry.",
+      summary: "Please check the highlighted fields.",
+    },
+    fields: {
+      company: { label: "Company" },
+      name: { label: "Your name" },
+      email: { label: "Email" },
+      phone: { label: "Phone" },
+      country: { label: "Country" },
+      message: { label: "Message" },
+      topic: { label: "Topic" },
+      pickup: { label: "Pickup location", hint: "Postcode and town, or full address" },
+      delivery: { label: "Delivery location", hint: "Postcode and town, or full address" },
+      date: { label: "Requested date and time window" },
+      shipment: { label: "Shipment", hint: "What is being sent, number of items, approximate size and weight" },
+      area: { label: "Routes or delivery area", hint: "Where the deliveries take place" },
+      volume: { label: "Expected volume", hint: "e.g. stops or parcels per day, days per week" },
+      startDate: { label: "Planned start" },
+      engagement: { label: "Type of engagement" },
+      timeline: { label: "Timeline" },
+      budget: { label: "Budget or rate expectations" },
+      stops: {
+        label: "Stops",
+        hint: "Pickup and delivery addresses on the route, in the usual order",
+      },
+      schedule: { label: "Service days and time windows", hint: "e.g. Mon, Wed, Fri, 8–10 am" },
+    },
+    expressQuote: {
+      typeLegend: "What do you need?",
+      types: {
+        direct: "An individual delivery for my business",
+        routes: "A recurring route for my business’s regular deliveries",
+        subcontracting: "Delivery capacity for my logistics network (logistics companies)",
+      },
+      engagementOptions: ["Fixed route", "Delivery area", "Daily runs with variable volume", "Not sure yet"],
+      subject: {
+        direct: "Delivery quote request",
+        routes: "Contracted route proposal request",
+        subcontracting: "Subcontracting proposal request",
+      },
+    },
+    digitalProposal: {
+      engagementOptions: [
+        "IT consulting",
+        "Software project",
+        "API / system integration",
+        "Application modernisation",
+        "Contract engineering engagement",
+        "Support and maintenance",
+        "Not sure yet",
+      ],
+      subject: "Proposal request",
+    },
+    contact: {
+      topicOptions: {
+        express: "soFlott Express – courier & logistics",
+        digital: "soFlott Digital – IT & software",
+        general: "General enquiry",
+      },
+      subject: "Enquiry via website",
+    },
+  },
+
+  imprint: {
+    company: "Company",
+    address: "Address",
+    managingDirectors: "Managing director(s)",
+    register: "Commercial register",
+    vatId: "VAT identification number",
+    contact: "Contact",
+    divisions: "Divisions",
   },
 
   footer: {
     tagline:
-      "soFlott is the regional direct courier for business customers: urgent transport without transfers, digital proof of delivery and transparent fixed prices.",
+      "Courier & logistics and IT & software engineering for business customers – from one accountable company.",
     columns: [
       {
-        title: "Services",
+        title: "soFlott Express",
         links: [
-          { page: "services", label: "Direct runs & express transport" },
-          { page: "industries", label: "Industry solutions" },
-          { page: "pricing", label: "Pricing & terms" },
+          "express",
+          "express/direct-b2b-delivery",
+          "express/logistics-subcontracting",
+          "express/contracted-delivery-routes",
+          "express/service-areas",
+          "express/request-a-quote",
+        ],
+      },
+      {
+        title: "soFlott Digital",
+        links: [
+          "digital",
+          "digital/it-consulting",
+          "digital/software-development",
+          "digital/api-integration",
+          "digital/application-modernisation",
+          "digital/request-a-proposal",
         ],
       },
       {
         title: "Company",
-        links: [
-          { page: "platform", label: "Technology" },
-          { page: "security", label: "Security" },
-          { page: "contact", label: "Contact" },
-        ],
+        links: ["about", "contact", "legal/imprint", "legal/privacy"],
       },
     ],
-    contactTitle: "Direct line",
-    serviceAreaTitle: "Service area",
-    serviceAreaText: "Augsburg, Mering and Munich; special trips on request.",
-    legalNote: "All prices plus 19% German VAT. Our terms and conditions apply.",
-    copyright: (year, company) => `© ${year} ${company}. soFlott. Business Delivered.`,
+    contactTitle: "Contact",
+    legalNote: "soFlott Express and soFlott Digital are divisions of soFlott UG (haftungsbeschränkt).",
+    copyright: (year, company) => `© ${year} ${company}. All rights reserved.`,
   },
 };

@@ -5,7 +5,7 @@
 // English ("en") is offered so international companies can read the site too.
 //
 // Every public page lives under a /<locale>/ prefix, e.g. "/de/pricing" and
-// "/en/pricing". Explicit prefixes are the clearest setup for Google: each
+// "/en/express". Explicit prefixes are the clearest setup for Google: each
 // language has its own stable URL, and we can point hreflang tags at them.
 // ---------------------------------------------------------------------------
 

@@ -44,14 +44,14 @@ function addresses(values: QuoteFormValues) {
   };
 }
 
-export function BookingForm({ clientId }: { clientId?: number }) {
+export function BookingForm() {
   const router = useRouter();
   const quote = useQuoteOrder();
   const createOrder = useCreateOrder();
   const content = useAppContent();
   const t = content.client.newOrder;
-  const availability = useBookingAvailability(!clientId);
-  const canBook = Boolean(clientId) || (!availability.isError && availability.data?.canBook === true);
+  const availability = useBookingAvailability(true);
+  const canBook = !availability.isError && availability.data?.canBook === true;
   const availabilityText = content.bookingAvailability;
   const { formatCurrency, formatDistance, formatDuration } = useFormatters();
   const schema = useMemo(() => createOrderFormSchema(content.validation), [content.validation]);
@@ -64,7 +64,6 @@ export function BookingForm({ clientId }: { clientId?: number }) {
   const route = quoteSchema.safeParse(Object.fromEntries(quoteFields.map((name, index) => [name, watched[index]])));
   const current = route.success ? addresses(route.data) : null;
   const hasCurrentQuote = quote.isSuccess && current !== null &&
-    quote.variables?.clientId === clientId &&
     current.pickupAddress === quote.variables?.pickupAddress &&
     current.dropoffAddress === quote.variables?.dropoffAddress;
   const result = hasCurrentQuote ? quote.data : undefined;
@@ -83,30 +82,27 @@ export function BookingForm({ clientId }: { clientId?: number }) {
       }
       return;
     }
-    quote.mutate({ ...addresses(parsed.data), ...(clientId ? { clientId } : {}) });
+    quote.mutate(addresses(parsed.data));
   };
 
   const submit = form.handleSubmit(async (values) => {
     if (!canBook) return;
-    if (!clientId) {
-      try {
-        const now = await getBookingAvailability();
-        if (!now.canBook) {
-          await availability.refetch();
-          form.setError("root.availability", { message: now.unavailableReason === "Busy" ? availabilityText.busyNotice : availabilityText.unavailable });
-          return;
-        }
-      } catch {
-        form.setError("root.availability", { message: availabilityText.checkFailed });
+    try {
+      const now = await getBookingAvailability();
+      if (!now.canBook) {
+        await availability.refetch();
+        form.setError("root.availability", { message: now.unavailableReason === "Busy" ? availabilityText.busyNotice : availabilityText.unavailable });
         return;
       }
+    } catch {
+      form.setError("root.availability", { message: availabilityText.checkFailed });
+      return;
     }
     if (!hasCurrentQuote || !current) {
       form.setError("root.quote", { message: t.quoteRequired });
       return;
     }
     createOrder.mutate({
-      ...(clientId ? { clientId } : {}),
       ...current,
       cargoCategory: values.cargoCategory,
       weightKg: values.weightKg,
@@ -117,7 +113,7 @@ export function BookingForm({ clientId }: { clientId?: number }) {
       dropoffPhone: values.dropoffPhone.trim(),
       specialInstructions: values.specialInstructions || null,
       externalReference: values.externalReference || null,
-    }, { onSuccess: (order) => router.push(`${clientId ? "/admin" : "/client"}/orders/${order.id}`) });
+    }, { onSuccess: (order) => router.push(`/client/orders/${order.id}`) });
   });
 
   const field = (name: keyof OrderFormValues, label: string, span = "", props: Record<string, unknown> = {}) => (
@@ -156,7 +152,7 @@ export function BookingForm({ clientId }: { clientId?: number }) {
 
   return (
     <div className="space-y-6">
-      {!clientId && !canBook ? (
+      {!canBook ? (
         <Card><CardContent className="space-y-3 pt-6">
           <p role="status">{availability.isLoading ? content.common.loading : availability.isError
             ? availabilityText.checkFailed : availability.data?.unavailableReason === "Busy"

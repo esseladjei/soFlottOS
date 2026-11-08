@@ -82,7 +82,7 @@ export const de: AppContent = {
       eyebrow: "Arbeitsbereich",
       heading: "Bei soFlottOS anmelden",
       intro:
-        "Eine Anmeldung bringt Admins, Geschäftskunden und Fahrer in ihren eigenen Arbeitsbereich.",
+        "Eine Anmeldung bringt Geschäftskunden und Fahrer in ihren eigenen Arbeitsbereich.",
       highlights: [
         {
           title: "Sichere JWT-Verarbeitung",
@@ -91,7 +91,7 @@ export const de: AppContent = {
         },
         {
           title: "Klar getrennte Rollenbereiche",
-          description: "Admin-, Kunden- und Fahrerseiten sind sauber voneinander getrennt.",
+          description: "Kunden- und Fahrerseiten sind sauber voneinander getrennt.",
         },
       ],
       demoTitle: "Testzugänge für die Entwicklung",
@@ -102,6 +102,7 @@ export const de: AppContent = {
       passwordLabel: "Passwort",
       submit: "Weiter",
       submitting: "Anmeldung läuft…",
+      adminConsole: "Administratorkonten melden sich in der separaten soFlott-Admin-Konsole an.",
       noAccount: "Neu bei soFlottOS?",
       createAccount: "Konto erstellen",
       welcomeBack: (name) => `Willkommen zurück, ${name}.`,
@@ -182,16 +183,6 @@ export const de: AppContent = {
   },
 
   shell: {
-    admin: {
-      title: "Admin-Betrieb",
-      nav: {
-        dashboard: "Übersicht",
-        bookingAvailability: "Verfügbarkeit",
-        clients: "Kunden",
-        drivers: "Fahrer",
-        invoices: "Rechnungen",
-      },
-    },
     client: {
       title: "Kundenbereich",
       nav: {
@@ -207,82 +198,6 @@ export const de: AppContent = {
     },
   },
 
-  admin: {
-    dashboard: {
-      title: "Betriebsübersicht",
-      description: "Kennzahlen und Zuweisung laufender Aufträge.",
-      kpis: {
-        pendingOrders: "Offen",
-        activeOrders: "Aktiv",
-        deliveredToday: "Heute zugestellt",
-        onlineDrivers: "Fahrer online",
-        busyDrivers: "Fahrer im Einsatz",
-        totalClients: "Kunden",
-        revenueNet: "Umsatz netto",
-        outstanding: "Offene Posten",
-      },
-      activeOrdersTitle: "Aktive Aufträge",
-      assignDriver: "Fahrer zuweisen",
-      assignDriverFor: (orderId) => `Fahrer für Auftrag ${orderId} zuweisen`,
-    },
-    newOrder: {
-      title: "Auftrag für einen Kunden anlegen",
-      description: "Eine Lieferung im Auftrag eines Kunden buchen.",
-      selectClient: "Kunde",
-    },
-    clients: {
-      title: "Kundenverwaltung",
-      description: "Geschäftskunden anlegen und einsehen.",
-      createTitle: "Kunde anlegen",
-      listTitle: "Kunden",
-      activeOrders: (count) => `${count} aktiv`,
-      editTitle: "Kunde bearbeiten",
-      detailDescription: (created, totalOrders) =>
-        `Angelegt am ${created} · ${totalOrders} Aufträge insgesamt`,
-    },
-    drivers: {
-      title: "Fahrer",
-      description: "Verfügbarkeit und Auslastung der Fahrerkonten.",
-      noPhone: "Keine Telefonnummer",
-      noVehicle: "Keine Fahrzeugbeschreibung",
-      workload: (active, completed) => `${active} aktiv · ${completed} abgeschlossen`,
-      revenue: "Umsatz aus abgeschlossenen Lieferungen",
-      createTitle: "Fahrer hinzufügen",
-      create: "Fahrer anlegen",
-      fields: {
-        fullName: "Vollständiger Name",
-        email: "E-Mail",
-        password: "Temporäres Passwort",
-        phone: "Telefon",
-        vehicleDescription: "Fahrzeugbeschreibung",
-      },
-    },
-    invoices: {
-      title: "Rechnungen",
-      description: "Rechnungen als Versendet, Bezahlt oder Überfällig markieren.",
-      listTitle: "Alle Rechnungen",
-      due: (date) => `Fällig ${date}`,
-      statusFor: (invoiceNumber) => `Status für Rechnung ${invoiceNumber} setzen`,
-    },
-    clientForm: {
-      fields: {
-        companyName: "Firma",
-        contactPerson: "Ansprechpartner",
-        email: "E-Mail",
-        phone: "Telefon",
-        street: "Straße",
-        city: "Ort",
-        postalCode: "Postleitzahl",
-        country: "Land",
-        taxIdNumber: "USt-IdNr.",
-        defaultBaseFee: "Grundpreis",
-        defaultRatePerKilometer: "Preis / km",
-        specialDeliveryInstructions: "Besondere Lieferhinweise",
-      },
-      save: "Kunde speichern",
-      create: "Kunde anlegen",
-    },
-  },
 
   client: {
     dashboard: {

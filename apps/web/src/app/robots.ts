@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // The signed-in app has nothing to offer search engines.
-      disallow: ["/api", "/admin", "/client", "/driver"],
+      disallow: ["/api", "/client", "/driver"],
     },
     sitemap: `${siteConfig.url}/sitemap.xml`,
     host: siteConfig.url,

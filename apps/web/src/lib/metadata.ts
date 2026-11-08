@@ -14,26 +14,18 @@ import { siteConfig } from "@/lib/site";
 export const baseMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.brand} | Business Delivered.`,
+    default: `${siteConfig.brand} | Express & Digital`,
     template: `%s | ${siteConfig.brand}`,
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
   manifest: "/manifest.webmanifest",
-  keywords: [
-    "Eiltransport",
-    "Direktfahrt buchen",
-    "Expresskurier Gewerbe",
-    "Kurierdienst Notfall",
-    "Sonderfahrt",
-    "Kurierdienst B2B",
-    "same day delivery",
-    "direct courier",
-  ],
+  // Page-specific keywords live in the marketing content; these are generic.
+  keywords: ["soFlott", "soFlott Express", "soFlott Digital", "B2B"],
   openGraph: {
     type: "website",
     siteName: siteConfig.brand,
-    title: `${siteConfig.brand} | Business Delivered.`,
+    title: `${siteConfig.brand} | Express & Digital`,
     description: siteConfig.description,
     url: siteConfig.url,
     images: [
@@ -41,13 +33,13 @@ export const baseMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.brand} - Business Delivered`,
+        alt: `${siteConfig.brand} - Express & Digital`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.brand} | Business Delivered.`,
+    title: `${siteConfig.brand} | Express & Digital`,
     description: siteConfig.description,
     images: ["/twitter-image"],
   },

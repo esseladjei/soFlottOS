@@ -18,6 +18,12 @@
     "lint:web": "npm --prefix apps/web run lint",
     "typecheck:web": "npm --prefix apps/web run typecheck",
     "build:web": "npm --prefix apps/web run build",
-    "check:web": "npm --prefix apps/web run check"
+    "check:web": "npm --prefix apps/web run check",
+    "install:admin": "npm --prefix apps/admin install",
+    "dev:admin": "npm --prefix apps/admin run dev",
+    "lint:admin": "npm --prefix apps/admin run lint",
+    "typecheck:admin": "npm --prefix apps/admin run typecheck",
+    "build:admin": "npm --prefix apps/admin run build",
+    "check:admin": "npm --prefix apps/admin run check"
   }
 }

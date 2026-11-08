@@ -81,7 +81,7 @@ export const en: AppContent = {
       metaTitle: "Sign in",
       eyebrow: "Role workspace",
       heading: "Sign in to soFlottOS",
-      intro: "One login sends admins, clients and drivers to their own focused workspace.",
+      intro: "One login sends business clients and drivers to their own focused workspace.",
       highlights: [
         {
           title: "Secure JWT handling",
@@ -90,7 +90,7 @@ export const en: AppContent = {
         },
         {
           title: "Simple role areas",
-          description: "Admin, client and driver pages are separated for clarity.",
+          description: "Client and driver pages are separated for clarity.",
         },
       ],
       demoTitle: "Development presets",
@@ -101,6 +101,7 @@ export const en: AppContent = {
       passwordLabel: "Password",
       submit: "Continue",
       submitting: "Signing in…",
+      adminConsole: "Administrator accounts sign in to the separate soFlott admin console.",
       noAccount: "New to soFlottOS?",
       createAccount: "Create an account",
       welcomeBack: (name) => `Welcome back, ${name}.`,
@@ -181,16 +182,6 @@ export const en: AppContent = {
   },
 
   shell: {
-    admin: {
-      title: "Admin operations",
-      nav: {
-        dashboard: "Dashboard",
-        bookingAvailability: "Availability",
-        clients: "Clients",
-        drivers: "Drivers",
-        invoices: "Invoices",
-      },
-    },
     client: {
       title: "Client workspace",
       nav: {
@@ -206,82 +197,6 @@ export const en: AppContent = {
     },
   },
 
-  admin: {
-    dashboard: {
-      title: "Ops dashboard",
-      description: "KPIs and active order assignment.",
-      kpis: {
-        pendingOrders: "Pending",
-        activeOrders: "Active",
-        deliveredToday: "Delivered today",
-        onlineDrivers: "Online drivers",
-        busyDrivers: "Busy drivers",
-        totalClients: "Clients",
-        revenueNet: "Revenue net",
-        outstanding: "Outstanding",
-      },
-      activeOrdersTitle: "Active orders",
-      assignDriver: "Assign driver",
-      assignDriverFor: (orderId) => `Assign driver for order ${orderId}`,
-    },
-    newOrder: {
-      title: "Create an order for a client",
-      description: "Book a delivery on a client's behalf.",
-      selectClient: "Client",
-    },
-    clients: {
-      title: "Client CRM",
-      description: "Create and inspect business clients.",
-      createTitle: "Create client",
-      listTitle: "Clients",
-      activeOrders: (count) => `${count} active`,
-      editTitle: "Edit client",
-      detailDescription: (created, totalOrders) =>
-        `Created ${created} · ${totalOrders} total orders`,
-    },
-    drivers: {
-      title: "Drivers",
-      description: "Availability and workload for driver accounts.",
-      noPhone: "No phone",
-      noVehicle: "No vehicle description",
-      workload: (active, completed) => `${active} active · ${completed} completed`,
-      revenue: "Revenue from completed deliveries",
-      createTitle: "Add a driver",
-      create: "Create driver",
-      fields: {
-        fullName: "Full name",
-        email: "Email",
-        password: "Temporary password",
-        phone: "Phone",
-        vehicleDescription: "Vehicle description",
-      },
-    },
-    invoices: {
-      title: "Invoices",
-      description: "Mark invoices as Sent, Paid or Overdue.",
-      listTitle: "All invoices",
-      due: (date) => `Due ${date}`,
-      statusFor: (invoiceNumber) => `Set status for invoice ${invoiceNumber}`,
-    },
-    clientForm: {
-      fields: {
-        companyName: "Company",
-        contactPerson: "Contact",
-        email: "Email",
-        phone: "Phone",
-        street: "Street",
-        city: "City",
-        postalCode: "Postal code",
-        country: "Country",
-        taxIdNumber: "VAT ID",
-        defaultBaseFee: "Base fee",
-        defaultRatePerKilometer: "Rate / km",
-        specialDeliveryInstructions: "Special delivery instructions",
-      },
-      save: "Save client",
-      create: "Create client",
-    },
-  },
 
   client: {
     dashboard: {
