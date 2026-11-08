@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f7f7f5;
+}
+
+::selection {
+  background: #fed7aa;
+  color: #431407;
+}
+
+@layer base {
+  * {
+    border-color: #e7e5e4;
+  }
+
+  body {
+    @apply font-[family-name:var(--font-sans)] text-stone-900;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-[family-name:var(--font-display)] tracking-tight;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    @apply transition;
+  }
+}
+
+@layer components {
+  .ops-console [class*="bg-slate-950"],
+  .ops-console [class*="bg-slate-900"],
+  .ops-console [class*="bg-white/5"] {
+    background-color: #fafaf9 !important;
+  }
+
+  .ops-console [class*="border-white"] {
+    border-color: #e7e5e4 !important;
+  }
+
+  .ops-console .text-white {
+    color: #1c1917 !important;
+  }
+
+  .ops-console .text-slate-200,
+  .ops-console .text-slate-300,
+  .ops-console .text-slate-400 {
+    color: #78716c !important;
+  }
+
+  .ops-console [class*="cyan"] {
+    color: #ea580c !important;
+  }
+
+  .ops-console [class*="bg-cyan"] {
+    background-color: #ffedd5 !important;
+  }
+}
+
+@media print {
+  body { background: white !important; }
+  header, nav, .print\:hidden { display: none !important; }
+  .invoice-page { box-shadow: none !important; margin: 0 !important; max-width: none !important; padding: 0 !important; }
+  a { color: inherit !important; text-decoration: none !important; }
+}

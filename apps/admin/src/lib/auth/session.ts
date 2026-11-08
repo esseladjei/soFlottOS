@@ -1,0 +1,38 @@
+import "server-only";
+import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
+import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
+import {
+  decodeSessionCookieValue,
+  encodeSessionCookieValue,
+  isAdminSession,
+  toPublicSession,
+  type SessionCookiePayload,
+} from "@/lib/auth/session-cookie";
+
+export function getSessionFromRequest(request: NextRequest): SessionCookiePayload | null {
+  const session = decodeSessionCookieValue(request.cookies.get(SESSION_COOKIE_NAME)?.value);
+  return isAdminSession(session) ? session : null;
+}
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  const session = decodeSessionCookieValue(cookieStore.get(SESSION_COOKIE_NAME)?.value);
+  return isAdminSession(session) ? toPublicSession(session) : null;
+}
+
+export async function setSession(session: SessionCookiePayload) {
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE_NAME, encodeSessionCookieValue(session), {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    expires: new Date(session.expiresAtUtc),
+  });
+}
+
+export async function clearSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
+}

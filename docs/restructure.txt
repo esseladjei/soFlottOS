@@ -1,0 +1,1452 @@
+# soFlott UG --- Website & Business Platform Implementation Brief
+
+**Document type:** Product, website, architecture and implementation
+specification\
+**Version:** 2.0 --- Revised to make B2B subcontracting a first-class
+soFlott Express business model\
+**Company:** soFlott UG (haftungsbeschränkt), Germany\
+**Audience:** AI coding agents, software engineers, product designers
+and implementation partners
+
+------------------------------------------------------------------------
+
+## 1. Purpose of this brief
+
+Redesign and extend the existing soFlott website and business software
+into a coherent platform for the company's two commercial divisions:
+
+1.  **soFlott Express** --- courier and logistics services, comprising:
+    -   Direct B2B courier deliveries.
+    -   B2B subcontracting 
+    -   Contracted delivery operations.
+2.  **soFlott Digital** --- IT consulting, software engineering and
+    related technology services.
+
+The platform must support the full business lifecycle:
+
+**Lead/customer → enquiry → contract/order → service delivery → approved
+billable work → invoice → payment → reporting.**
+
+This is an extension of an existing working product, not a greenfield
+rewrite.
+
+### Mandatory instruction to the AI coding agent
+
+Before changing code:
+
+1.  Inspect the complete repository, workspace configuration, deployment
+    setup, database schema, API routes, authentication and existing
+    courier workflows.
+2.  Produce a concise inventory of what already exists and identify
+    reusable components.
+3.  Map existing functionality to the requirements in this brief.
+4.  Propose an implementation plan with dependencies, risks and
+    migrations before destructive changes.
+5.  Preserve working courier functionality and existing customer data.
+6.  Implement incrementally, using backward-compatible API changes and
+    database migrations.
+7.  Add tests and documentation as each capability is introduced.
+8.  Do not invent legal, tax, insurance, transport or employment rules.
+    Flag unresolved questions for the company and its German tax/legal
+    advisers.
+
+Do not replace the existing technology stack merely for stylistic
+preference. Do not create duplicate business logic in the new
+administration frontend.
+
+------------------------------------------------------------------------
+
+## 2. Company, legal entity and brand structure
+
+### 2.1 Legal entity
+
+The legal entity is **soFlott UG (haftungsbeschränkt)**, registered in
+Germany.
+
+The business activities discussed include courier and logistics
+services, B2B delivery, IT services, consulting and software delivery.
+Verify the exact wording and scope against the company's current
+commercial register entry, Gewerbeanmeldung and tax registration before
+launching any activity that may fall outside them.
+
+All contracts, invoices, bank accounts, tax registrations and statutory
+accounting belong to the legal entity soFlott UG (haftungsbeschränkt).
+
+### 2.2 Commercial divisions
+
+``` text
+soFlott UG (haftungsbeschränkt)
+│
+├── soFlott Express — Courier & Logistics
+│   ├── Direct B2B Courier Deliveries
+│   ├── B2B Subcontracting  
+│   └── Contracted Delivery Operations
+│
+└── soFlott Digital — IT Consulting & Software Engineering
+    ├── IT Consulting
+    ├── Custom Software Development
+    ├── API & System Integration
+    ├── Application Modernisation
+    └── Ongoing Engineering / Support
+```
+
+The divisions are commercial brands/business units, not separate legal
+entities unless the company later decides otherwise.
+
+Use the full registered legal name on legally relevant documents. Brand
+names can be prominent, but contracts and invoices must clearly identify
+the contracting legal entity.
+
+### 2.3 Internal management dimensions
+
+Every relevant commercial record should be attributable to:
+
+-   Legal entity.
+-   Division (`Express` or `Digital`).
+-   Business model (`DirectDelivery`, `Subcontracting`, `ITConsulting`,
+    `SoftwareProject`, etc.).
+-   Customer or business partner.
+-   Contract, order, route or project.
+-   Revenue/expense category.
+-   Tax treatment where applicable.
+
+This enables reporting by division and business model while maintaining
+one company's books.
+
+------------------------------------------------------------------------
+
+## 3. Business models --- required scope
+
+The platform must support three distinct commercial workflows. The first
+two are both core parts of soFlott Express.
+
+### 3.1 soFlott Express --- Model A: Direct B2B courier deliveries
+
+**Commercial relationship:** A business customer orders a specific
+delivery directly from soFlott.
+
+Typical example: a manufacturer requests collection of a component at
+one site and delivery to another business location.
+
+#### Customer journey
+
+1.  Business customer visits the Express website or customer portal.
+2.  Customer requests a delivery or asks for a quote.
+3.  Customer supplies pickup/delivery addresses, requested date/time
+    window and shipment details.
+4.  Platform calculates or proposes a price using configured pricing
+    rules.
+5.  Customer receives a quote or booking confirmation, according to the
+    business's approval policy.
+6.  Operations accepts and assigns the job.
+7.  Driver completes collection and delivery.
+8.  Proof of delivery (POD) and exceptions are recorded.
+9.  Completed order becomes billable.
+10. Invoice is issued individually or included in a consolidated billing
+    period.
+
+#### Required capabilities
+
+-   Business customer accounts and multiple contact/address records.
+-   Pickup and delivery locations.
+-   Shipment description, dimensions, weight and handling instructions
+    as relevant.
+-   Requested pickup/delivery dates and time windows.
+-   Configurable pricing: base fee, distance, urgency, waiting time,
+    handling and other approved surcharges.
+-   Manual price override with permission and audit history.
+-   Quote, acceptance and booking statuses.
+-   Dispatch and driver assignment.
+-   Delivery status tracking.
+-   POD: recipient/name or approved acknowledgement, timestamp, notes
+    and optional image/signature where appropriate.
+-   Failed delivery, delay, cancellation, damage and other exception
+    workflows.
+-   Customer notifications.
+-   Individual invoice or consolidated periodic invoice.
+-   Customer-visible order and invoice history.
+
+Do not assume that a map distance is the contractual billable distance.
+Store the agreed price and pricing basis used for the transaction.
+
+### 3.2 soFlott Express --- Model B: B2B subcontracting / contracted delivery operations
+
+**This is a first-class, mandatory business model within soFlott
+Express. It must not be omitted, treated as a minor feature of direct
+bookings, or deferred as an optional future module.**
+
+**Commercial relationship:** A logistics company, parcel carrier,
+distributor or other business contracts soFlott to provide delivery
+capacity or execute defined delivery operations. soFlott invoices its
+contracting business partner according to the agreement.
+
+This is different from an individual direct B2B delivery order. It has
+its own commercial agreement, pricing model, operational planning,
+evidence, reconciliation and billing cycle.
+
+#### Typical engagement examples
+
+-   A fixed route operated on agreed weekdays.
+-   A defined delivery area or service zone.
+-   A daily delivery run with variable parcel volume.
+-   Payment per completed parcel or stop.
+-   A fixed monthly route fee.
+-   A hybrid arrangement combining a base fee and variable volume
+    charges.
+
+#### Required subcontracting module
+
+The internal administration navigation must include:
+
+``` text
+Express
+├── Direct Deliveries
+├── Subcontracting
+│   ├── Business Partners
+│   ├── Contracts & Agreements
+│   ├── Contract Rates / Rate Cards
+│   ├── Routes & Service Areas
+│   ├── Schedules & Working Days
+│   ├── Delivery Manifests
+│   ├── Driver Assignments
+│   ├── Vehicle Assignments
+│   ├── Delivery Operations
+│   ├── Proof of Delivery
+│   ├── Exceptions & Failed Deliveries
+│   ├── SLA / Performance
+│   ├── Volume Reconciliation
+│   ├── Billing Periods
+│   └── Subcontract Invoicing
+└── Drivers & Vehicles
+```
+
+#### Partner and contract management
+
+Store and manage:
+
+-   Contracting business partner and its legal/billing details.
+-   Operational contacts and escalation contacts.
+-   Contract reference, start/end dates and renewal/termination
+    conditions.
+-   Contract documents and amendments.
+-   Service scope, territory, route definitions and schedules.
+-   Operating days, holidays and exceptional service days.
+-   Agreed service levels and performance measures.
+-   Pricing model and effective-dated rate cards.
+-   Agreed treatment of failed, returned, refused or exceptional
+    deliveries.
+-   Waiting time, additional stops, additional routes and other approved
+    surcharges.
+-   Invoice frequency, billing cut-off, payment terms and supporting
+    statement requirements.
+-   Restrictions on further subcontracting, where contractually
+    relevant.
+
+Rates must be versioned/effective-dated. A rate change must not silently
+alter the calculation for an already completed billing period.
+
+#### Route and delivery operations
+
+Support:
+
+-   Recurring route schedules and ad hoc additional routes.
+-   Route/area assignment.
+-   Driver and vehicle assignment.
+-   Daily manifests or delivery lists, including import where partner
+    data is supplied.
+-   Unique parcel, consignment, stop or delivery references as
+    appropriate.
+-   Assignment and dispatch status.
+-   Delivery attempt and completion status.
+-   POD capture.
+-   Failed delivery reason, reattempt, return and exception records.
+-   Driver notes and operational incident records.
+-   Daily route close-out.
+
+Keep the original imported manifest data or a traceable source record
+where useful. Validate imports and identify duplicate or malformed
+references.
+
+#### Reconciliation and approval
+
+A delivery manifest or raw scan count must not automatically become an
+invoice without validation.
+
+Provide a reconciliation workflow:
+
+1.  Import or create the operational manifest.
+2.  Record delivery attempts and outcomes.
+3.  Close the route/day.
+4.  Compare recorded work against contract rules.
+5.  Identify missing PODs, duplicates, disputed items and exceptions.
+6.  Apply approved adjustments according to the contract.
+7.  Produce a reconciliation statement.
+8.  Obtain authorized review/approval.
+9.  Freeze the approved billable period or create a controlled
+    adjustment.
+10. Generate the invoice and supporting statement.
+
+Keep an audit trail of adjustments, reasons, evidence, approver and
+timestamps.
+
+#### Subcontract billing models
+
+Support at least:
+
+  Billing model         Calculation concept
+  --------------------- ----------------------------------------------------
+  Fixed monthly route   Contracted monthly amount
+  Per working day       Approved operating days × daily rate
+  Per parcel            Eligible completed parcels × agreed rate
+  Per stop              Eligible completed stops × agreed rate
+  Hybrid                Base fee + approved variable volume/extra services
+
+The exact definition of a billable delivery, stop, attempt or parcel
+must be configurable per contract and approved by the business. Do not
+hardcode a universal rule.
+
+#### Subcontract reports
+
+Provide operational and financial reporting by:
+
+-   Contracting partner.
+-   Contract.
+-   Route/service area.
+-   Driver/vehicle, subject to privacy and employment requirements.
+-   Billing period.
+-   Planned versus completed work.
+-   Delivery success and exception rates.
+-   Reconciled billable volume.
+-   Revenue, direct costs and contribution/profitability where cost data
+    exists.
+-   Outstanding invoices and payment status.
+
+**Important distinction:** subcontracting is a service supplied by
+soFlott to its contracting business partner. Do not model it as soFlott
+hiring another courier company unless that is a separately configured
+arrangement. Support both partner and supplier concepts clearly if the
+company later uses further subcontractors.
+
+#### Compliance review prompts
+
+Before activating subcontracting operations, obtain professional review
+of the specific business model, including where relevant:
+
+-   German parcel delivery and subcontracting requirements.
+-   Social insurance contribution liability and chain-of-subcontracting
+    exposure.
+-   Driver employment status, payroll and working-time obligations.
+-   Insurance coverage for vehicles, goods and liability.
+-   Transport permits or licensing requirements for the actual vehicle,
+    goods and operating model.
+-   Contractual restrictions on further subcontracting.
+-   Data protection and permitted handling of recipient information.
+-   Cross-border transport considerations if routes cross borders.
+
+The application should support recording required documents, expiry
+dates and review status, but must not present itself as determining
+legal compliance automatically.
+
+### 3.3 soFlott Digital --- IT consulting and software engineering
+
+**Commercial relationship:** A business contracts soFlott UG for IT
+consulting, software engineering, integration, modernisation or ongoing
+technical support.
+
+Target markets discussed include Germany, the UK, Ireland and the UAE.
+Do not imply that the company already has customers or offices in these
+markets unless verified.
+
+#### Service positioning
+
+Present soFlott Digital as a professional B2B technology supplier, not
+merely as an individual job seeker.
+
+Potential services:
+
+-   Custom software development.
+-   Full-stack web application engineering.
+-   ASP.NET / .NET and modern web application work where supported by
+    actual capability.
+-   API development and system integration.
+-   Legacy application modernisation.
+-   Technical consulting and architecture.
+-   Ongoing maintenance and support.
+-   Contract software engineering.
+
+#### Commercial engagement models
+
+  Engagement                Billing basis
+  ------------------------- -------------------------------
+  Consulting                Hourly or daily rate
+  Time and materials        Approved billable time × rate
+  Fixed-price development   Contracted project price
+  Milestone project         Approved milestone amounts
+  Retainer/support          Recurring monthly fee
+
+#### Required workflow
+
+1.  Create business client and validate legal/billing details.
+2.  Record enquiry and proposal.
+3.  Create contract and scope.
+4.  Create project and milestones or work packages.
+5.  Record time, expenses or deliverables as appropriate.
+6.  Submit time/expenses for approval where required.
+7.  Record milestone acceptance.
+8.  Create approved billable items.
+9.  Generate invoice according to the contract.
+10. Track payment and project profitability.
+
+#### Required features
+
+-   Client and contact management.
+-   Proposals/quotes.
+-   Contracts and statements of work.
+-   Project/work package management.
+-   Scope, deliverables and acceptance criteria.
+-   Hourly/daily rates and fixed-price schedules.
+-   Timesheets and approval.
+-   Milestone schedules and acceptance records.
+-   Retainers and recurring billing.
+-   Change requests and out-of-scope work.
+-   Project documents and correspondence references.
+-   Invoice history and outstanding balances.
+-   Project revenue and cost reporting.
+
+For example, a project could have a 30% commencement payment, 40%
+intermediate milestone and 30% final acceptance payment. These
+percentages are examples only; make schedules configurable per contract.
+
+International contracting should support clear contract currency,
+invoice currency, payment terms, customer country and VAT decision
+records. Confirm any currency conversion and accounting treatment with
+the accountant.
+
+------------------------------------------------------------------------
+
+## 4. Website and digital brand architecture
+
+### 4.1 Recommended initial URL architecture
+
+Pragmatic starting point:
+
+``` text
+soflott.de/
+│
+├── /about/
+├── /contact/
+├── /legal/imprint/
+├── /legal/privacy/
+│
+├── /express/
+│   ├── /direct-b2b-delivery/
+│   ├── /logistics-subcontracting/
+│   ├── /contracted-delivery-routes/
+│   ├── /service-areas/
+│   ├── /how-it-works/
+│   ├── /request-a-quote/
+│   └── /contact/
+│
+└── /digital/
+    ├── /it-consulting/
+    ├── /software-development/
+    ├── /api-integration/
+    ├── /application-modernisation/
+    ├── /contract-software-engineering/
+    ├── /case-studies/
+    ├── /request-a-proposal/
+    └── /contact/
+```
+
+Use subdirectories initially to consolidate site management and simplify
+SEO coordination. Separate subdomains can be considered later if
+technical or organizational needs justify them.
+
+### 4.2 Corporate homepage
+
+The homepage should introduce soFlott UG as the parent company and
+direct visitors to the correct division.
+
+It should explain that soFlott provides:
+
+-   Courier and logistics services through soFlott Express.
+-   IT consulting and software engineering through soFlott Digital.
+
+Do not try to rank the corporate homepage for every courier and software
+keyword. Division landing pages should target their own commercial
+search intent.
+
+### 4.3 soFlott Express website
+
+The Express section must clearly distinguish two service lines:
+
+**Direct B2B courier delivery** - Individual business delivery
+requests. - Pickup and delivery. - Urgent/same-day services only if
+actually offered. - Pricing/quote request. - Tracking and customer
+support.
+
+**B2B logistics subcontracting** - Contracted delivery capacity. - Fixed
+routes and recurring delivery operations. - Delivery-area or
+volume-based engagements. - Operational reliability and POD. -
+Invitation to discuss a framework agreement or request a subcontracting
+proposal.
+
+Do not present subcontracting as merely another direct booking option.
+The target audience and buying process differ. Direct delivery pages
+target businesses needing a shipment moved; subcontracting pages target
+logistics companies seeking a delivery partner.
+
+### 4.4 soFlott Digital website
+
+Create pages with distinct commercial intent:
+
+-   IT consulting.
+-   Custom software development.
+-   API and system integration.
+-   Application modernisation.
+-   Contract software engineering.
+-   Technical support and maintenance.
+-   Case studies or project examples, but only with truthful, approved
+    content.
+
+Calls to action should include "Discuss a project", "Request a proposal"
+and "Discuss a contract engagement".
+
+### 4.5 Language and international markets
+
+-   German content for German customers.
+-   English content for UK, Ireland, UAE and other international
+    prospects.
+-   Start with English for UAE unless validated demand justifies Arabic
+    localization.
+-   Use correct language metadata, canonical URLs and hreflang where
+    appropriate.
+-   Do not machine-translate pages without review.
+
+### 4.6 SEO requirements
+
+#### Express keyword themes
+
+-   B2B courier services.
+-   Business express delivery.
+-   Same-day delivery, only if genuinely offered.
+-   Courier services in relevant service areas.
+-   Logistics subcontractor.
+-   Parcel delivery subcontracting.
+-   Contracted delivery routes.
+-   Delivery partner for logistics companies.
+
+#### Digital keyword themes
+
+-   IT consulting Germany.
+-   Software development services.
+-   Full-stack software engineering.
+-   API integration services.
+-   Legacy application modernisation.
+-   Contract software engineer.
+-   B2B software development.
+
+#### Local SEO
+
+Create location pages only for places/regions genuinely served and where
+unique, useful local information can be provided. Avoid mass-produced
+near-duplicate city pages.
+
+#### Technical SEO
+
+-   Semantic headings and meaningful page titles.
+-   Unique meta descriptions.
+-   Canonical URLs.
+-   XML sitemap and robots directives.
+-   Correct index/noindex rules for portals and admin applications.
+-   Structured data only when accurate and applicable.
+-   Optimized images and descriptive alt text.
+-   Fast page rendering and Core Web Vitals.
+-   Mobile-first responsive design.
+-   Accessible navigation and forms.
+-   Analytics and conversion measurement with appropriate privacy
+    controls.
+-   Search Console and relevant webmaster tooling.
+
+Customer portals and internal administration pages must not be indexed
+by search engines.
+
+### 4.7 Trust, legal and conversion requirements
+
+-   Clear legal identity and contact information.
+-   German Impressum and privacy information as applicable.
+-   Transparent service descriptions.
+-   Realistic service areas and operating capabilities.
+-   Clear enquiry and quote forms.
+-   Customer testimonials/case studies only when genuine and authorized.
+-   No fabricated client logos, certifications, delivery statistics or
+    claims.
+-   Clear distinction between soFlott UG and its commercial divisions.
+
+------------------------------------------------------------------------
+
+## 5. Application architecture and user environments
+
+The existing system consists of an **ASP.NET Core C# REST API** and a
+**Next.js frontend in one monorepo**, currently handling courier
+transactions.
+
+Preserve this stack unless repository inspection identifies a compelling
+reason to change it.
+
+### 5.1 Three user-facing environments
+
+1.  **Public website/application:** Marketing, service information,
+    enquiries and appropriate public/customer-facing courier functions.
+2.  **Customer portal:** Authenticated customers can access their own
+    bookings, delivery status, documents, invoices and relevant project
+    information as features are introduced.
+3.  **Internal administration:** A separate, restricted Next.js
+    application for company staff to operate Express, Digital and
+    Finance.
+
+The admin application must be a separate frontend deployment and access
+boundary. It can reuse the existing backend and database through secured
+APIs.
+
+### 5.2 Suggested monorepo structure
+
+Adapt this to the existing repository and package manager. Do not impose
+a workspace migration if the current monorepo already has a sound
+convention.
+
+``` text
+soflott-platform/
+├── apps/
+│   ├── web/                    # Existing Next.js public/customer app
+│   ├── admin/                  # New internal Next.js admin app
+│   └── api/                    # Existing ASP.NET Core REST API
+│
+├── packages/
+│   ├── api-client/             # Shared typed API client
+│   ├── shared-types/           # Shared TypeScript contracts
+│   ├── shared-ui/              # Reusable UI primitives where appropriate
+│   └── validation/             # Shared client-side schemas where appropriate
+│
+├── docs/
+├── scripts/
+└── workspace configuration
+```
+
+The ASP.NET API may remain in its existing directory if moving it would
+create unnecessary risk.
+
+### 5.3 Admin application
+
+The admin application is the internal ERP-style operating interface for
+soFlott UG.
+
+Suggested navigation:
+
+``` text
+Dashboard
+
+Express
+├── Direct Deliveries
+├── Subcontracting
+│   ├── Business Partners
+│   ├── Contracts & Agreements
+│   ├── Rate Cards
+│   ├── Routes & Schedules
+│   ├── Manifests
+│   ├── Driver / Vehicle Assignments
+│   ├── Delivery Operations
+│   ├── Exceptions
+│   ├── POD
+│   ├── Reconciliation
+│   ├── Billing Periods
+│   └── Subcontract Invoices
+└── Drivers & Vehicles
+
+Digital
+├── Clients
+├── Proposals
+├── Contracts
+├── Projects
+├── Timesheets
+├── Milestones
+└── Support / Retainers
+
+Finance
+├── Customers / Business Partners
+├── Billable Work
+├── Invoices
+├── Credit Notes / Corrections
+├── Payments
+├── Tax Treatment Records
+├── Accounting Exports
+└── Financial Reports
+
+Administration
+├── Users & Roles
+├── Permissions
+├── Audit Logs
+├── Document Management
+├── Integrations
+└── Company Settings
+```
+
+### 5.4 Suggested deployment domains
+
+Illustrative only; confirm domain ownership and hosting configuration:
+
+  Environment               Example
+  ------------------------- -----------------------
+  Corporate/public site     `soflott.de`
+  Express division          `soflott.de/express/`
+  Digital division          `soflott.de/digital/`
+  Customer portal           `portal.soflott.de`
+  Internal administration   `admin.soflott.de`
+  Backend API               `api.soflott.de`
+
+The admin frontend should be deployed separately and protected by an
+identity-aware access gateway or equivalent control.
+VPN/private-network-only access can be considered as the company grows.
+
+The backend may remain reachable for public application functionality,
+but every privileged API operation must enforce server-side
+authorization. Hiding the admin URL is not security.
+
+------------------------------------------------------------------------
+
+## 6. Backend architecture
+
+### 6.1 Modular organization
+
+Organize the existing ASP.NET Core application by business capability,
+following existing project conventions:
+
+``` text
+Api/
+├── Modules/
+│   ├── Authentication/
+│   ├── Customers/
+│   ├── Express/
+│   │   ├── DirectDeliveries/
+│   │   ├── Subcontracting/
+│   │   │   ├── Partners/
+│   │   │   ├── Contracts/
+│   │   │   ├── RateCards/
+│   │   │   ├── Routes/
+│   │   │   ├── Manifests/
+│   │   │   ├── DeliveryOperations/
+│   │   │   ├── Reconciliation/
+│   │   │   └── Billing/
+│   │   ├── Drivers/
+│   │   └── Vehicles/
+│   ├── Digital/
+│   │   ├── Clients/
+│   │   ├── Contracts/
+│   │   ├── Projects/
+│   │   ├── Timesheets/
+│   │   └── Milestones/
+│   ├── Finance/
+│   │   ├── BillableItems/
+│   │   ├── Invoices/
+│   │   ├── CreditNotes/
+│   │   ├── Payments/
+│   │   ├── Tax/
+│   │   └── AccountingExport/
+│   └── Administration/
+├── Infrastructure/
+├── Persistence/
+└── Program.cs
+```
+
+This is a target organization, not an instruction to move every existing
+class immediately. Refactor incrementally.
+
+### 6.2 Shared services
+
+Reuse common capabilities:
+
+-   Authentication and authorization.
+-   Customer/business partner master data.
+-   Contacts and addresses.
+-   Contracts and document storage.
+-   Drivers and vehicles where applicable.
+-   Delivery/POD infrastructure where applicable.
+-   Billable item processing.
+-   Invoice and payment services.
+-   Notifications.
+-   Audit logs.
+-   Reporting.
+-   Accounting exports.
+
+Avoid coupling unrelated modules through large, generic controllers.
+Keep clear module boundaries and service contracts.
+
+### 6.3 API design
+
+-   Maintain consistent REST conventions and API versioning where
+    needed.
+-   Use DTOs rather than exposing persistence entities directly.
+-   Validate input on the server.
+-   Enforce ownership and permissions on every relevant request.
+-   Use pagination, filtering and sorting for operational lists.
+-   Make import and billing operations idempotent where possible.
+-   Use explicit state transitions for contracts, deliveries,
+    reconciliation and invoices.
+-   Document APIs with OpenAPI/Swagger where appropriate.
+-   Avoid duplicating business rules in Next.js frontends.
+
+Illustrative endpoint groups:
+
+``` text
+/api/express/direct-deliveries
+/api/express/subcontracting/partners
+/api/express/subcontracting/contracts
+/api/express/subcontracting/routes
+/api/express/subcontracting/manifests
+/api/express/subcontracting/reconciliation
+/api/digital/clients
+/api/digital/projects
+/api/digital/timesheets
+/api/finance/billable-items
+/api/finance/invoices
+/api/finance/payments
+/api/admin/users
+/api/admin/audit-logs
+```
+
+The exact route names should follow the existing API's conventions.
+
+------------------------------------------------------------------------
+
+## 7. Shared data and financial architecture
+
+### 7.1 Core domain concepts
+
+A conceptual model:
+
+``` text
+LegalEntity
+ ├── Divisions
+ │    ├── Express
+ │    └── Digital
+ │
+ ├── CustomersAndBusinessPartners
+ │    ├── LegalDetails
+ │    ├── BillingDetails
+ │    ├── Contacts
+ │    ├── Addresses
+ │    └── TaxIdentifiers
+ │
+ ├── Contracts
+ │    ├── DirectDeliveryAgreements
+ │    ├── SubcontractAgreements
+ │    └── DigitalServiceAgreements
+ │
+ ├── OperationalWork
+ │    ├── DirectDeliveryOrders
+ │    ├── SubcontractRoutesAndDeliveries
+ │    └── DigitalProjectsAndWork
+ │
+ ├── BillableItems
+ │    ├── CompletedDirectDeliveries
+ │    ├── ApprovedSubcontractWork
+ │    ├── ApprovedTimesheets
+ │    └── AcceptedMilestones
+ │
+ └── Finance
+      ├── Invoices
+      ├── InvoiceLines
+      ├── CreditNotesAndCorrections
+      ├── Payments
+      ├── TaxTreatmentRecords
+      └── AccountingExports
+```
+
+Use a shared customer/business-partner master where appropriate, but
+preserve domain-specific records and relationships. A logistics
+subcontracting partner may be a customer of soFlott for delivery
+services; a separate supplier relationship may exist if soFlott buys
+services from that business. Do not conflate the two roles.
+
+### 7.2 Billable work as the bridge to finance
+
+**Invoices must be generated from approved billable work and contract
+terms, not arbitrary frontend values.**
+
+Examples:
+
+-   Direct Express: completed delivery order at agreed price.
+-   Express subcontracting: approved reconciliation statement for a
+    contract/billing period.
+-   Digital time-and-materials: approved timesheet entries.
+-   Digital milestone project: accepted milestone.
+-   Digital retainer: contractually due recurring charge.
+
+Billable items should preserve their source references and calculation
+details.
+
+### 7.3 Invoice architecture
+
+All divisions use one shared invoice engine and one legal supplier
+identity.
+
+Invoice data should include, as applicable:
+
+-   Supplier legal name and address.
+-   Customer legal/billing name and address.
+-   Invoice number and invoice date.
+-   Service/delivery period or supply date.
+-   Clear description of services.
+-   Quantity, unit, unit price and line amount where relevant.
+-   Net amount.
+-   Applicable VAT rate and amount, or legally appropriate tax
+    treatment.
+-   Gross amount where applicable.
+-   Currency.
+-   Payment terms and due date.
+-   Required tax wording and identifiers.
+-   Contract/order/project/route references.
+-   Supporting statement or attachment references.
+
+Invoice numbering must be unique and consistent. A central sequence is a
+reasonable starting recommendation, but numbering policy must be
+confirmed with the accountant and implemented with concurrency-safe
+allocation.
+
+### 7.4 Issued invoice integrity
+
+Do not silently edit or delete issued invoices.
+
+Provide controlled correction workflows:
+
+1.  Preserve the original issued invoice and its data.
+2.  Create a credit note or correction document as appropriate.
+3.  Reference the original invoice.
+4.  Record reason, user, timestamp and supporting evidence.
+5.  Issue the corrected/replacement document where legally appropriate.
+6.  Maintain a complete audit trail.
+
+Draft invoices can be edited under controlled permissions; issued
+documents require formal correction procedures.
+
+### 7.5 German VAT and international B2B services
+
+The application must not hardcode simplistic rules such as "all UK
+invoices are zero VAT" or "all international services are reverse
+charge".
+
+Tax treatment depends on the type of service, customer status, country,
+place-of-supply rules and applicable exceptions.
+
+For each transaction, retain relevant facts:
+
+-   Customer country and establishment.
+-   Business/private customer classification.
+-   VAT/tax identification number where applicable.
+-   Verification status and date where appropriate.
+-   Service category and description.
+-   Place-of-supply decision and legal/tax rationale approved by the
+    adviser.
+-   Tax code/treatment applied.
+-   Required invoice wording.
+-   Reporting/export classification.
+
+Provide a configurable tax decision framework, but require accountant
+review of rules and templates before production use.
+
+Markets discussed include Germany, Ireland, the UK and UAE. The software
+should be capable of recording and applying adviser-approved treatments
+for these markets. Do not infer that every service supplied to a
+customer in one country receives identical treatment.
+
+### 7.6 German e-invoicing readiness
+
+Plan for German domestic B2B e-invoicing requirements and transitional
+rules.
+
+-   Support receipt and processing of structured e-invoices.
+-   Plan for compliant structured output based on EN 16931 where
+    applicable.
+-   Evaluate ZUGFeRD and XRechnung support according to customer and
+    transaction requirements.
+-   Do not assume a normal PDF is a structured e-invoice.
+-   Preserve the original structured invoice payload and associated
+    rendered view.
+-   Validate incoming and outgoing documents.
+-   Provide secure export to the accountant/bookkeeping workflow.
+
+Confirm applicable dates, exemptions, formats and obligations with the
+current official guidance and tax adviser before release.
+
+### 7.7 Payments and accounting
+
+-   Record payments, partial payments, overpayments and allocations.
+-   Track due dates and outstanding balances.
+-   Support payment reminders under configurable policies.
+-   Distinguish invoice date, service period and cash receipt date.
+-   Support accountant-friendly exports and reconciliation.
+-   Do not claim the platform is a complete accounting or tax filing
+    system unless the required functionality and compliance have
+    actually been implemented.
+
+### 7.8 Revenue and profitability reporting
+
+Report by legal entity, division, business model, customer, contract,
+route/project and period.
+
+For Express: - Direct delivery revenue and costs. - Subcontract contract
+revenue. - Route-level costs and contribution. - Delivery volume and
+exception rates. - Outstanding partner invoices.
+
+For Digital: - Consulting revenue by client/project. - Billable versus
+non-billable time. - Milestone revenue. - Retainer revenue. - Project
+costs and margin where cost data exists.
+
+Do not calculate profitability from revenue alone. Clearly identify
+missing cost inputs.
+
+------------------------------------------------------------------------
+
+## 8. Administration roles and permissions
+
+Use server-enforced role-based and preferably permission-based
+authorization. Roles are collections of permissions, not the only
+security check.
+
+Suggested roles:
+
+  -----------------------------------------------------------------------
+  Role                                Expected access
+  ----------------------------------- -----------------------------------
+  Company Owner / Super Admin         All company divisions and settings
+
+  Express Manager                     Express operations and
+                                      subcontracting
+
+  Dispatcher                          Delivery scheduling and assignments
+
+  Driver                              Assigned jobs and permitted
+                                      POD/operational actions
+
+  Digital Project Manager             Assigned Digital clients/projects
+
+  Finance User                        Invoices, payments, billing and
+                                      reports
+
+  Accountant / External Finance       Explicitly granted finance access,
+                                      preferably read/export-limited
+
+  Customer                            Own portal data only
+  -----------------------------------------------------------------------
+
+Access must be limited by division, record ownership, assignment and
+sensitivity where applicable.
+
+Example policy names:
+
+-   `Express.DirectDeliveries.Read`
+-   `Express.DirectDeliveries.Manage`
+-   `Express.Subcontracting.ManageContracts`
+-   `Express.Subcontracting.Reconcile`
+-   `Express.Dispatch.Assign`
+-   `Digital.Projects.Read`
+-   `Digital.Projects.Manage`
+-   `Finance.Invoices.Read`
+-   `Finance.Invoices.Issue`
+-   `Finance.Payments.Manage`
+-   `Administration.Users.Manage`
+
+Do not grant every administrator unrestricted finance or user-management
+access by default.
+
+------------------------------------------------------------------------
+
+## 9. Security, privacy and operational controls
+
+### 9.1 Admin access
+
+-   Separate admin frontend deployment.
+-   MFA for all privileged users.
+-   Strong identity provider or secure authentication implementation.
+-   Consider identity-aware access gateway; VPN/private access may be
+    adopted as requirements grow.
+-   Short-lived access tokens or secure server-side sessions.
+-   Secure refresh-token rotation and revocation if token-based
+    authentication is used.
+-   Secure, HttpOnly, appropriately configured cookies where applicable.
+-   Reauthentication for highly sensitive actions.
+-   Session expiry and device/session management.
+-   Rate limiting and brute-force protection.
+
+### 9.2 API security
+
+-   Enforce authorization on the backend for every protected endpoint.
+-   Never rely on frontend route guards or hidden navigation.
+-   CORS is not an authorization mechanism.
+-   Protect cookie-authenticated state-changing requests against CSRF.
+-   Validate all inputs and file uploads.
+-   Apply least privilege to database and service credentials.
+-   Protect secrets in deployment secret stores.
+-   Avoid logging passwords, tokens, sensitive recipient data or full
+    payment details.
+-   Apply tenant/record ownership checks even though the platform
+    initially serves one legal entity.
+
+### 9.3 Audit trail
+
+Log security-relevant and financially significant events, including:
+
+-   Login and authentication events.
+-   Permission and role changes.
+-   Customer/billing detail changes.
+-   Contract and rate-card changes.
+-   Driver/route assignments where material.
+-   POD or delivery status corrections.
+-   Reconciliation adjustments and approvals.
+-   Invoice issue/correction/credit note events.
+-   Payment allocation changes.
+-   Sensitive document access where appropriate.
+
+Audit records should be tamper-resistant within the system design and
+retained according to a reviewed retention policy.
+
+### 9.4 Privacy and GDPR
+
+-   Minimize personal data collected.
+-   Limit access to recipient and driver information.
+-   Define retention and deletion/archiving policies with legal advice.
+-   Record appropriate processing purposes and access.
+-   Secure file/document storage.
+-   Review processor agreements and hosting locations.
+-   Avoid exposing delivery recipient data through public tracking URLs.
+-   Ensure portal users can only access records they are entitled to
+    see.
+
+### 9.5 Backup and resilience
+
+-   Automated database backups.
+-   Protected/off-site backup copies.
+-   Backup encryption and access control.
+-   Documented recovery objectives.
+-   Regular restore tests.
+-   Monitoring for failed backups and application errors.
+-   Documented incident response and access revocation procedures.
+
+------------------------------------------------------------------------
+
+## 10. UX, design and accessibility requirements
+
+-   Professional, trustworthy B2B visual identity.
+-   Clear visual relationship between parent company and divisions.
+-   Distinct but consistent Express and Digital visual language.
+-   Responsive desktop, tablet and mobile layouts.
+-   Accessible navigation, forms, contrast and keyboard interactions.
+-   Clear validation and actionable error messages.
+-   Loading, empty, success and failure states.
+-   Consistent tables, filters, search and pagination in admin.
+-   Clear status indicators for contracts, deliveries, reconciliation
+    and invoices.
+-   Confirmation for destructive or financially significant actions.
+-   No decorative complexity that makes operational workflows slower.
+
+Public website design should prioritize clarity and conversion. Admin
+design should prioritize operational efficiency, accuracy and
+auditability.
+
+------------------------------------------------------------------------
+
+## 11. Integrations and technical operations
+
+Inspect current integrations before adding new dependencies.
+
+Potential integration categories:
+
+-   Email delivery and transactional notifications.
+-   Maps/routing/geocoding for Express, with explicit distinction
+    between estimated and contractually billable distance.
+-   File/document storage for contracts, POD and invoices.
+-   Payment/bank reconciliation where appropriate.
+-   Structured e-invoice validation and generation.
+-   Accounting export or bookkeeping integration.
+-   Analytics and search performance monitoring.
+-   Error monitoring and application observability.
+
+For each integration, document purpose, data exchanged, authentication,
+failure handling, cost and data protection implications.
+
+------------------------------------------------------------------------
+
+## 12. Testing and quality requirements
+
+### 12.1 Existing functionality regression
+
+Before and after each change, test the current courier transaction
+lifecycle. Do not break existing bookings, status transitions, customer
+access, pricing or notifications.
+
+### 12.2 Required automated tests
+
+-   Unit tests for pricing, tax-treatment selection inputs, contract
+    rate calculations and billing.
+-   API integration tests for authorization and business workflows.
+-   Frontend component and page tests.
+-   End-to-end tests for critical user journeys.
+-   Migration tests and rollback/recovery strategy.
+-   Import validation and duplicate detection tests.
+-   Invoice numbering concurrency tests.
+-   Tests proving issued invoices cannot be silently edited/deleted.
+-   Permission tests for every privileged API area.
+-   Tests proving one customer cannot access another customer's records.
+-   Tests for subcontract reconciliation and billing calculations.
+-   Tests for timesheet approval and milestone billing.
+
+### 12.3 Key end-to-end acceptance scenarios
+
+**Direct delivery** - A business customer requests a delivery. - The
+system calculates a quote using configured rules. - Operations accepts
+and assigns the delivery. - Driver completes delivery and records POD. -
+The order becomes billable. - An invoice is generated and visible to the
+entitled customer.
+
+**Subcontracting** - Admin creates a business partner and subcontract
+agreement. - Admin configures a rate card, route and schedule. - A
+manifest is imported or created. - Driver is assigned and delivery
+outcomes/POD are recorded. - Route/day is closed. - Reconciliation
+identifies exceptions and calculates eligible billable work. -
+Authorized user approves the billing period. - System generates invoice
+and supporting statement. - Revenue and operational performance are
+reportable by contract and route.
+
+**Digital consulting** - Admin creates an international business client
+and contract. - Project and rate/milestone schedule are configured. -
+Consultant records time or milestone completion. - Required
+approval/acceptance is recorded. - Approved billable work generates an
+invoice using adviser-approved tax configuration. - Payment is tracked.
+
+**Security** - Anonymous visitor cannot access admin. - Authenticated
+customer cannot access admin endpoints. - Driver cannot access finance
+or Digital projects. - Express manager cannot access restricted Digital
+records unless separately authorized. - Finance user cannot change
+delivery evidence without permission. - Revoked user/session loses
+access.
+
+------------------------------------------------------------------------
+
+## 13. Phased implementation roadmap
+
+The sequence below is a recommended delivery plan. The two Express
+business models---direct B2B and subcontracting---are both required core
+scope. Subcontracting must not be relegated to a speculative later
+phase.
+
+### Phase 0 --- Repository and product audit
+
+Tasks: - Inspect monorepo and deployment. - Inventory current Next.js
+and ASP.NET functionality. - Map current courier flows and database
+entities. - Identify authentication model and API security gaps. -
+Inventory current tests and integrations. - Document current routes,
+components and shared code. - Identify migration and regression risks.
+
+Deliverable: repository assessment, gap analysis and approved
+implementation plan.
+
+Acceptance: - Existing capabilities documented. - No code or data
+destructively changed. - Proposed changes mapped to current
+architecture.
+
+### Phase 1 --- Brand, public website and information architecture
+
+Tasks: - Establish corporate homepage. - Build Express and Digital
+landing pages. - Clearly communicate direct B2B and subcontracting
+services separately. - Build enquiry/quote forms. - Add German/English
+structure and SEO foundations. - Add legal/trust pages and correct
+company identity.
+
+Acceptance: - Visitors can identify the two divisions. - Express
+visitors can distinguish direct courier service from logistics
+subcontracting. - Subcontracting prospects have a clear proposal/enquiry
+path. - Digital prospects have a clear project/contract enquiry path. -
+Portal/admin routes are not indexed.
+
+### Phase 2 --- Separate admin application and security foundation
+
+Tasks: - Add separate Next.js admin app in the monorepo. - Reuse
+existing API and database. - Implement MFA/secure authentication
+approach. - Implement role/permission policies. - Protect API endpoints
+server-side. - Add audit logging foundation. - Move or recreate existing
+internal courier management screens without disrupting public booking
+flows.
+
+Acceptance: - Admin is independently deployed and restricted. - Existing
+courier transactions continue to work. - Unauthorized API calls are
+rejected. - Roles and permissions are tested.
+
+### Phase 3 --- Express direct B2B workflow
+
+Tasks: - Complete customer/order management. - Configure pricing and
+quotes. - Improve dispatch, driver assignment and POD. - Implement
+billable-work generation. - Support individual and consolidated
+invoicing.
+
+Acceptance: - End-to-end direct delivery scenario passes. - Price
+calculation and overrides are traceable. - Completed work can be billed
+once and only once.
+
+### Phase 4 --- Express B2B subcontracting (mandatory core Express capability)
+
+Tasks: - Partner management. - Contract and amendment management. -
+Effective-dated rate cards. - Routes, areas and schedules. - Manifest
+import and validation. - Driver/vehicle assignment. - Delivery outcomes
+and POD. - Exceptions and failed delivery workflows. - Route/day
+close-out. - Reconciliation, disputes and approval. - Billing periods
+and invoice generation. - Contract/route profitability and operational
+reports.
+
+Acceptance: - A complete subcontract agreement can be configured. -
+Recurring route operations can be scheduled. - Manifest and delivery
+outcomes can be captured. - Reconciliation can identify exceptions and
+produce approved billable work. - Different billing models calculate
+correctly. - Invoice and supporting statement are generated. - Every
+adjustment is auditable. - Direct delivery and subcontracting records
+remain distinguishable.
+
+### Phase 5 --- Shared finance and compliance foundation
+
+Tasks: - Shared invoice engine and billable item model. - Invoice
+numbering and issue controls. - Credit notes/corrections. - Payment
+allocation and outstanding balances. - Division and business-model
+reporting. - Configurable tax treatment records. - Structured e-invoice
+readiness. - Accountant export. - Document archive and retention
+controls.
+
+Acceptance: - All three commercial workflows can create billable work. -
+Issued invoices are preserved and corrected through controlled
+workflows. - Tax treatment is traceable and configurable. - Structured
+e-invoice requirements are validated with the accountant before
+production use.
+
+### Phase 6 --- Digital consulting and software project management
+
+Tasks: - Digital client and proposal management. - Contracts and
+statements of work. - Projects and deliverables. - Timesheets and
+approvals. - Milestone acceptance. - Retainers and recurring billing. -
+International client tax data and adviser-approved invoice
+configuration. - Project revenue and cost reporting.
+
+Acceptance: - Time-and-materials, milestone and retainer workflows
+operate. - Approved work generates invoices. - UK, Ireland and UAE
+customer scenarios can be configured without hardcoded tax assumptions.
+
+### Phase 7 --- Optimization and future productization
+
+Tasks: - Improve dashboards and management reports. - Add integrations
+based on actual business needs. - Improve route/dispatch optimization if
+justified. - Evaluate whether parts of the platform could become a SaaS
+product for other courier or consulting businesses.
+
+Do not build a multi-tenant SaaS architecture prematurely. First prove
+the platform in soFlott's own operations.
+
+------------------------------------------------------------------------
+
+## 14. Decisions requiring owner/adviser confirmation
+
+The coding agent must not guess these decisions. Present a short
+decision list when implementation reaches the relevant point.
+
+### Commercial decisions
+
+-   Actual Express service areas and operating hours.
+-   Whether same-day/urgent services are offered.
+-   Direct delivery pricing formula and minimum charges.
+-   Subcontract billing definitions: parcel, stop, attempt, successful
+    delivery, return, etc.
+-   Which subcontract billing models will be offered initially.
+-   Contract service levels and exception rules.
+-   Whether soFlott will employ drivers, use self-employed drivers or
+    engage other companies; obtain legal review.
+-   Digital service rates, currencies, payment terms and contract
+    templates.
+
+### Finance and legal decisions
+
+-   Approved invoice numbering policy.
+-   Accountant-approved VAT rules and invoice wording for Germany,
+    Ireland, UK and UAE.
+-   E-invoice formats and transition requirements applicable to each
+    customer/transaction.
+-   Accounting export format and bookkeeping workflow.
+-   Document retention periods.
+-   Contract templates and liability provisions.
+-   Parcel subcontracting, social insurance, transport, insurance and
+    employment compliance.
+
+### Technical decisions
+
+-   Existing monorepo tooling and whether to introduce/retain workspace
+    tooling.
+-   Authentication provider and MFA approach.
+-   Admin access gateway versus VPN/private access.
+-   Existing hosting constraints and deployment topology.
+-   Whether customer portal should remain in the existing app or become
+    a separately deployed app.
+-   Database migration approach and any required data model changes.
+
+------------------------------------------------------------------------
+
+## 15. Definition of done
+
+The redesign and platform extension are complete only when:
+
+1.  soFlott UG is presented as the parent legal entity with two clear
+    commercial divisions.
+2.  soFlott Express clearly offers both direct B2B courier services and
+    B2B subcontracting.
+3.  Subcontracting is implemented as a first-class operational and
+    billing workflow, not merely a marketing page.
+4.  soFlott Digital presents credible B2B IT consulting and software
+    engineering services.
+5.  The public website, customer portal and internal administration have
+    distinct access purposes.
+6.  The internal admin frontend is separately deployed and protected.
+7.  The existing ASP.NET Core API is reused with strict server-side
+    authorization.
+8.  Existing working courier transactions remain functional.
+9.  Direct delivery, subcontracting and Digital work all feed the shared
+    billable-work and finance model.
+10. Invoice issue/correction, payment tracking and audit trails are
+    implemented appropriately.
+11. Tax and e-invoicing rules are configurable and adviser-reviewed
+    rather than guessed by the coding agent.
+12. Critical workflows, permissions and regression tests pass.
+13. Deployment, environment variables, backups, monitoring and recovery
+    are documented.
+14. The repository contains updated technical and operational
+    documentation.
+
+------------------------------------------------------------------------
+
+## 16. Final instruction to the AI coding agent
+
+Treat this brief as the target product direction, but treat the existing
+repository as the source of truth for current implementation.
+
+Work in small, reviewable increments:
+
+1.  Inspect.
+2.  Report findings.
+3.  Propose a plan.
+4.  Confirm unresolved product/legal decisions.
+5.  Implement the smallest coherent phase.
+6.  Test and document.
+7.  Review regressions.
+8.  Continue to the next phase.
+
+**Do not rewrite working courier functionality unnecessarily. Do not
+omit B2B subcontracting. Do not duplicate the backend for the admin
+application. Do not put security enforcement only in the frontend. Do
+not invent tax or legal rules.**
+
+The target is one coherent soFlott UG business platform, with two
+commercial divisions, three distinct service workflows, shared secure
+infrastructure and a reliable financial lifecycle.
