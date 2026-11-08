@@ -3,7 +3,7 @@ namespace soFlottOS.Api.Domain;
 // ---------------------------------------------------------------------------
 // All enumerations used by the domain live in this single file so that a
 // newcomer can see every "allowed value" of the system at a glance.
-// They are stored in MySQL as readable strings (see AppDbContext) and sent to
+// They are stored in PostgreSQL as readable strings (see AppDbContext) and sent to
 // the frontend as strings too (see Program.cs -> JsonStringEnumConverter).
 // ---------------------------------------------------------------------------
 

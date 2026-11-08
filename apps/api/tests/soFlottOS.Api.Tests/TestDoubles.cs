@@ -8,7 +8,7 @@ namespace soFlottOS.Api.Tests;
 
 /// <summary>
 /// Hand written test doubles. They keep entities in a list instead of a database,
-/// which keeps the unit tests fast and removes the need for a running MySQL.
+/// which keeps the unit tests fast and removes the need for a running PostgreSQL.
 /// </summary>
 internal sealed class FakeUserRepository : IUserRepository
 {

@@ -15,7 +15,7 @@ Services/      the business rules (pricing, VAT, dispatch, invoicing)
 Data/          EF Core repositories + AppDbContext
    |
    v
-Domain/        plain entities = the MySQL tables
+Domain/        plain entities = the PostgreSQL tables
 ```
 
 `Dtos/` holds the JSON shapes that cross the wire, `Common/` holds configuration,
@@ -48,7 +48,7 @@ the arrow above.
 From the repository root:
 
 ```bash
-npm run db:up        # start MySQL
+npm run db:up        # start PostgreSQL
 npm run dev:api      # run the API on http://localhost:5235
 npm run build:api
 npm run test:api
@@ -68,7 +68,7 @@ Migrations are applied automatically at startup when `Database:ApplyMigrationsOn
 
 | Section | What it controls |
 |---|---|
-| `ConnectionStrings:MySql` | database connection |
+| `ConnectionStrings:Postgres` | database connection |
 | `Jwt` | token issuer, audience, signing key, lifetime |
 | `Pricing` | base fee, rate per km, minimum charge, `VatRate` (0.19) |
 | `Routing` | distance + geocoding: `OpenRouteService` (default — real `driving-car` distance, needs `ApiKey`) or `GeoDistance` (offline Haversine straight line, development only — it understates billable distance and draws a straight line on the map). Addresses are geocoded automatically — ORS Pelias when an `ApiKey` is set, otherwise key-less Nominatim (`GeocodingUrl`, `CountryCode`, `UserAgent`) |
@@ -80,7 +80,7 @@ Migrations are applied automatically at startup when `Database:ApplyMigrationsOn
 | `Cors` | which frontend origins may call the API |
 
 Never commit real secrets. Configure `Jwt__SigningKey` (at least 32 random
-characters) and `ConnectionStrings__MySql` with environment variables or .NET
+characters) and `ConnectionStrings__Postgres` with environment variables or .NET
 User Secrets. OpenRouteService routing requires `Routing__ApiKey`; local
 development defaults to offline `GeoDistance`. To seed development accounts,
 run `npm run seed:password -- 'YOUR_PASSWORD'` and `npm run seed:enable` from the

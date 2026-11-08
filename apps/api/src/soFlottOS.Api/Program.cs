@@ -74,11 +74,11 @@ else if (emailOptions.Enabled && !builder.Environment.IsDevelopment())
 // --- 2. Dependency injection ----------------------------------------------
 
 // 2a. Database (data layer).
-var connectionString = builder.Configuration.GetConnectionString("MySql")
-    ?? throw new InvalidOperationException("ConnectionStrings:MySql is missing.");
+var connectionString = builder.Configuration.GetConnectionString("Postgres")
+    ?? throw new InvalidOperationException("ConnectionStrings:Postgres is missing.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(connectionString, mySql => mySql.EnableRetryOnFailure()));
+    options.UseNpgsql(connectionString, npgsql => npgsql.EnableRetryOnFailure()));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
@@ -213,7 +213,7 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
-// /healthz tells Docker or a load balancer whether the API (and MySQL) is alive.
+// /healthz tells Docker or a load balancer whether the API (and PostgreSQL) is alive.
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<AppDbContext>("database");
 

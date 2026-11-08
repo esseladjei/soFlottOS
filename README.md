@@ -4,22 +4,22 @@ A B2B courier platform for a small German operator: customers book deliveries,
 an admin dispatches drivers, drivers deliver and capture a signature, and every
 order produces a VAT-compliant invoice automatically.
 
-Three applications, one repository, one shared MySQL database:
+Three applications, one repository, one shared PostgreSQL database:
 
 | Folder | What it is | Local URL |
 |---|---|---|
-| `apps/api` | ASP.NET Core 10 backend (MySQL, JWT, EF Core) | `http://localhost:5235` |
+| `apps/api` | ASP.NET Core 10 backend (PostgreSQL, JWT, EF Core) | `http://localhost:5235` |
 | `apps/web` | public Next.js 16 site + customer/driver courier portal | `http://localhost:3000` |
 | `apps/admin` | internal Next.js 16 administration console, **not public**, deployed separately | `http://localhost:3001` |
 | `docs/API-CONTRACT.md` | the single contract both apps follow |
-| `compose.yml` | local MySQL |
+| `compose.yml` | local PostgreSQL |
 | `scripts/dotnetw.mjs` | finds `dotnet` on `PATH` or in `~/.dotnet` |
 
 ## How the apps talk
 
 ```
 customer/driver ──► apps/web   (Next.js route handlers) ──┐
-                                                          ├──► ASP.NET Core API ──► MySQL
+                                                          ├──► ASP.NET Core API ──► PostgreSQL
 admin ───────────► apps/admin (Next.js route handlers) ──┘
                    (/api/auth/*, /api/proxy/*)
 ```
@@ -50,13 +50,13 @@ This is the repository's only solution file. If Rider shows "No loaded projects"
 close the solution and reopen `soFlottOS.sln`.
 
 Before starting the API, configure `Jwt:SigningKey` (at least 32 random
-characters) and `ConnectionStrings:MySql` in .NET User Secrets or environment
+characters) and `ConnectionStrings:Postgres` in .NET User Secrets or environment
 variables. Development uses offline `GeoDistance` routing by default; set
 `Routing:Provider=OpenRouteService` and configure `Routing:ApiKey` to use live
 routing. Do not put credentials in configuration files.
 
 ```bash
-npm run db:up                 # 1. start MySQL in Docker
+npm run db:up                 # 1. start PostgreSQL in Docker
 npm run dev:api               # 2. backend on http://localhost:5235
 
 cp apps/web/.env.example apps/web/.env.local
@@ -84,7 +84,7 @@ Replace `REPLACE_WITH_YOUR_OWN_PASSWORD` with a unique password of at least
 12 characters, including uppercase and lowercase letters, a number and a symbol.
 Keep the surrounding single quotes. The password command can appear in your
 terminal history and npm output; do not share those logs.
-MySQL must be running, and `Jwt:SigningKey` and `ConnectionStrings:MySql` must
+PostgreSQL must be running, and `Jwt:SigningKey` and `ConnectionStrings:Postgres` must
 already be configured as described above. If you run the API in Rider, restart
 `soFlottOS.Api: http` instead of running `npm run dev:api`.
 
@@ -107,7 +107,7 @@ not delete the accounts.
 
 | Command | Does |
 |---|---|
-| `npm run db:up` / `db:down` | start / stop MySQL |
+| `npm run db:up` / `db:down` | start / stop PostgreSQL |
 | `npm run dev:api` | run the backend |
 | `npm run build:api` / `test:api` | build / unit-test the backend |
 | `npm run tools:api` | restore the `dotnet-ef` CLI |
@@ -151,7 +151,7 @@ times exclusive. Use `24:00` as an end time and split overnight windows across
 two days. An enabled schedule with no windows closes all customer bookings;
 disabling the schedule allows bookings anytime unless busy. Existing installations
 start with the schedule disabled and busy off, preserving their booking behavior.
-Settings persist in MySQL through the availability migration.
+Settings persist in PostgreSQL through the availability migration.
 
 Business time-zone conversion is centralized in API `Common/BusinessTime.cs`
 (also used by email) and web `lib/business-time.ts` (used by shared date
@@ -171,7 +171,7 @@ Email is **disabled by default**. Verify your sending domain in Resend, configur
 `Email__FrontendBaseUrl` on the **API process**, and complete the `Invoicing`
 company/address/tax/payment details. Keep credentials outside source control.
 The included outbox migration is applied on API startup when migration auto-apply
-is enabled. `compose.yml` runs only MySQL, so email settings do not belong on that
+is enabled. `compose.yml` runs only PostgreSQL, so email settings do not belong on that
 container.
 
 See [email configuration and extension guide](apps/api/src/soFlottOS.Api/Services/Email/README.md).

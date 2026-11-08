@@ -7,7 +7,7 @@ customer portal (`apps/web`), ideally behind a private hostname
 
 Same stack as `apps/web`: Next.js App Router, TypeScript, Tailwind CSS,
 TanStack Query, React Hook Form, Zod and sonner. It talks to the same
-ASP.NET Core API (`apps/api`) and therefore the same MySQL database.
+ASP.NET Core API (`apps/api`) and therefore the same PostgreSQL database.
 
 ## Run locally
 

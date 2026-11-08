@@ -6,7 +6,7 @@ using soFlottOS.Api.Domain.Entities;
 
 namespace soFlottOS.Api.Tests;
 
-// Preserve the real repository; only its MySQL YEAR query is adapted to the test ticks mapping.
+// Preserve the real repository; only its PostgreSQL year query is adapted to the test ticks mapping.
 internal sealed class EmailTestInvoiceRepository(AppDbContext context) : IInvoiceRepository
 {
     private readonly InvoiceRepository _repository = new(context);

@@ -2,7 +2,7 @@
   "name": "soflottos-monorepo",
   "private": true,
   "scripts": {
-    "db:up": "docker compose up -d mysql",
+    "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "restore:api": "node ./scripts/dotnetw.mjs restore soFlottOS.sln",
     "tools:api": "node ./scripts/dotnetw.mjs tool restore --tool-manifest apps/api/.config/dotnet-tools.json",

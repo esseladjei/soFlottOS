@@ -6,7 +6,7 @@ namespace soFlottOS.Api.Data;
 
 /// <summary>
 /// The EF Core database context: the only class that knows how C# objects map to
-/// MySQL tables. Each DbSet below becomes one table.
+/// PostgreSQL tables. Each DbSet below becomes one table.
 /// <para>
 /// The mapping rules (column sizes, indexes, relationships) are configured in
 /// OnModelCreating, one private method per table, so everything about the schema
@@ -180,8 +180,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         pod.HasKey(entity => entity.Id);
         pod.Property(entity => entity.RecipientName).HasMaxLength(150).IsRequired();
 
-        // Signatures are large base64 strings -> LONGTEXT.
-        pod.Property(entity => entity.SignatureDataUrl).HasColumnType("longtext").IsRequired();
+        // Signatures are large base64 strings -> text.
+        pod.Property(entity => entity.SignatureDataUrl).HasColumnType("text").IsRequired();
         pod.Property(entity => entity.GpsLatitude).HasPrecision(10, 6).IsRequired();
         pod.Property(entity => entity.GpsLongitude).HasPrecision(10, 6).IsRequired();
         pod.HasIndex(entity => entity.OrderId).IsUnique();
@@ -249,7 +249,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         email.HasIndex(entity => entity.DeliveryKey).IsUnique();
         email.Property(entity => entity.EventType).HasMaxLength(100).IsRequired();
         email.Property(entity => entity.Recipient).HasMaxLength(255).IsRequired();
-        email.Property(entity => entity.ContentJson).HasColumnType("longtext").IsRequired();
+        email.Property(entity => entity.ContentJson).HasColumnType("text").IsRequired();
         email.Property(entity => entity.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
         email.Property(entity => entity.LeaseToken).HasMaxLength(32);
         email.Property(entity => entity.ProviderMessageId).HasMaxLength(255);

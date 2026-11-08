@@ -15,13 +15,13 @@
 
 ### Backend Architecture
 - **Framework:** C# .NET 8/9 ASP.NET Core Web API using Clean Architecture (Repository Pattern, Service Layer, Controllers).
-- **ORM & Database:** Entity Framework Core (EF Core) with MySQL 8.0+.
+- **ORM & Database:** Entity Framework Core (EF Core) with PostgreSQL 16+.
 - **Authentication:** JWT Bearer tokens with Role-Based Access Control (`Admin`, `Dispatcher`, `Driver`, `Client`).
 - **Integrations:** OpenRouteService / Mapbox API (routing & distance), Twilio (SMS/WhatsApp notifications).
 
 ### Frontend Architecture
 - **Framework:** Next.js 14+ (App Router, React Server Components, TypeScript, Tailwind CSS).
-- **Apps (one shared API + MySQL database):**
+- **Apps (one shared API + PostgreSQL database):**
     - `apps/web` (public) — marketing site, `/client` portal (booking, route quoting, invoices) and `/driver` mobile PWA with signature pad for Proof of Delivery (PoD).
     - `apps/admin` (internal, deployed separately, Admin role only) — operations dispatch, driver management, booking availability, CRM, revenue and invoice manager.
     - `apps/api` — ASP.NET Core REST API used by both frontends.

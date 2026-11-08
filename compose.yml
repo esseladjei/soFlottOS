@@ -1,24 +1,20 @@
 services:
-  mysql:
-    image: mysql:8.4
-    container_name: soflott-mysql
+  postgres:
+    image: postgres:17
+    container_name: soflott-postgres
     environment:
-      MYSQL_DATABASE: soflott_db
-      MYSQL_USER: soflott_app
-      MYSQL_PASSWORD: SoFlottApp_Local_ChangeMe!
-      MYSQL_ROOT_PASSWORD: Root_Local_ChangeMe!
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
+      POSTGRES_DB: soflott_db
+      POSTGRES_USER: soflott_app
+      POSTGRES_PASSWORD: SoFlottApp_Local_ChangeMe!
     ports:
-      - "3306:3306"
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pRoot_Local_ChangeMe!"]
+      test: ["CMD-SHELL", "pg_isready -U soflott_app -d soflott_db"]
       interval: 10s
       timeout: 5s
       retries: 10
     volumes:
-      - soflott_mysql_data:/var/lib/mysql
+      - soflott_postgres_data:/var/lib/postgresql/data
 
 volumes:
-  soflott_mysql_data:
+  soflott_postgres_data:

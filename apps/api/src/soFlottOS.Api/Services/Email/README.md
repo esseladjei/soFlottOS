@@ -14,7 +14,7 @@ Business services never call Resend directly. The integration is split into:
 ## Configuration
 
 Email is disabled by default. No historical events are replayed when it is enabled.
-Configure the **API process**, not the MySQL service in `compose.yml`:
+Configure the **API process**, not the PostgreSQL service in `compose.yml`:
 
 ```bash
 export Email__Enabled=true

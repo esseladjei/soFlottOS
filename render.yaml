@@ -9,9 +9,10 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      # External MySQL (Render has no managed MySQL), e.g. server=...;port=3306;database=...;user=...;password=...;SslMode=Required
-      - key: ConnectionStrings__MySql
-        sync: false
+      - key: ConnectionStrings__Postgres
+        fromDatabase:
+          name: soflott-db
+          property: connectionString
       - key: Jwt__SigningKey
         generateValue: true
       - key: Cors__AllowedOrigins__0
@@ -26,3 +27,8 @@ services:
         sync: false
     # To enable Email (password reset) in production, attach a persistent disk and set
     # Authentication__DataProtectionKeyPath to a path on it; the API requires this.
+
+databases:
+  - name: soflott-db
+    databaseName: soflott_db
+    user: soflott_app

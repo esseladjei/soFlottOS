@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   The one and only backend project.
   Folder layers inside it: Domain -> Data (+Repositories) -> Services -> Controllers.
 -->
@@ -20,9 +20,9 @@
     <PackageReference Include="Microsoft.OpenApi" Version="2.12.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
 
-    <!-- Data: EF Core + the MySQL provider. Design is only needed for `dotnet ef`. -->
+    <!-- Data: EF Core + the PostgreSQL (Npgsql) provider. Design is only needed for `dotnet ef`. -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
