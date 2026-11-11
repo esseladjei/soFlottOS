@@ -39,7 +39,7 @@ export const siteConfig = {
 
   // --- Contact -------------------------------------------------------------
   // PLACEHOLDER: replace with the real number before launch.
-  phone: env.NEXT_PUBLIC_CONTACT_PHONE || "+49 821 0000000",
+  phone: env.NEXT_PUBLIC_CONTACT_PHONE || "+49 8233 8470743",
   email: env.NEXT_PUBLIC_CONTACT_EMAIL || "info@soflott.de",
 
   // --- Commercial divisions ------------------------------------------------
@@ -61,7 +61,7 @@ export const siteConfig = {
   // OWNER DECISION: fill these from the commercial register entry before
   // launch. Empty values are shown as "to be completed" on /legal/imprint.
   legal: {
-    managingDirectors: env.NEXT_PUBLIC_LEGAL_MANAGING_DIRECTORS ?? "",
+    managingDirectors: env.NEXT_PUBLIC_LEGAL_MANAGING_DIRECTORS ?? "Essel Adjei-Mensah",
     registerCourt: env.NEXT_PUBLIC_LEGAL_REGISTER_COURT ?? "",
     registerNumber: env.NEXT_PUBLIC_LEGAL_REGISTER_NUMBER ?? "",
     vatId: env.NEXT_PUBLIC_LEGAL_VAT_ID ?? "",
@@ -71,9 +71,9 @@ export const siteConfig = {
 
   // --- Address (imprint + Organization structured data) --------------------
   address: {
-    street: env.NEXT_PUBLIC_ADDRESS_STREET ?? "",
-    postalCode: env.NEXT_PUBLIC_ADDRESS_POSTAL_CODE ?? "",
-    city: env.NEXT_PUBLIC_ADDRESS_CITY ?? "",
+    street: env.NEXT_PUBLIC_ADDRESS_STREET ?? "Mandichostr. 1a",
+    postalCode: env.NEXT_PUBLIC_ADDRESS_POSTAL_CODE ?? "86504",
+    city: env.NEXT_PUBLIC_ADDRESS_CITY ?? "Merching",
     country: env.NEXT_PUBLIC_ADDRESS_COUNTRY || "DE",
   },
 
