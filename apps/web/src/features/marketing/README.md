@@ -6,6 +6,9 @@ Components that render the public website. Copy lives in
 | File | Purpose |
 | --- | --- |
 | `components/marketing-page.tsx` | Renders any page: division sub-nav, hero, blocks, closing CTA, JSON-LD |
+| `components/express-visual.tsx` | Localized Express artwork; static image dimensions and automatic height preserve the full image without cropping or stretching |
+| `components/digital-visual.ts` | Localized Digital hero and service artwork |
+| `components/marketing-visual.tsx` | Shared responsive image renderer, preserving original proportions |
 | `components/blocks.tsx` | One renderer per content block kind (`cards`, `links`, `divisions`, `steps`, `compare`, `checklist`, `text`, `notice`, `faq`, `form`, `contact`, `imprint`) |
 | `components/enquiry-form.tsx` | Express quote / subcontracting, Digital proposal and contact forms |
 | `components/marketing-nav.tsx`, `marketing-menu.tsx` | Corporate top navigation + mobile menu |

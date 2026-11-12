@@ -30,7 +30,7 @@ export function CookieSettingsPanel({
   variant,
   className,
 }: {
-  /** `dialog` has its own scroll area and a sticky action bar. */
+  /** `dialog` is scrollable and has a sticky action bar on larger screens. */
   variant: "dialog" | "page";
   className?: string;
 }) {
@@ -46,8 +46,8 @@ export function CookieSettingsPanel({
   const date = consent ? new Intl.DateTimeFormat(locale, { dateStyle: "long", timeStyle: "short" }).format(new Date(consent.updatedAt)) : "";
 
   return (
-    <div className={cn(inDialog && "flex min-h-0 flex-1 flex-col", className)}>
-      <div className={cn(inDialog && "min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-7")}>
+    <div className={className}>
+      <div className={cn(inDialog && "px-5 py-5 sm:px-7")}>
         {inDialog ? (
           <div className="flex items-start gap-3 pr-8">
             <span aria-hidden className="mt-1 flex size-9 shrink-0 items-center justify-center rounded-xl bg-stone-900 text-white">
@@ -100,7 +100,7 @@ export function CookieSettingsPanel({
       <div
         className={cn(
           "flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-end",
-          inDialog ? "border-t border-stone-200 bg-white px-5 py-4 sm:px-7" : "mt-6",
+          inDialog ? "border-t border-stone-200 bg-white px-5 py-4 sm:sticky sm:bottom-0 sm:px-7" : "mt-6",
         )}
       >
         <Button className={solid} onClick={rejectOptional}>
