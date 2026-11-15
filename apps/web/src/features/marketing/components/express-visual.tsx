@@ -5,9 +5,9 @@ import type {MarketingPage} from "@/i18n/routes";
 import heroDe from "../../../../public/images/express/hero/hero_de_2.png";
 import heroEn from "../../../../public/images/express/hero/hero_en_1.png";
 import b2bDe from "../../../../public/images/express/de/b2b/b2b_3.png";
-import b2bEn from "../../../../public/images/express/en/b2b/b2b_6.png";
+import b2bEn from "../../../../public/images/express/en/b2b/b2b_8.png";
 import routesDe from "../../../../public/images/express/de/fixedroutes/soFlott_express_fixedroute_1_de.png";
-import routesEn from "../../../../public/images/express/en/fixedroutes/fixedroute_3.png";
+import routesEn from "../../../../public/images/express/en/fixedroutes/fixedroute_1.png";
 import subcontractingDe from "../../../../public/images/express/de/subcontracting/subcontract-3.png";
 import subcontractingEn from "../../../../public/images/express/en/subcontracting/subcontact_2.png";
 
