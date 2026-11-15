@@ -43,7 +43,7 @@ export function SectionIntro({
   return (
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
       {eyebrow ? (
-        <p className={cn("text-xs font-extrabold uppercase tracking-[0.2em]", accent)}>{eyebrow}</p>
+        <p className={cn("text-sm font-semibold", accent)}>{eyebrow}</p>
       ) : null}
       <h2
         className="mt-2 font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight text-stone-950 md:text-3xl"

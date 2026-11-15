@@ -33,7 +33,7 @@ export const siteConfig = {
   companyName: "soFlott UG (haftungsbeschränkt)",
 
   description:
-    "soFlott UG (haftungsbeschränkt): B2B courier and logistics services through soFlott Express, IT consulting and software engineering through soFlott Digital.",
+    "soFlott UG (haftungsbeschränkt): B2B courier and logistics services through soFlott Express, digital solutions and IT consulting through soFlott Digital.",
 
   url: resolveOrigin(env.NEXT_PUBLIC_SITE_URL, "http://localhost:3000"),
 

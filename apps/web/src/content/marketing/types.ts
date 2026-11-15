@@ -158,6 +158,7 @@ export interface PageContent {
   meta: PageMeta;
   hero: {
     eyebrow: string;
+    descriptor?: string;
     title: string;
     intro: string;
     primaryCta?: LinkItem;

@@ -85,7 +85,10 @@ export function MarketingPageView({
                     ) : null}
 
                     <div className={cn("max-w-3xl", isHome ? "pt-6 md:pt-12" : "pt-8")}>
-                        <p className={cn("text-xs font-extrabold uppercase tracking-[0.2em]", theme.accent)}>{data.hero.eyebrow}</p>
+                        <p className={cn("text-sm font-semibold", theme.accent)}>{data.hero.eyebrow}</p>
+                        {data.hero.descriptor ? (
+                            <p className="mt-1 text-sm font-medium text-stone-600">{data.hero.descriptor}</p>
+                        ) : null}
                         <h1 className="mt-3 text-balance font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-stone-950 md:text-5xl">
                             {data.hero.title}
                         </h1>

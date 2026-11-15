@@ -168,7 +168,7 @@ export function EnquiryForm({
         ? forms.expressQuote.subject[expressType]
         : kind === "digital-proposal"
           ? forms.digitalProposal.subject
-          : `${forms.contact.subject} – ${forms.contact.topicOptions[topic]}`;
+          : `${forms.contact.subject}: ${forms.contact.topicOptions[topic]}`;
 
     const lines: string[] = [];
     if (kind === "express-quote") lines.push(`${forms.expressQuote.typeLegend} ${forms.expressQuote.types[expressType]}`);
@@ -320,7 +320,7 @@ export function EnquiryForm({
                   <Textarea {...common} onChange={(event) => update(field.key, event.target.value)} rows={4} />
                 ) : field.type === "select" ? (
                   <Select {...common} onChange={(event) => update(field.key, event.target.value)}>
-                    <option value="">–</option>
+                    <option value="">-</option>
                     {field.options?.map((option) => (
                       <option key={option} value={option}>
                         {option}

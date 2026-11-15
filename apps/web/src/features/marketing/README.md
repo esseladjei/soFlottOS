@@ -18,6 +18,18 @@ Components that render the public website. Copy lives in
 | `lib/theme.ts` | Colours per division (Express orange, Digital sky, corporate stone) |
 | `lib/seo.ts`, `lib/links.ts` | Metadata/hreflang and link resolution |
 
+## Search and sharing
+
+Each localized page supplies its own title and description. The metadata helper
+adds canonical URLs, language alternates and social sharing images. Set
+`NEXT_PUBLIC_SITE_URL` to the public site origin in production; otherwise these
+URLs default to localhost. The sitemap omits modification dates because the site
+does not currently track when individual pages were last changed.
+
+The Digital overview hero uses localized text for the brand descriptor and
+headline. It intentionally does not use the older hero artwork, which contains
+outdated positioning.
+
 ## Enquiry forms (Phase 1)
 
 There is no enquiry backend yet. Forms validate in the browser and open the

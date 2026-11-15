@@ -1,8 +1,6 @@
 import type {StaticImageData} from "next/image";
 import type {Locale} from "@/i18n/config";
 import type {MarketingPage} from "@/i18n/routes";
-import heroDe from "../../../../public/images/digital/hero/hero_digital_de_3.png";
-import heroEn from "../../../../public/images/digital/hero/hero_digital_en_2.png";
 import consultingDe from "../../../../public/images/digital/hero/hero_digital_de_4.png";
 import consultingEn from "../../../../public/images/digital/hero/hero_digital_en_3.png";
 import softwareDe from "../../../../public/images/digital/de/software/software_de_2.png";
@@ -16,7 +14,6 @@ import supportEn from "../../../../public/images/digital/en/support_maintenance/
 
 const digitalVisuals: Record<Locale, Partial<Record<MarketingPage, StaticImageData>>> = {
     de: {
-        digital: heroDe,
         "digital/it-consulting": consultingDe,
         "digital/software-development": softwareDe,
         "digital/api-integration": apiDe,
@@ -25,7 +22,6 @@ const digitalVisuals: Record<Locale, Partial<Record<MarketingPage, StaticImageDa
         "digital/support-and-maintenance": consultingDe,
     },
     en: {
-        digital: heroEn,
         "digital/it-consulting": consultingEn,
         "digital/software-development": softwareEn,
         "digital/api-integration": apiEn,

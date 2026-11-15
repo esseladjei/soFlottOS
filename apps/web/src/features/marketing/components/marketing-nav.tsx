@@ -36,7 +36,7 @@ export function MarketingNav({ locale, content }: { locale: Locale; content: Mar
     <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
       <div className="relative mx-auto flex min-h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
         <Link
-          aria-label={`${siteConfig.brand} – ${content.pages.home.label}`}
+          aria-label={`${siteConfig.brand}: ${content.pages.home.label}`}
           className="flex w-fit shrink-0 flex-col rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-4"
           href={localePath(locale)}
         >

@@ -50,7 +50,9 @@ export function buildPageMetadata({
   const canonical = absoluteUrl(localePath(locale, page));
 
   return {
-    title: meta.title,
+    title: meta.title.toLowerCase().includes(siteConfig.brand.toLowerCase())
+      ? { absolute: meta.title }
+      : meta.title,
     description: meta.description,
     keywords: meta.keywords,
     ...(indexable ? {} : { robots: { index: false, follow: true } }),
@@ -64,6 +66,7 @@ export function buildPageMetadata({
       title: meta.title,
       description: meta.description,
       url: canonical,
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: siteConfig.brand }],
       locale: openGraphLocales[locale],
       alternateLocale: locales
         .filter((item) => item !== locale)
@@ -73,6 +76,7 @@ export function buildPageMetadata({
       card: "summary_large_image",
       title: meta.title,
       description: meta.description,
+      images: ["/twitter-image"],
     },
   };
 }

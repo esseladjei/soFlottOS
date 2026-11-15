@@ -49,20 +49,16 @@ export default function OpenGraphImage() {
             soFlott
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ fontSize: 28, color: "#a5f3fc", letterSpacing: 6 }}>
-              NEXT.JS + ASP.NET
-            </span>
-            <span style={{ fontSize: 56, fontWeight: 700 }}>{siteConfig.name}</span>
+            <span style={{ fontSize: 56, fontWeight: 700 }}>{siteConfig.brand}</span>
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           <div style={{ fontSize: 74, lineHeight: 1.05, fontWeight: 700, maxWidth: 960 }}>
-            Regional B2B courier service.
+            soFlott Express &amp; soFlott Digital
           </div>
           <div style={{ fontSize: 28, color: "#cbd5e1", maxWidth: 980, lineHeight: 1.5 }}>
-            Direct deliveries around Augsburg, Mering and Munich, with digital proof of delivery
-            and transparent invoicing.
+            Courier and logistics services. Digital solutions and IT consulting.
           </div>
         </div>
       </div>

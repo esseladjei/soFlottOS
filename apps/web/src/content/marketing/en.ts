@@ -22,7 +22,7 @@ export const en: MarketingContent = {
     address: "Address",
     divisionOf: "A division of soFlott UG (haftungsbeschränkt)",
     legalDraft:
-      "Draft – this page is pending review by a legal adviser and will be finalised before launch.",
+      "Draft: this page is pending review by a legal adviser and will be finalised before launch.",
     toBeCompleted: "to be completed",
   },
 
@@ -51,7 +51,7 @@ export const en: MarketingContent = {
     },
     digital: {
       name: "soFlott Digital",
-      tagline: "IT consulting & software engineering",
+      tagline: "Digital Solutions & IT Consulting",
       ariaLabel: "soFlott Digital navigation",
       items: [
         "digital",
@@ -75,15 +75,15 @@ export const en: MarketingContent = {
     home: {
       label: "Home",
       meta: {
-        title: "soFlott UG – Courier & Logistics and IT & Software Engineering",
+        title: "B2B Courier Services and Digital Solutions",
         description:
-          "soFlott UG (haftungsbeschränkt) is a German company with two divisions: soFlott Express for B2B courier and logistics services, and soFlott Digital for IT consulting and software engineering.",
+          "soFlott Express provides B2B courier and logistics services. soFlott Digital offers digital solutions and IT consulting for businesses.",
       },
       hero: {
         eyebrow: "soFlott UG (haftungsbeschränkt)",
-        title: "One company. Two specialist divisions for business customers.",
+        title: "Courier services and digital solutions for businesses",
         intro:
-          "soFlott moves goods for businesses and builds software for businesses. Choose the division that fits what you need – both belong to the same company and work to the same standards.",
+          "soFlott Express handles business deliveries and logistics. soFlott Digital provides digital solutions and IT consulting. Both are divisions of soFlott UG.",
         primaryCta: { label: "soFlott Express", page: "express" },
         secondaryCta: { label: "soFlott Digital", page: "digital" },
       },
@@ -91,15 +91,15 @@ export const en: MarketingContent = {
         {
           kind: "divisions",
           eyebrow: "Our divisions",
-          title: "What are you looking for?",
+          title: "Choose the service you need",
           intro:
-            "Each division has its own services, its own contacts and its own way of working with you.",
+            "Explore our services and contact the team that can help with your enquiry.",
           items: [
             {
               division: "express",
               name: "soFlott Express",
               summary:
-                "Courier and logistics services for businesses – individual B2B deliveries, recurring contracted routes and delivery capacity for logistics companies.",
+                "Business courier and logistics services, from individual deliveries to recurring routes and subcontracting for logistics companies.",
               points: [
                 "Direct B2B courier deliveries",
                 "Contracted, recurring routes for your own regular deliveries",
@@ -112,12 +112,12 @@ export const en: MarketingContent = {
               division: "digital",
               name: "soFlott Digital",
               summary:
-                "IT consulting and software engineering for businesses – from architecture advice to building, integrating and maintaining applications.",
+                "Digital engineering, systems integration, software modernisation and technology consulting for businesses.",
               points: [
                 "IT consulting and technical architecture",
-                "Custom software and full-stack web applications",
-                "API development and system integration",
-                "Application modernisation and ongoing support",
+                "Digital engineering and contract assignments",
+                "API development and systems integration",
+                "Software modernisation and ongoing technical support",
               ],
               cta: { label: "Go to soFlott Digital", page: "digital" },
             },
@@ -138,7 +138,7 @@ export const en: MarketingContent = {
               icon: "file",
               title: "Clear agreements",
               description:
-                "Scope, prices and service levels are agreed in writing before work starts – per delivery, per route or per project.",
+                "We agree on the scope, prices and service levels in writing before each delivery, route or project begins.",
             },
             {
               icon: "shield",
@@ -160,7 +160,7 @@ export const en: MarketingContent = {
     about: {
       label: "About",
       meta: {
-        title: "About soFlott UG – Company and Divisions",
+        title: "About soFlott UG and Its Divisions",
         description:
           "Who is behind soFlott: soFlott UG (haftungsbeschränkt), a company registered in Germany, operating the divisions soFlott Express and soFlott Digital.",
       },
@@ -168,22 +168,22 @@ export const en: MarketingContent = {
         eyebrow: "About us",
         title: "soFlott UG (haftungsbeschränkt)",
         intro:
-          "A German company serving business customers in two fields: courier and logistics, and IT consulting and software engineering.",
+          "A German company serving business customers in courier and logistics, digital solutions and IT consulting.",
       },
       blocks: [
         {
           kind: "text",
           title: "One legal entity, two divisions",
           paragraphs: [
-            "soFlott Express and soFlott Digital are commercial divisions – brands – of soFlott UG (haftungsbeschränkt). They are not separate companies. All contracts, invoices and registrations belong to soFlott UG.",
-            "We keep the two divisions separate because their customers have different needs: a business that needs a shipment moved, a logistics company looking for a delivery partner and an organisation planning a software project each deserve a clear, focused offer.",
+            "soFlott Express and soFlott Digital are divisions of soFlott UG (haftungsbeschränkt), not separate companies. Contracts, invoices and registrations belong to soFlott UG.",
+            "The two divisions serve different needs, from a business arranging a delivery or a logistics company seeking a partner to an organisation looking for technical advice or engineering support.",
           ],
         },
         {
           kind: "text",
           title: "Why logistics and software?",
           paragraphs: [
-            "We run our own courier operation on software we built ourselves: booking, dispatch, driver app, proof of delivery and invoicing. That work is the foundation of soFlott Digital – we know what it takes to design, build and operate business software that people rely on every day.",
+            "We built the software used by our courier operation, including booking, dispatch, the driver app, proof of delivery and invoicing. This experience is the foundation of soFlott Digital.",
           ],
         },
         {
@@ -199,7 +199,7 @@ export const en: MarketingContent = {
             {
               icon: "code",
               title: "soFlott Digital",
-              description: "IT consulting, software development, integration and modernisation.",
+              description: "Digital engineering, IT consulting, integration, modernisation and technical support.",
               page: "digital",
             },
           ],
@@ -216,15 +216,15 @@ export const en: MarketingContent = {
     contact: {
       label: "Contact",
       meta: {
-        title: "Contact soFlott – Express and Digital",
+        title: "Contact soFlott Express and Digital",
         description:
-          "Contact soFlott UG: courier and logistics enquiries for soFlott Express, IT consulting and software enquiries for soFlott Digital.",
+          "Contact soFlott UG about courier and logistics services, digital solutions or IT consulting.",
       },
       hero: {
         eyebrow: "Contact",
         title: "How can we help?",
         intro:
-          "For the fastest answer, use the contact page of the division you need. For anything else, send us a message here.",
+          "Contact the relevant division about a delivery or a technology enquiry. For general enquiries, send us a message here.",
       },
       blocks: [
         {
@@ -240,7 +240,7 @@ export const en: MarketingContent = {
             {
               icon: "code",
               title: "soFlott Digital",
-              description: "Consulting, software projects, proposals and contract engagements.",
+              description: "IT consulting, integration, engineering assignments and technical support.",
               page: "digital/contact",
             },
           ],
@@ -282,7 +282,7 @@ export const en: MarketingContent = {
     express: {
       label: "Overview",
       meta: {
-        title: "soFlott Express – B2B Courier Services and Logistics Subcontracting",
+        title: "soFlott Express | B2B Courier and Logistics",
         description:
           "soFlott Express provides direct B2B courier deliveries, contracted recurring delivery routes for businesses and delivery capacity for logistics companies, carriers and distributors.",
         keywords: [
@@ -296,7 +296,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Express",
         title: "Courier and logistics services for business.",
         intro:
-          "We move individual shipments for businesses, run fixed recurring routes for businesses with regular deliveries – and provide delivery capacity for logistics companies that need a reliable partner. Each service has its own way of working.",
+          "We deliver individual shipments, operate recurring routes for businesses and provide delivery capacity for logistics companies.",
         primaryCta: { label: "I need a delivery", page: "express/direct-b2b-delivery" },
         secondaryCta: { label: "I am a logistics company", page: "express/logistics-subcontracting" },
       },
@@ -321,7 +321,7 @@ export const en: MarketingContent = {
               label: "Whose shipments",
               values: [
                 "Your own goods or documents",
-                "Your own goods – between your sites, suppliers or regular customers",
+                "Your own goods between your sites, suppliers or regular customers",
                 "Your customers’ parcels, delivered on behalf of your logistics network",
               ],
             },
@@ -329,7 +329,7 @@ export const en: MarketingContent = {
               label: "Ordered as",
               values: [
                 "An individual delivery request",
-                "A route agreement – stops, days and time windows fixed once",
+                "A route agreement with agreed stops, days and time windows",
                 "A framework agreement or service contract",
               ],
             },
@@ -400,7 +400,7 @@ export const en: MarketingContent = {
             {
               icon: "clipboard",
               title: "How it works",
-              description: "From request to proof of delivery and invoice – step by step.",
+              description: "From your request to proof of delivery and invoicing.",
               page: "express/how-it-works",
             },
           ],
@@ -426,7 +426,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Express · Direct delivery",
         title: "Direct B2B courier deliveries.",
         intro:
-          "You need a shipment collected at one business location and delivered to another. We quote, collect, deliver and document – and send you a proper B2B invoice.",
+          "We collect shipments from one business location and deliver them to another. You receive a quote, proof of delivery and a B2B invoice.",
         primaryCta: { label: "Request a delivery quote", page: "express/request-a-quote" },
         secondaryCta: { label: "Create a B2B delivery account", href: "/register" },
         points: [
@@ -482,7 +482,7 @@ export const en: MarketingContent = {
           kind: "notice",
           title: "Urgent and time-critical deliveries",
           text:
-            "Tell us your required pickup and delivery window when you request a quote. We confirm the earliest window we can reliably meet before you book – we do not promise delivery times we have not confirmed.",
+            "Tell us your required pickup and delivery window when you request a quote. Before you book, we confirm the earliest window we can meet.",
         },
         {
           kind: "checklist",
@@ -527,7 +527,7 @@ export const en: MarketingContent = {
     "express/logistics-subcontracting": {
       label: "Logistics subcontracting",
       meta: {
-        title: "Logistics Subcontracting – Delivery Partner for Logistics Companies",
+        title: "Logistics Subcontracting for Delivery Companies",
         description:
           "soFlott Express as a delivery subcontractor for logistics companies, parcel carriers and distributors: contracted capacity, fixed routes, delivery areas, proof of delivery and reconciled periodic invoicing.",
         keywords: [
@@ -541,7 +541,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Express · Subcontracting",
         title: "A delivery partner for logistics companies.",
         intro:
-          "Logistics companies, parcel carriers and distributors contract soFlott to provide delivery capacity or run defined delivery operations within their network – delivering their customers’ parcels. We work under a framework agreement, report every route and invoice exactly what was agreed.",
+          "Logistics companies, parcel carriers and distributors contract soFlott to provide delivery capacity or run delivery operations within their network. We deliver their customers’ parcels under a framework agreement, report every route and invoice as agreed.",
         primaryCta: {
           label: "Request a subcontracting proposal",
           page: "express/request-a-quote",
@@ -575,7 +575,7 @@ export const en: MarketingContent = {
               icon: "scale",
               title: "Flexible billing",
               description:
-                "Per completed stop or parcel, a fixed route fee, or a base fee plus variable volume – as agreed in the contract.",
+                "Per completed stop or parcel, a fixed route fee, or a base fee plus variable volume, as agreed in the contract.",
             },
           ],
         },
@@ -614,14 +614,14 @@ export const en: MarketingContent = {
             "One contracting partner: soFlott UG (haftungsbeschränkt)",
             "Written agreements for prices, billing units and service levels",
             "Route-level reporting of completed, failed and returned deliveries",
-            "Volume reconciliation before invoicing – no surprises on the invoice",
+            "Volume reconciliation before invoicing",
           ],
         },
         {
           kind: "notice",
           title: "Not a logistics company?",
           text:
-            "If you are a business that ships its own goods on a regular schedule – for example between your branches or to the same customers every week – a contracted delivery route is the better fit.",
+            "A contracted delivery route is a better fit if your business ships its own goods regularly, for example between branches or to the same customers each week.",
         },
       ],
       cta: {
@@ -653,7 +653,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Express · Contracted routes",
         title: "Your regular deliveries, on a fixed route.",
         intro:
-          "When your business ships the same kind of deliveries on a regular pattern, a contracted route replaces repeated individual orders. We agree stops, days, time windows and pricing once – and run the route consistently, without you having to book each delivery.",
+          "A contracted route replaces repeated individual orders when your business makes regular deliveries. We agree on stops, days, time windows and pricing in advance, so you do not have to book each delivery separately.",
         primaryCta: {
           label: "Request a route proposal",
           page: "express/request-a-quote",
@@ -721,7 +721,7 @@ export const en: MarketingContent = {
     "express/service-areas": {
       label: "Service areas",
       meta: {
-        title: "Service Areas – Courier Services in Augsburg, Mering and Munich",
+        title: "Courier Service Areas: Augsburg, Mering and Munich",
         description:
           "Where soFlott Express operates: B2B courier deliveries and contracted routes in the Augsburg, Mering and Munich area in Bavaria, with routes outside the region on request.",
         keywords: ["courier Augsburg", "courier Mering", "courier Munich", "B2B courier Bavaria"],
@@ -760,7 +760,7 @@ export const en: MarketingContent = {
           kind: "text",
           title: "Outside the region",
           paragraphs: [
-            "For direct deliveries outside this area, send us the route – we will tell you honestly whether and when we can do it. For subcontracting, delivery areas are defined individually in each agreement.",
+            "For direct deliveries outside this area, send us the route and we will confirm whether and when we can make the delivery. Subcontracting areas are defined in each agreement.",
           ],
         },
       ],
@@ -775,7 +775,7 @@ export const en: MarketingContent = {
     "express/how-it-works": {
       label: "How it works",
       meta: {
-        title: "How soFlott Express Works – From Request to Invoice",
+        title: "How soFlott Express Works: Request to Invoice",
         description:
           "How direct B2B deliveries, contracted delivery routes and subcontracting engagements work at soFlott Express: request, quote, dispatch, proof of delivery, reconciliation and invoicing.",
       },
@@ -794,7 +794,7 @@ export const en: MarketingContent = {
             {
               title: "Request",
               description:
-                "Send pickup and delivery addresses, the requested time window and shipment details – via the form, by phone or in the customer portal.",
+                "Send pickup and delivery addresses, the requested time window and shipment details via the form, by phone or in the customer portal.",
             },
             {
               title: "Quote and confirmation",
@@ -877,7 +877,7 @@ export const en: MarketingContent = {
       ],
       cta: {
         title: "Ready to start?",
-        description: "Request a delivery quote, a route proposal or a subcontracting proposal – the form lets you choose.",
+        description: "Use the form to request a delivery quote, a route proposal or a subcontracting proposal.",
         primaryCta: { label: "Request a quote", page: "express/request-a-quote" },
         secondaryCta: { label: "Contact soFlott Express", page: "express/contact" },
       },
@@ -909,7 +909,7 @@ export const en: MarketingContent = {
     "express/contact": {
       label: "Contact",
       meta: {
-        title: "Contact soFlott Express – Courier & Logistics",
+        title: "Contact soFlott Express for Courier and Logistics",
         description:
           "Contact soFlott Express for B2B courier deliveries, quotes, logistics subcontracting and contracted delivery routes.",
       },
@@ -931,22 +931,24 @@ export const en: MarketingContent = {
     digital: {
       label: "Overview",
       meta: {
-        title: "soFlott Digital – IT Consulting and Software Engineering",
+        title: "soFlott Digital | Digital Solutions & IT Consulting",
         description:
-          "soFlott Digital provides IT consulting, custom software development, API integration, application modernisation and contract software engineering for businesses in Germany and internationally.",
+          "Digital engineering, systems integration, software modernisation and technology consulting for businesses.",
         keywords: [
           "IT consulting Germany",
-          "software development services",
-          "B2B software development",
-          "full-stack software engineering",
+          "digital engineering",
+          "systems integration",
+          "software modernisation",
+          "contract engineering",
         ],
       },
       hero: {
         eyebrow: "soFlott Digital",
-        title: "IT consulting and software engineering for business.",
+        descriptor: "Digital Solutions & IT Consulting",
+        title: "Technology that moves your business forward.",
         intro:
-          "We help businesses plan, build, integrate and maintain software – as a project, as ongoing support or as contract engineering capacity in your team. We work in English and German.",
-        primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
+          "Digital engineering, systems integration, software modernisation and technology consulting for businesses.",
+        primaryCta: { label: "Discuss your needs", page: "digital/request-a-proposal" },
         secondaryCta: { label: "Discuss a contract engagement", page: "digital/contract-software-engineering" },
       },
       blocks: [
@@ -1000,7 +1002,7 @@ export const en: MarketingContent = {
           columns: ["Engagement", "Billing basis"],
           rows: [
             { label: "Consulting", values: ["Advice, reviews, workshops", "Hourly or daily rate"] },
-            { label: "Time and materials", values: ["Flexible development work", "Approved time × agreed rate"] },
+            { label: "Time and materials", values: ["Engineering and technical work", "Approved time × agreed rate"] },
             { label: "Fixed-price project", values: ["Clearly defined scope", "Contracted project price"] },
             {
               label: "Milestone project",
@@ -1019,8 +1021,8 @@ export const en: MarketingContent = {
         },
       ],
       cta: {
-        title: "Have a project in mind?",
-        description: "Tell us what you want to achieve. We will reply with questions or a proposal.",
+        title: "Discuss your technology needs",
+        description: "Tell us about your project, engineering assignment or support needs. We will reply with questions or a proposal.",
         primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
         secondaryCta: { label: "Contact soFlott Digital", page: "digital/contact" },
       },
@@ -1064,7 +1066,7 @@ export const en: MarketingContent = {
             {
               icon: "scale",
               title: "Technology selection",
-              description: "Comparison of options – build, buy or integrate – for your situation.",
+              description: "A comparison of build, buy and integration options for your situation.",
             },
           ],
         },
@@ -1101,7 +1103,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Digital · Software development",
         title: "Custom software for the way your business works.",
         intro:
-          "We design and build business applications – web portals, internal tools and workflow systems – that fit your processes instead of forcing you to adapt to generic software.",
+          "We design and build business applications, including web portals, internal tools and workflow systems, around your processes.",
         primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
       },
       blocks: [
@@ -1218,7 +1220,7 @@ export const en: MarketingContent = {
       },
       hero: {
         eyebrow: "soFlott Digital · Modernisation",
-        title: "Modernise legacy applications – step by step.",
+        title: "Modernise legacy applications at a manageable pace.",
         intro:
           "Ageing software is often business-critical and hard to change. We assess it, define a realistic migration path and modernise it in stages while your business keeps running.",
         primaryCta: { label: "Discuss a project", page: "digital/request-a-proposal" },
@@ -1258,7 +1260,7 @@ export const en: MarketingContent = {
     "digital/contract-software-engineering": {
       label: "Contract engineering",
       meta: {
-        title: "Contract Software Engineering – Engineering Capacity for Your Team",
+        title: "Contract Software Engineering for Your Team",
         description:
           "Contract software engineering from soFlott Digital: experienced full-stack engineering capacity for your projects, contracted through soFlott UG on a time-and-materials basis.",
         keywords: [
@@ -1272,7 +1274,7 @@ export const en: MarketingContent = {
         eyebrow: "soFlott Digital · Contract engineering",
         title: "Engineering capacity for your team.",
         intro:
-          "When your team needs additional experienced engineers for a project or a period of time, soFlott Digital provides contract software engineering – contracted business-to-business through soFlott UG.",
+          "When your team needs additional experienced engineers for a project or a period of time, soFlott Digital provides contract software engineering through a B2B agreement with soFlott UG.",
         primaryCta: { label: "Discuss a contract engagement", page: "digital/request-a-proposal" },
       },
       blocks: [
@@ -1376,7 +1378,7 @@ export const en: MarketingContent = {
       blocks: [
         {
           kind: "text",
-          title: "soFlottOS – the platform behind soFlott Express",
+          title: "soFlottOS, the platform behind soFlott Express",
           paragraphs: [
             "soFlott Express runs on soFlottOS, a platform developed in-house by soFlott. It covers the courier workflow from customer booking to invoice.",
           ],
@@ -1411,13 +1413,13 @@ export const en: MarketingContent = {
     "digital/request-a-proposal": {
       label: "Request a proposal",
       meta: {
-        title: "Request a Proposal – Software Project or Contract Engagement",
+        title: "Request a Digital Solutions or IT Consulting Proposal",
         description:
           "Request a proposal from soFlott Digital for IT consulting, a software project, API integration, modernisation, support or a contract engineering engagement.",
       },
       hero: {
         eyebrow: "soFlott Digital · Request a proposal",
-        title: "Tell us about your project.",
+        title: "Tell us what you need.",
         intro:
           "Describe what you want to achieve. We will reply with questions or a proposal, usually including the suggested engagement model.",
       },
@@ -1425,8 +1427,8 @@ export const en: MarketingContent = {
         {
           kind: "form",
           form: "digital-proposal",
-          title: "Your project",
-          intro: "Rough information is fine – we will clarify the details together.",
+          title: "Your enquiry",
+          intro: "Share what you know so far. We will clarify the details together.",
         },
       ],
     },
@@ -1434,14 +1436,14 @@ export const en: MarketingContent = {
     "digital/contact": {
       label: "Contact",
       meta: {
-        title: "Contact soFlott Digital – IT Consulting & Software",
+        title: "Contact soFlott Digital for IT and Digital Solutions",
         description:
-          "Contact soFlott Digital about IT consulting, software projects, proposals and contract engineering engagements.",
+          "Contact soFlott Digital about consulting, systems integration, contract engineering and technical support.",
       },
       hero: {
         eyebrow: "soFlott Digital · Contact",
         title: "Talk to soFlott Digital.",
-        intro: "Questions about a project, a proposal or a contract engagement? Get in touch.",
+        intro: "Get in touch about consulting, an engineering assignment, integration or ongoing support.",
         primaryCta: { label: "Request a proposal", page: "digital/request-a-proposal" },
       },
       blocks: [
@@ -1489,7 +1491,7 @@ export const en: MarketingContent = {
         label: "Stops",
         hint: "Pickup and delivery addresses on the route, in the usual order",
       },
-      schedule: { label: "Service days and time windows", hint: "e.g. Mon, Wed, Fri, 8–10 am" },
+      schedule: { label: "Service days and time windows", hint: "e.g. Mon, Wed, Fri, 8 to 10 am" },
     },
     expressQuote: {
       typeLegend: "What do you need?",
@@ -1519,8 +1521,8 @@ export const en: MarketingContent = {
     },
     contact: {
       topicOptions: {
-        express: "soFlott Express – courier & logistics",
-        digital: "soFlott Digital – IT & software",
+        express: "soFlott Express: courier and logistics",
+        digital: "soFlott Digital: IT and software",
         general: "General enquiry",
       },
       subject: "Enquiry via website",
@@ -1539,7 +1541,7 @@ export const en: MarketingContent = {
 
   footer: {
     tagline:
-      "Courier & logistics and IT & software engineering for business customers – from one accountable company.",
+      "Courier and logistics services, digital solutions and IT consulting for businesses.",
     columns: [
       {
         title: "soFlott Express",
