@@ -45,8 +45,22 @@ public sealed class PasswordPolicyTests
     [Fact]
     public void EnforcesExactMinimumAndBcryptUtf8Limit()
     {
-        Assert.False(PasswordPolicy.IsValid("Aa1!" + new string('x', 7)));
-        Assert.True(PasswordPolicy.IsValid("Aa1!" + new string('x', 8)));
+        Assert.False(PasswordPolicy.IsValid("Aa1!" + new string('x', 3)));
+        var minimum = "Aa1!" + new string('x', 4);
+        Assert.True(PasswordPolicy.IsValid(minimum));
+        var hasher = new BCryptPasswordHasher();
+        Assert.True(hasher.Verify(minimum, hasher.Hash(minimum)));
+        foreach (var request in new object[]
+                 {
+                     new RegisterClientRequest { Password = minimum },
+                     new RegisterDriverRequest { Password = minimum },
+                     new ResetPasswordRequest { Password = minimum }
+                 })
+        {
+            var results = new List<ValidationResult>();
+            Validator.TryValidateObject(request, new ValidationContext(request), results, true);
+            Assert.DoesNotContain(results, result => result.MemberNames.Contains("Password"));
+        }
         Assert.True(PasswordPolicy.IsValid("Aa1!" + new string('x', 68)));
         Assert.False(PasswordPolicy.IsValid("Aa1!" + new string('x', 69)));
         var unicode = "Aa1!" + new string('ä', 34);

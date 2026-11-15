@@ -31,7 +31,7 @@ export default function AdminDriversPage() {
       <form className="grid gap-4 md:grid-cols-2" onSubmit={create}>
         <div className="space-y-2"><label className="text-sm font-bold" htmlFor="fullName">{t.fields.fullName}</label><Input id="fullName" name="fullName" required maxLength={150} /></div>
         <div className="space-y-2"><label className="text-sm font-bold" htmlFor="email">{t.fields.email}</label><Input id="email" name="email" type="email" required maxLength={255} /></div>
-        <div className="space-y-2"><label className="text-sm font-bold" htmlFor="password">{t.fields.password}</label><Input id="password" name="password" type="password" required minLength={12} maxLength={128} autoComplete="new-password" /></div>
+        <div className="space-y-2"><label className="text-sm font-bold" htmlFor="password">{t.fields.password}</label><Input id="password" name="password" type="password" required minLength={8} maxLength={128} autoComplete="new-password" aria-describedby="driver-password-policy" /><p id="driver-password-policy" className="text-sm text-stone-500">{content.validation.passwordPolicy}</p></div>
         <div className="space-y-2"><label className="text-sm font-bold" htmlFor="phone">{t.fields.phone}</label><Input id="phone" name="phone" type="tel" required maxLength={50} /></div>
         <div className="space-y-2 md:col-span-2"><label className="text-sm font-bold" htmlFor="vehicleDescription">{t.fields.vehicleDescription}</label><Input id="vehicleDescription" name="vehicleDescription" maxLength={150} /></div>
         {createDriver.isError ? <p role="alert" className="text-sm text-rose-600 md:col-span-2">{createDriver.error.message || content.common.requestFailed}</p> : null}

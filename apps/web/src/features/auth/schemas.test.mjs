@@ -6,7 +6,6 @@ import {
   createForgotPasswordSchema,
   createLoginSchema,
   createRegisterClientSchema,
-  createRegisterDriverSchema,
   createResetPasswordSchema,
   isStrongPassword,
 } from "./schemas.ts";
@@ -20,9 +19,9 @@ test("new passwords enforce each requirement and exact BCrypt byte boundaries", 
   ]) {
     assert.equal(isStrongPassword(password), false, password);
   }
-  assert.equal(isStrongPassword(`Aa1!${"x".repeat(7)}`), false);
+  assert.equal(isStrongPassword(`Aa1!${"x".repeat(3)}`), false);
   for (const password of [
-    `Aa1!${"x".repeat(8)}`, `Aa1!${"x".repeat(68)}`, `Aa1!${"ä".repeat(34)}`,
+    `Aa1!${"x".repeat(4)}`, `Aa1!${"x".repeat(68)}`, `Aa1!${"ä".repeat(34)}`,
   ]) {
     assert.equal(isStrongPassword(password), true, password);
   }
@@ -32,12 +31,12 @@ test("all new-password forms use the localized policy, but legacy login remains 
   for (const content of [en, de]) {
     for (const schema of [
       createRegisterClientSchema(content.validation).shape.password,
-      createRegisterDriverSchema(content.validation).shape.password,
       createResetPasswordSchema(content.validation).shape.password,
     ]) {
-      const result = schema.safeParse("Secret123!");
+      const result = schema.safeParse("Short1!");
       assert.equal(result.success, false);
       assert.equal(result.error.issues[0].message, content.validation.passwordPolicy);
+      assert.equal(schema.safeParse("Aa1!xxxx").success, true);
       assert.equal(schema.safeParse("StrongPassword123!").success, true);
     }
     assert.equal(createLoginSchema(content.validation).safeParse({

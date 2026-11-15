@@ -5,10 +5,10 @@ namespace soFlottOS.Api.Services.Security;
 
 public static class PasswordPolicy
 {
-    public const string Message = "Use at least 12 characters with uppercase (A-Z) and lowercase (a-z) letters, a digit and an ASCII symbol, no whitespace, and at most 72 UTF-8 bytes.";
+    public const string Message = "Use at least 8 characters with uppercase (A-Z) and lowercase (a-z) letters, a digit and an ASCII symbol, no whitespace, and at most 72 UTF-8 bytes.";
 
     public static bool IsValid(string? password) =>
-        password is { Length: >= 12 and <= 72 } &&
+        password is { Length: >= 8 and <= 72 } &&
         Encoding.UTF8.GetByteCount(password) <= 72 &&
         password.Any(c => c is >= 'A' and <= 'Z') &&
         password.Any(c => c is >= 'a' and <= 'z') &&

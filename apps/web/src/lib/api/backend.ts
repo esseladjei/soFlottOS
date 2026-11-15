@@ -4,7 +4,7 @@ import { serverEnv } from "@/lib/server-env";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { getSessionFromRequest } from "@/lib/auth/session";
 import { getRequestLocale } from "@/i18n/server";
-import type { ApiProblemDetails, AuthResponse, ForgotPasswordRequest, LoginRequest, RegisterClientRequest, RegisterDriverRequest, ResetPasswordRequest } from "@/types/api";
+import type { ApiProblemDetails, AuthResponse, ForgotPasswordRequest, LoginRequest, RegisterClientRequest, ResetPasswordRequest } from "@/types/api";
 
 export class BackendError extends Error {
   constructor(
@@ -96,7 +96,7 @@ async function readJsonOrText(response: Response) {
   return response.text();
 }
 
-async function authenticateAgainstBackend(path: string, body: LoginRequest | RegisterClientRequest | RegisterDriverRequest) {
+async function authenticateAgainstBackend(path: string, body: LoginRequest | RegisterClientRequest) {
   const response = await fetchFromBackend(path, {
     method: "POST",
     headers: {
@@ -120,10 +120,6 @@ export function loginAgainstBackend(request: LoginRequest) {
 
 export function registerClientAgainstBackend(request: RegisterClientRequest) {
   return authenticateAgainstBackend("/api/auth/register/client", request);
-}
-
-export function registerDriverAgainstBackend(request: RegisterDriverRequest) {
-  return authenticateAgainstBackend("/api/auth/register/driver", request);
 }
 
 export async function recoverPasswordAgainstBackend(

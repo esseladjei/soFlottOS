@@ -89,7 +89,7 @@ public sealed record ResetPasswordRequest
     public string Password { get; init; } = string.Empty;
 }
 
-/// <summary>Returned by login and both registration endpoints.</summary>
+/// <summary>Returned by login and client registration.</summary>
 public sealed record AuthResponse(
     int UserId,
     string Email,

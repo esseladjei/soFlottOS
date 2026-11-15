@@ -81,7 +81,7 @@ npm run dev:api
 ```
 
 Replace `REPLACE_WITH_YOUR_OWN_PASSWORD` with a unique password of at least
-12 characters, including uppercase and lowercase letters, a number and a symbol.
+8 characters, including uppercase and lowercase letters, a number and a symbol.
 Keep the surrounding single quotes. The password command can appear in your
 terminal history and npm output; do not share those logs.
 PostgreSQL must be running, and `Jwt:SigningKey` and `ConnectionStrings:Postgres` must
@@ -130,7 +130,7 @@ are entered as separate street, house number, postal code and city fields; conta
 names and phone numbers are required. Coordinates remain optional until address
 geocoding is available. Invoice details can be printed or saved as PDF, and all
 account roles can recover a forgotten password.
-Passwords must be at least 12 characters and include uppercase and lowercase
+Passwords must be at least 8 characters and include uppercase and lowercase
 letters, a number and a symbol; reset links expire after 30 minutes and can be
 used once. Signed-in UI messages and transactional email/SMS use the account's
 German or English language preference.

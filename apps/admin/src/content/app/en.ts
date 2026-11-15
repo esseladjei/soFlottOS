@@ -59,7 +59,7 @@ export const en: AppContent = {
   validation: {
     email: "Use a valid email address.",
     password: "Password must be at least 8 characters.",
-    passwordPolicy: "Use at least 12 characters with uppercase (A-Z) and lowercase (a-z) letters, a digit and an ASCII symbol (such as ! or @), no whitespace, and at most 72 UTF-8 bytes (non-ASCII characters use more than one byte).",
+    passwordPolicy: "Use at least 8 characters with uppercase (A-Z) and lowercase (a-z) letters, a digit and an ASCII symbol (such as ! or @), no whitespace, and at most 72 UTF-8 bytes (non-ASCII characters use more than one byte).",
     passwordConfirmation: "The passwords must match.",
     companyName: "Company name is required.",
     contactPerson: "Contact person is required.",
@@ -154,7 +154,13 @@ export const en: AppContent = {
     admin: {
       title: "Admin operations",
       nav: {
+        label: "Admin navigation",
+        menu: "Menu",
+        operations: "Operations",
+        people: "People",
+        billing: "Billing",
         dashboard: "Dashboard",
+        newOrder: "New order",
         bookingAvailability: "Availability",
         clients: "Clients",
         drivers: "Drivers",

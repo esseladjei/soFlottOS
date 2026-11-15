@@ -27,7 +27,6 @@ export const de: MarketingContent = {
     ariaLabel: "Hauptnavigation",
     menuLabel: "Menü öffnen",
     items: ["express", "digital", "about", "contact"],
-    login: "Kunden-Login",
     cta: { label: "Kontakt aufnehmen", page: "contact" },
   },
 
@@ -426,7 +425,7 @@ export const de: MarketingContent = {
         intro:
           "Sie möchten eine Sendung an einem Geschäftsstandort abholen und an einen anderen zustellen lassen. Wir erstellen das Angebot, holen ab, stellen zu, dokumentieren – und senden Ihnen eine ordentliche B2B-Rechnung.",
         primaryCta: { label: "Zustellangebot anfragen", page: "express/request-a-quote" },
-        secondaryCta: { label: "Geschäftskundenkonto eröffnen", href: "/register" },
+        secondaryCta: { label: "B2B-Zustellkonto erstellen", href: "/register" },
         points: [
           "Preis vor der Buchung",
           "Statusverfolgung im Kundenportal",
@@ -504,7 +503,7 @@ export const de: MarketingContent = {
             {
               question: "Brauche ich ein Konto, um zu bestellen?",
               answer:
-                "Nein. Sie können ein Angebot auch ohne Konto anfragen. Stammkunden eröffnen in der Regel ein Geschäftskundenkonto, um im Kundenportal zu buchen, Aufträge zu verfolgen und Rechnungen herunterzuladen.",
+                "Sie können ein Angebot auch ohne Konto anfragen. Das Kundenportal ist für Geschäftskunden von soFlott Express vorgesehen, um Zustellungen zu buchen, Aufträge zu verfolgen und Rechnungen herunterzuladen.",
             },
             {
               question: "Was passiert, wenn eine Zustellung nicht möglich ist?",
@@ -518,7 +517,7 @@ export const de: MarketingContent = {
         title: "Etwas muss zugestellt werden?",
         description: "Senden Sie uns Adressen, Zeitfenster und Sendungsdetails – wir antworten mit einem Angebot.",
         primaryCta: { label: "Zustellangebot anfragen", page: "express/request-a-quote" },
-        secondaryCta: { label: "Kunden-Login", href: "/login" },
+        secondaryCta: { label: "Beim B2B-Zustellkonto anmelden", href: "/login" },
       },
     },
 

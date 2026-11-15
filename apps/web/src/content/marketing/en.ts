@@ -30,7 +30,6 @@ export const en: MarketingContent = {
     ariaLabel: "Main navigation",
     menuLabel: "Open menu",
     items: ["express", "digital", "about", "contact"],
-    login: "Customer login",
     cta: { label: "Get in touch", page: "contact" },
   },
 
@@ -429,7 +428,7 @@ export const en: MarketingContent = {
         intro:
           "You need a shipment collected at one business location and delivered to another. We quote, collect, deliver and document – and send you a proper B2B invoice.",
         primaryCta: { label: "Request a delivery quote", page: "express/request-a-quote" },
-        secondaryCta: { label: "Open a business account", href: "/register" },
+        secondaryCta: { label: "Create a B2B delivery account", href: "/register" },
         points: [
           "Price before you book",
           "Status tracking in the customer portal",
@@ -507,7 +506,7 @@ export const en: MarketingContent = {
             {
               question: "Do I need an account to order?",
               answer:
-                "No. You can request a quote without an account. Regular customers usually open a business account to book, track orders and download invoices in the customer portal.",
+                "You can request a quote without an account. The customer portal is for business customers of soFlott Express to book deliveries, track orders and download invoices.",
             },
             {
               question: "What if a delivery cannot be completed?",
@@ -521,7 +520,7 @@ export const en: MarketingContent = {
         title: "Need something delivered?",
         description: "Send us the addresses, time window and shipment details and we will reply with a quote.",
         primaryCta: { label: "Request a delivery quote", page: "express/request-a-quote" },
-        secondaryCta: { label: "Customer login", href: "/login" },
+        secondaryCta: { label: "B2B delivery account login", href: "/login" },
       },
     },
 

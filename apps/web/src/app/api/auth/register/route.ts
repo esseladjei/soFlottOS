@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
-import { BackendError, BackendUnavailableError, registerClientAgainstBackend, registerDriverAgainstBackend } from "@/lib/api/backend";
+import { publicRegistrationSchema } from "@/features/auth/public-registration";
+import { BackendError, BackendUnavailableError, registerClientAgainstBackend } from "@/lib/api/backend";
 import { setSession } from "@/lib/auth/session";
 import { toPublicSession } from "@/lib/auth/session-cookie";
-import type { RegisterClientRequest, RegisterDriverRequest } from "@/types/api";
-
-type RegisterBody =
-  | { role: "Client"; payload: RegisterClientRequest }
-  | { role: "Driver"; payload: RegisterDriverRequest };
 
 export function GET() {
   return NextResponse.json(
@@ -17,14 +13,19 @@ export function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as RegisterBody;
-    const session = body.role === "Client"
-      ? await registerClientAgainstBackend(body.payload)
-      : await registerDriverAgainstBackend(body.payload);
+    const body: unknown = await request.json();
+    const parsed = publicRegistrationSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ title: "Invalid registration request", status: 400 }, { status: 400 });
+    }
+    const session = await registerClientAgainstBackend(parsed.data.payload);
 
     await setSession(session);
     return NextResponse.json(toPublicSession(session));
   } catch (error) {
+    if (error instanceof SyntaxError) {
+      return NextResponse.json({ title: "Invalid JSON", status: 400 }, { status: 400 });
+    }
     if (error instanceof BackendError) {
       return NextResponse.json(error.body, { status: error.status });
     }
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
       return NextResponse.json(error.problem, { status: error.problem.status ?? 503 });
     }
 
+    console.error("Registration request failed.", error);
     return NextResponse.json(
       { title: "Registration failed", detail: "An unexpected error occurred while creating your account.", status: 500 },
       { status: 500 },

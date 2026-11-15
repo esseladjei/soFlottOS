@@ -22,7 +22,7 @@ public interface IAuthService
 /// <summary>
 /// Sign-in and sign-up.
 /// A business signing up gets two records: a login <see cref="User"/> and a CRM <see cref="Client"/>.
-/// A driver signing up gets a login user that starts Offline.
+/// A driver created by an administrator gets a login user that starts Offline.
 /// Admin accounts are never created publicly - they are seeded or created in the database.
 /// </summary>
 public sealed class AuthService(

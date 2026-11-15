@@ -248,7 +248,6 @@ export interface MarketingContent {
     ariaLabel: string;
     menuLabel: string;
     items: MarketingPage[];
-    login: string;
     cta: LinkItem;
   };
   /** Sub-navigation shown inside each division. */

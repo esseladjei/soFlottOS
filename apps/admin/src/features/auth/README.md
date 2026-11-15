@@ -7,7 +7,7 @@ points at `Email:FrontendBaseUrl` (the customer portal, `apps/web`); the new
 password works here afterwards. Recovery never signs the user in automatically.
 The reset token is read from the URL fragment and sent only in the POST body;
 successful reset clears the session cookie/cache and removes the fragment.
-New-password forms share the backend's 12-character/72-UTF-8-byte complexity
+New-password forms share the backend's 8-character/72-UTF-8-byte complexity
 policy and localized English/German hints, validation, feedback and confirmation.
 Login continues to accept legacy passwords. Backend recovery tokens, encrypted
 outbox content, session revocation and deployment requirements are documented in

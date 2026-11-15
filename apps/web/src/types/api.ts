@@ -60,14 +60,6 @@ export interface RegisterClientRequest {
   taxIdNumber?: string | null;
 }
 
-export interface RegisterDriverRequest {
-  fullName: string;
-  email: string;
-  password: string;
-  phone: string;
-  vehicleDescription?: string | null;
-}
-
 /** Returned by login/register. The raw `token` never leaves the Next.js server. */
 export interface AuthResponse {
   userId: number;

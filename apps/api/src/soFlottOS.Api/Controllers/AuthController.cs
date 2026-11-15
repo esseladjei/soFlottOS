@@ -76,19 +76,6 @@ public sealed class AuthController(IAuthService authService, PasswordResetServic
         return Created($"/api/clients/{response.ClientId}", response);
     }
 
-    /// <summary>Self-service signup for a courier.</summary>
-    [HttpPost("register/driver")]
-    [AllowAnonymous]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<AuthResponse>> RegisterDriver(
-        [FromBody] RegisterDriverRequest request,
-        CancellationToken cancellationToken)
-    {
-        var response = await _authService.RegisterDriverAsync(request, cancellationToken);
-        return Created("/api/driver/me", response);
-    }
-
     /// <summary>Who am I? Used by the frontend to refresh its session.</summary>
     [HttpGet("me")]
     [Authorize]

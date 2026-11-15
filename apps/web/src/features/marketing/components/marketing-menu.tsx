@@ -16,13 +16,11 @@ export interface MenuLink {
 export function MarketingMenu({
   links,
   cta,
-  login,
   label,
   navLabel,
 }: {
   links: MenuLink[];
   cta: MenuLink;
-  login: string;
   /** Accessible name of the toggle button. */
   label: string;
   /** Accessible name of the navigation landmark. */
@@ -64,13 +62,6 @@ export function MarketingMenu({
           ))}
         </nav>
         <div className="mt-3 flex flex-wrap gap-3 border-t border-stone-100 pt-4">
-          <Link
-            className="inline-flex min-h-11 items-center rounded-xl border border-stone-300 px-4 text-sm font-bold text-stone-900 hover:bg-stone-100"
-            href="/login"
-            onClick={close}
-          >
-            {login}
-          </Link>
           <Link
             className="inline-flex min-h-11 items-center rounded-xl bg-stone-900 px-4 text-sm font-bold text-white hover:bg-stone-800"
             href={cta.href}

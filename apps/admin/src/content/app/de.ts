@@ -59,7 +59,7 @@ export const de: AppContent = {
   validation: {
     email: "Bitte eine gültige E-Mail-Adresse angeben.",
     password: "Das Passwort muss mindestens 8 Zeichen lang sein.",
-    passwordPolicy: "Verwenden Sie mindestens 12 Zeichen mit Großbuchstaben (A-Z), Kleinbuchstaben (a-z), einer Ziffer und einem ASCII-Sonderzeichen (z. B. ! oder @), ohne Leerraum und mit höchstens 72 UTF-8-Bytes (Nicht-ASCII-Zeichen benötigen mehrere Bytes).",
+    passwordPolicy: "Verwenden Sie mindestens 8 Zeichen mit Großbuchstaben (A-Z), Kleinbuchstaben (a-z), einer Ziffer und einem ASCII-Sonderzeichen (z. B. ! oder @), ohne Leerraum und mit höchstens 72 UTF-8-Bytes (Nicht-ASCII-Zeichen benötigen mehrere Bytes).",
     passwordConfirmation: "Die Passwörter müssen übereinstimmen.",
     companyName: "Firmenname ist erforderlich.",
     contactPerson: "Ansprechpartner ist erforderlich.",
@@ -155,7 +155,13 @@ export const de: AppContent = {
     admin: {
       title: "Admin-Betrieb",
       nav: {
+        label: "Admin-Navigation",
+        menu: "Menü",
+        operations: "Betrieb",
+        people: "Kontakte",
+        billing: "Abrechnung",
         dashboard: "Übersicht",
+        newOrder: "Neuer Auftrag",
         bookingAvailability: "Verfügbarkeit",
         clients: "Kunden",
         drivers: "Fahrer",

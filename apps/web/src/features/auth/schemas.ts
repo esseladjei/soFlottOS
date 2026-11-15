@@ -6,7 +6,7 @@ import { z } from "zod";
 import type { ValidationMessages } from "@/content/app/types";
 
 export function isStrongPassword(password: string) {
-  return password.length >= 12 && password.length <= 72 &&
+  return password.length >= 8 && password.length <= 72 &&
     new TextEncoder().encode(password).length <= 72 &&
     /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) &&
     Array.from(password).some(c => c >= "!" && c <= "~" && !/[A-Za-z0-9]/.test(c)) &&
@@ -39,16 +39,6 @@ export function createRegisterClientSchema(t: ValidationMessages) {
   });
 }
 
-export function createRegisterDriverSchema(t: ValidationMessages) {
-  return z.object({
-    fullName: z.string().min(2, t.fullName),
-    email: z.string().email(t.email),
-    password: strongPassword(t),
-    phone: z.string().min(3, t.phone),
-    vehicleDescription: z.string().optional(),
-  });
-}
-
 export function createForgotPasswordSchema(t: ValidationMessages) {
   return z.object({ email: z.string().trim().max(255, t.email).email(t.email) });
 }
@@ -68,4 +58,3 @@ export type ResetPasswordValues = z.infer<ReturnType<typeof createResetPasswordS
 
 export type LoginFormValues = z.infer<ReturnType<typeof createLoginSchema>>;
 export type RegisterClientValues = z.infer<ReturnType<typeof createRegisterClientSchema>>;
-export type RegisterDriverValues = z.infer<ReturnType<typeof createRegisterDriverSchema>>;

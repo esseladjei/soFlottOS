@@ -23,7 +23,7 @@ Each feature/route folder has a short README or header comment to explain its pu
 ## Auth, session, and proxy flow
 
 1. The browser posts credentials to `/api/auth/login` or registration data to `/api/auth/register`.
-2. That Next.js route calls the ASP.NET backend server-side (`/api/auth/login`, `/api/auth/register/client`, or `/api/auth/register/driver`).
+2. That Next.js route calls the ASP.NET backend server-side (`/api/auth/login` or `/api/auth/register/client`). Driver accounts are created in the admin console.
 3. The backend returns an `AuthResponse` with a JWT. Next.js stores it in an HTTP-only base64url cookie named `soflott_session`.
 4. The browser only receives the safe public `Session` (`userId`, `email`, `fullName`, `role`, optional `clientId`, `expiresAtUtc`).
 5. Client components call `/api/proxy/<backend-path>` through React Query hooks. The proxy reads the cookie and forwards the JWT to the backend.

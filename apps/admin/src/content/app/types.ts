@@ -138,7 +138,19 @@ export interface AppContent {
   shell: {
     admin: {
       title: string;
-      nav: { dashboard: string; clients: string; drivers: string; invoices: string; bookingAvailability: string };
+      nav: {
+        label: string;
+        menu: string;
+        operations: string;
+        people: string;
+        billing: string;
+        dashboard: string;
+        newOrder: string;
+        clients: string;
+        drivers: string;
+        invoices: string;
+        bookingAvailability: string;
+      };
     };
   };
 

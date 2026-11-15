@@ -1,6 +1,6 @@
 # Account security
 
-New passwords must contain at least 12 characters, uppercase `A-Z`, lowercase
+New passwords must contain at least 8 characters, uppercase `A-Z`, lowercase
 `a-z`, a digit `0-9`, and an ASCII punctuation symbol (for example `!` or `@`).
 Whitespace is forbidden. The maximum is **72 UTF-8 bytes**, not 72 Unicode
 characters: BCrypt would otherwise truncate passwords. Registration DTOs,

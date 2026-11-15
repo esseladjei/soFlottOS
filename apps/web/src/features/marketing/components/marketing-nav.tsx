@@ -1,7 +1,7 @@
 // Top navigation of the public website (corporate level).
 //
-// Links to the two divisions, About and Contact, plus the language switcher,
-// the customer-portal login and a contact call to action. Every label comes
+// Links to the two divisions, About and Contact, plus the language switcher
+// and a contact call to action. Every label comes
 // from the content files, so the bar switches language automatically.
 
 import { BrandTagline } from "@/components/ui/brand-tagline";
@@ -66,16 +66,10 @@ export function MarketingNav({ locale, content }: { locale: Locale; content: Mar
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <LanguageSwitcher label={common.languageLabel} locale={locale} />
-          <Link
-            className="hidden whitespace-nowrap rounded-lg px-3 py-2.5 text-sm font-semibold text-stone-700 hover:bg-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 md:inline-flex"
-            href="/login"
-          >
-            {nav.login}
-          </Link>
           <Link className={cn(buttonBase, theme.button, theme.ring, "hidden sm:inline-flex")} href={cta.href}>
             {cta.label}
           </Link>
-          <MarketingMenu cta={cta} label={nav.menuLabel} links={links} login={nav.login} navLabel={nav.ariaLabel} />
+          <MarketingMenu cta={cta} label={nav.menuLabel} links={links} navLabel={nav.ariaLabel} />
         </div>
       </div>
     </header>

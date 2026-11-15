@@ -35,7 +35,7 @@ public sealed class AdminController(
     [HttpPost("drivers")]
     [ProducesResponseType(typeof(DriverProfileResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<AuthResponse>> CreateDriver(
+    public async Task<ActionResult<DriverProfileResponse>> CreateDriver(
         [FromBody] RegisterDriverRequest request,
         CancellationToken cancellationToken)
     {

@@ -30,10 +30,12 @@ Next.js frontend (`apps/web`). Every endpoint below is implemented by a controll
 | --- | --- | --- | --- |
 | POST | `/api/auth/login` | `LoginRequest` | `AuthResponse` |
 | POST | `/api/auth/register/client` | `RegisterClientRequest` | `AuthResponse` |
-| POST | `/api/auth/register/driver` | `RegisterDriverRequest` | `AuthResponse` |
 | POST | `/api/auth/forgot-password` | `ForgotPasswordRequest` | `204` (same response whether or not the account exists) |
 | POST | `/api/auth/reset-password` | `ResetPasswordRequest` | `204` |
 | GET | `/api/auth/me` *(any role)* | - | `CurrentUserResponse` |
+
+Driver accounts are created by administrators through `POST /api/admin/drivers`;
+drivers cannot register themselves.
 
 ## Clients (CRM) - `/api/clients`
 

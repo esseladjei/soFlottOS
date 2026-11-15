@@ -59,7 +59,7 @@ The queue remains persisted across restarts.
 
 | Event | Recipients |
 | --- | --- |
-| Client/driver self-registration | New login account |
+| Client self-registration or admin-created driver | New login account |
 | Admin-created CRM client | CRM contact; explicitly not an account creation message |
 | Order confirmation | CRM customer contact and linked login email |
 | Invoice issuance | Same customer recipients; printable HTML invoice attachment |

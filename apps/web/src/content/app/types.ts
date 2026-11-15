@@ -120,8 +120,6 @@ export interface AppContent {
       metaTitle: string;
       title: string;
       description: string;
-      clientTab: string;
-      driverTab: string;
       fields: {
         companyName: string;
         contactPerson: string;
@@ -133,11 +131,8 @@ export interface AppContent {
         postalCode: string;
         country: string;
         taxIdNumber: string;
-        fullName: string;
-        vehicleDescription: string;
       };
       submitClient: string;
-      submitDriver: string;
       created: string;
       failed: string;
       alreadyRegistered: string;
