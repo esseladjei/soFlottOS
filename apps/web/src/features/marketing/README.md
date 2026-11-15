@@ -6,6 +6,7 @@ Components that render the public website. Copy lives in
 | File | Purpose |
 | --- | --- |
 | `components/marketing-page.tsx` | Renders any page: division sub-nav, hero, blocks, closing CTA, JSON-LD |
+| `components/landing-hero.tsx` | Wide corporate and Digital landing heroes with localized artwork and division-specific CTAs |
 | `components/express-visual.tsx` | Localized Express artwork; static image dimensions and automatic height preserve the full image without cropping or stretching |
 | `components/digital-visual.ts` | Localized Digital hero and service artwork |
 | `components/marketing-visual.tsx` | Shared responsive image renderer, preserving original proportions |
@@ -26,9 +27,17 @@ adds canonical URLs, language alternates and social sharing images. Set
 URLs default to localhost. The sitemap omits modification dates because the site
 does not currently track when individual pages were last changed.
 
-The Digital overview hero uses localized text for the brand descriptor and
-headline. It intentionally does not use the older hero artwork, which contains
-outdated positioning.
+The corporate and Digital overview heroes display wide, uncropped artwork below
+the localized headline and action links. The corporate hero uses
+`soFlott_divisions_de-4.png` / `soFlott_divisions_en-4.png`; the Digital overview
+uses `hero_digital_de_3.png` / `hero_digital_en_4.png`. Static image imports
+provide intrinsic dimensions and the hero image loads with priority.
+Corporate and Digital artwork is capped at 1240px wide; the Express overview
+artwork is capped at 36rem. Original proportions are preserved to reduce height
+without cropping embedded labels. Digital hero actions remain in one row,
+with labels wrapping within their buttons on small screens.
+Home, Express and Digital use a coordinated content-and-artwork entrance,
+disabled for reduced-motion preferences; there is no automatic rotation.
 
 ## Enquiry forms (Phase 1)
 

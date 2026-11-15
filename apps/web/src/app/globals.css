@@ -29,6 +29,40 @@ body {
   }
 }
 
+@keyframes landing-hero-content-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-hero-content {
+    animation: landing-hero-content-reveal 450ms ease-out both;
+  }
+
+  .landing-hero-artwork {
+    animation: landing-hero-reveal 700ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+  }
+}
+
 @layer base {
   * {
     border-color: #e7e5e4;

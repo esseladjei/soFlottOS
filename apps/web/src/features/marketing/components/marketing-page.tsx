@@ -18,6 +18,7 @@ import {Breadcrumb} from "@/features/marketing/components/breadcrumb";
 import {getDigitalVisual} from "@/features/marketing/components/digital-visual";
 import {DivisionSubnav} from "@/features/marketing/components/division-subnav";
 import {ExpressVisual, getExpressVisual} from "@/features/marketing/components/express-visual";
+import {LandingHero} from "@/features/marketing/components/landing-hero";
 import {navLabel} from "@/features/marketing/components/marketing-nav";
 import {MarketingVisual} from "@/features/marketing/components/marketing-visual";
 import {Section} from "@/features/marketing/components/section";
@@ -71,79 +72,97 @@ export function MarketingPageView({
                 <DivisionSubnav content={content} current={page} division={division} locale={locale}/>
             ) : null}
 
-            <div className={theme.hero}>
-                <div
-                    className={cn(
-                        "mx-auto w-full max-w-6xl px-4 pb-14 pt-8 sm:px-6 md:pb-20 md:pt-10",
-                        hasHeroVisual && "grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(20rem,1.1fr)] lg:gap-10",
-                    )}
-                >
-                    {!isHome ? (
-                        <div className={hasHeroVisual ? "lg:col-span-2" : undefined}>
-                            <Breadcrumb items={trail} label={content.common.breadcrumbLabel} locale={locale}/>
-                        </div>
-                    ) : null}
-
-                    <div className={cn("max-w-3xl", isHome ? "pt-6 md:pt-12" : "pt-8")}>
-                        <p className={cn("text-sm font-semibold", theme.accent)}>{data.hero.eyebrow}</p>
-                        {data.hero.descriptor ? (
-                            <p className="mt-1 text-sm font-medium text-stone-600">{data.hero.descriptor}</p>
-                        ) : null}
-                        <h1 className="mt-3 text-balance font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-stone-950 md:text-5xl">
-                            {data.hero.title}
-                        </h1>
-                        <p className="mt-5 text-lg leading-8 text-stone-700">{data.hero.intro}</p>
-
-                        {division !== "corporate" && page === division ? (
-                            <p className="mt-3 text-sm text-stone-500">{content.common.divisionOf}</p>
-                        ) : null}
-
-                        {data.hero.points?.length ? (
-                            <ul className="mt-6 grid gap-2 sm:grid-cols-2">
-                                {data.hero.points.map((point) => (
-                                    <li className="flex gap-2 text-sm font-semibold text-stone-800" key={point}>
-                                        <CheckCircle2 aria-hidden
-                                                      className={cn("mt-0.5 size-4 shrink-0", theme.accent)}/>
-                                        {point}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : null}
-
-                        {data.hero.primaryCta || data.hero.secondaryCta ? (
-                            <div className="mt-8 flex flex-wrap gap-3">
-                                {data.hero.primaryCta ?
-                                    <CtaLink link={data.hero.primaryCta} locale={locale} theme={theme}/> : null}
-                                {data.hero.secondaryCta ? (
-                                    <CtaLink link={data.hero.secondaryCta} locale={locale} theme={theme}
-                                             variant="secondary"/>
-                                ) : null}
+            {page === "home" || page === "digital" ? (
+                <LandingHero
+                    breadcrumbLabel={content.common.breadcrumbLabel}
+                    divisionOf={content.common.divisionOf}
+                    hero={data.hero}
+                    homeLabel={content.pages.home.label}
+                    locale={locale}
+                    page={page}
+                    pageLabel={data.label}
+                />
+            ) : (
+                <div className={theme.hero}>
+                    <div
+                        className={cn(
+                            "mx-auto w-full max-w-6xl px-4 pb-14 pt-8 sm:px-6 md:pb-20 md:pt-10",
+                            hasHeroVisual && "grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(20rem,1.1fr)] lg:gap-10",
+                        )}
+                    >
+                        {!isHome ? (
+                            <div className={hasHeroVisual ? "lg:col-span-2" : undefined}>
+                                <Breadcrumb items={trail} label={content.common.breadcrumbLabel} locale={locale}/>
                             </div>
                         ) : null}
-                    </div>
 
-                    {hasHeroVisual ? (
-                        <div
-                            className="relative mx-auto w-full max-w-[40rem] overflow-hidden rounded-[2rem] border border-white/80 bg-stone-200 shadow-2xl shadow-stone-900/10">
-                            {digitalVisual ? (
-                                <MarketingVisual src={digitalVisual} priority sizes="(min-width: 1280px) 640px, (min-width: 1024px) 55vw, 100vw"/>
-                            ) : (
-                                <ExpressVisual locale={locale} page={page} priority sizes="(min-width: 1280px) 640px, (min-width: 1024px) 55vw, 100vw"/>
-                            )}
-                            <div aria-hidden
-                                 className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/15"/>
+                        <div className={cn("min-w-0 max-w-3xl", isHome ? "pt-6 md:pt-12" : "pt-8", page === "express" && "landing-hero-content")}>
+                            <p className={cn("text-sm font-semibold", theme.accent)}>{data.hero.eyebrow}</p>
+                            {data.hero.descriptor ? (
+                                <p className="mt-1 text-sm font-medium text-stone-600">{data.hero.descriptor}</p>
+                            ) : null}
+                            <h1 className="mt-3 text-balance font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-stone-950 md:text-5xl">
+                                {data.hero.title}
+                            </h1>
+                            <p className="mt-5 text-lg leading-8 text-stone-700">{data.hero.intro}</p>
+
+                            {division !== "corporate" && page === division ? (
+                                <p className="mt-3 text-sm text-stone-500">{content.common.divisionOf}</p>
+                            ) : null}
+
+                            {data.hero.points?.length ? (
+                                <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+                                    {data.hero.points.map((point) => (
+                                        <li className="flex gap-2 text-sm font-semibold text-stone-800" key={point}>
+                                            <CheckCircle2 aria-hidden
+                                                          className={cn("mt-0.5 size-4 shrink-0", theme.accent)}/>
+                                            {point}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : null}
+
+                            {data.hero.primaryCta || data.hero.secondaryCta ? (
+                                <div className="mt-8 flex flex-wrap gap-3">
+                                    {data.hero.primaryCta ?
+                                        <CtaLink link={data.hero.primaryCta} locale={locale} theme={theme}/> : null}
+                                    {data.hero.secondaryCta ? (
+                                        <CtaLink link={data.hero.secondaryCta} locale={locale} theme={theme}
+                                                 variant="secondary"/>
+                                    ) : null}
+                                </div>
+                            ) : null}
                         </div>
-                    ) : null}
 
-                    {showLegalDraft ? (
-                        <p className="mt-8 flex max-w-3xl gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
-                           role="note">
-                            <Info aria-hidden className="mt-0.5 size-4 shrink-0"/>
-                            {content.common.legalDraft}
-                        </p>
-                    ) : null}
+                        {hasHeroVisual ? (
+                            <div
+                                className={cn(
+                                    "relative mx-auto w-full max-w-[40rem] overflow-hidden rounded-[2rem] border border-white/80 bg-stone-200 shadow-2xl shadow-stone-900/10",
+                                    page === "express" && "landing-hero-artwork max-w-[36rem]",
+                                )}>
+                                {digitalVisual ? (
+                                    <MarketingVisual src={digitalVisual} priority
+                                                     sizes="(min-width: 1280px) 640px, (min-width: 1024px) 55vw, 100vw"/>
+                                ) : (
+                                    <ExpressVisual locale={locale} page={page} priority
+                                                   sizes="(min-width: 1280px) 640px, (min-width: 1024px) 55vw, 100vw"/>
+                                )}
+                                <div aria-hidden
+                                     className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/15"/>
+                            </div>
+                        ) : null}
+
+                        {showLegalDraft ? (
+                            <p className="mt-8 flex max-w-3xl gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+                               role="note">
+                                <Info aria-hidden className="mt-0.5 size-4 shrink-0"/>
+                                {content.common.legalDraft}
+                            </p>
+                        ) : null}
+                    </div>
                 </div>
-            </div>
+
+            )}
 
             <ContentBlocks blocks={data.blocks} ctx={{locale, page, division, theme, content}}/>
 

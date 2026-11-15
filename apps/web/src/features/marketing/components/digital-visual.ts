@@ -3,6 +3,8 @@ import type {Locale} from "@/i18n/config";
 import type {MarketingPage} from "@/i18n/routes";
 import consultingDe from "../../../../public/images/digital/hero/hero_digital_de_4.png";
 import consultingEn from "../../../../public/images/digital/hero/hero_digital_en_3.png";
+import heroDe from "../../../../public/images/digital/hero/hero_digital_de_3.png";
+import heroEn from "../../../../public/images/digital/hero/hero_digital_en_4.png";
 import softwareDe from "../../../../public/images/digital/de/software/software_de_2.png";
 import softwareEn from "../../../../public/images/digital/en/software/digital_software_en_4.png";
 import apiDe from "../../../../public/images/digital/de/api/api_de_1.png";
@@ -12,8 +14,11 @@ import contractDe from "../../../../public/images/digital/de/contract/contract_d
 import contractEn from "../../../../public/images/digital/en/contract/contract_en_4.png";
 import supportEn from "../../../../public/images/digital/en/support_maintenance/support_en_3.png";
 
+export const digitalHeroVisuals: Record<Locale, StaticImageData> = {de: heroDe, en: heroEn};
+
 const digitalVisuals: Record<Locale, Partial<Record<MarketingPage, StaticImageData>>> = {
     de: {
+        digital: digitalHeroVisuals.de,
         "digital/it-consulting": consultingDe,
         "digital/software-development": softwareDe,
         "digital/api-integration": apiDe,
@@ -22,6 +27,7 @@ const digitalVisuals: Record<Locale, Partial<Record<MarketingPage, StaticImageDa
         "digital/support-and-maintenance": consultingDe,
     },
     en: {
+        digital: digitalHeroVisuals.en,
         "digital/it-consulting": consultingEn,
         "digital/software-development": softwareEn,
         "digital/api-integration": apiEn,
