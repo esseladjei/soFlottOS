@@ -6,6 +6,7 @@ using soFlottOS.Api.Domain.Entities;
 using soFlottOS.Api.Dtos;
 using soFlottOS.Api.Services.Notifications;
 using soFlottOS.Api.Services.Email;
+using soFlottOS.Api.Services.Pricing;
 
 namespace soFlottOS.Api.Services;
 
@@ -30,8 +31,9 @@ public interface IOrderService
 /// The heart of the platform: quoting, booking, dispatching and cancelling deliveries.
 /// <para>
 /// Booking an order performs four steps in one go:
-/// 1. work out the distance, 2. price it including 19% VAT, 3. store the order,
-/// 4. generate the invoice and notify the customer.
+/// 1. work out the distance, 2. price it (cost &amp; pricing engine when an on-demand delivery
+/// profile is configured, otherwise the legacy tariff) and apply the client's tax treatment,
+/// 3. store the order, 4. generate the invoice and notify the customer.
 /// </para>
 /// </summary>
 public sealed class OrderService(
@@ -41,6 +43,7 @@ public sealed class OrderService(
     IRoutingService routingService,
     IGeocodingService geocodingService,
     IPricingService pricingService,
+    IPricingCalculationService pricingEngine,
     IInvoiceService invoiceService,
     INotificationQueue notificationQueue,
     IEmailCommunications emails,
@@ -81,7 +84,7 @@ public sealed class OrderService(
 
         var resolved = await ResolveRouteAsync(request.PickupAddress, request.DropoffAddress, null, null, null, null, cancellationToken);
 
-        var price = _pricingService.Calculate(resolved.Route.DistanceKm, client?.DefaultBaseFee, client?.DefaultRatePerKilometer);
+        var price = await PriceDeliveryAsync(resolved.Route.DistanceKm, client, cancellationToken);
 
         return new OrderQuoteResponse(
             resolved.Route.DistanceKm,
@@ -95,9 +98,50 @@ public sealed class OrderService(
             price.RatePerKilometer,
             price.DistanceCost,
             price.MinimumChargeApplied,
+            price.TaxTreatment,
+            TaxTreatmentResolver.NoteFor(price.TaxTreatment),
             new RouteEndpointResponse(resolved.Pickup.Lat, resolved.Pickup.Lng, resolved.Pickup.Label),
             new RouteEndpointResponse(resolved.Dropoff.Lat, resolved.Dropoff.Lng, resolved.Dropoff.Label),
             resolved.Route.Geometry.Select(point => new RoutePointResponse(point.Lat, point.Lng)).ToArray());
+    }
+
+    /// <summary>Unified price for one delivery: the engine when configured, otherwise the legacy tariff.</summary>
+    private sealed record DeliveryPrice(
+        decimal NetPrice,
+        decimal VatAmount,
+        decimal GrossPrice,
+        decimal VatRate,
+        decimal BaseFee,
+        decimal RatePerKilometer,
+        decimal DistanceCost,
+        bool MinimumChargeApplied,
+        TaxTreatment TaxTreatment,
+        OrderQuote? EngineQuote);
+
+    private async Task<DeliveryPrice> PriceDeliveryAsync(decimal distanceKm, Client? client, CancellationToken cancellationToken)
+    {
+        var engine = await pricingEngine.QuoteDeliveryAsync(distanceKm, client, cancellationToken);
+        if (engine is not null)
+        {
+            var lines = engine.Result.PriceLines;
+            var baseFee = lines.Where(l => l.Unit == PricingUnit.Fixed).Sum(l => l.Amount);
+            var perKm = lines.FirstOrDefault(l => l.Unit == PricingUnit.Kilometre);
+            return new DeliveryPrice(
+                engine.NetPrice, engine.VatAmount, engine.GrossPrice, engine.VatRate,
+                baseFee, perKm?.Rate ?? 0m, perKm?.Amount ?? 0m,
+                lines.Any(l => l.Label == "Minimum price applied"),
+                engine.TaxTreatment, engine);
+        }
+
+        // Legacy tariff: net price from appsettings, VAT still follows the client's tax treatment.
+        var legacy = _pricingService.Calculate(distanceKm, client?.DefaultBaseFee, client?.DefaultRatePerKilometer);
+        var treatment = TaxTreatmentResolver.Resolve(client);
+        var vatRate = TaxTreatmentResolver.VatRateFor(treatment, legacy.VatRate);
+        var vat = decimal.Round(legacy.NetPrice * vatRate, 2, MidpointRounding.AwayFromZero);
+        return new DeliveryPrice(
+            legacy.NetPrice, vat, legacy.NetPrice + vat, vatRate,
+            legacy.BaseFee, legacy.RatePerKilometer, legacy.DistanceCost, legacy.MinimumChargeApplied,
+            treatment, null);
     }
 
     /// <summary>
@@ -148,7 +192,7 @@ public sealed class OrderService(
             cancellationToken);
         var route = resolved.Route;
 
-        var price = _pricingService.Calculate(route.DistanceKm, client.DefaultBaseFee, client.DefaultRatePerKilometer);
+        var price = await PriceDeliveryAsync(route.DistanceKm, client, cancellationToken);
 
         await availability.EnsureCanBookAsync(currentUser, cancellationToken);
 
@@ -175,13 +219,21 @@ public sealed class OrderService(
             PaymentMethod = request.PaymentMethod,
             DistanceKm = route.DistanceKm,
             EstimatedDurationMinutes = route.EstimatedDurationMinutes,
+            ServiceType = ServiceType.OnDemandDelivery,
             NetPrice = price.NetPrice,
             VatAmount = price.VatAmount,
             GrossPrice = price.GrossPrice,
+            TaxTreatment = price.TaxTreatment,
+            VatRate = price.VatRate,
             Status = OrderStatus.Pending
         };
 
         await _orderRepository.AddAsync(order, cancellationToken);
+
+        if (price.EngineQuote is { } engineQuote)
+        {
+            order.PricingCalculationId = await pricingEngine.SaveOrderSnapshotAsync(engineQuote, order.Id, client.Id, currentUser.UserId, cancellationToken);
+        }
 
         // Every order is invoiced immediately (German MVP flow: Rechnung first, payment later).
         emails.OrderChanged(order, OrderEmailKind.Confirmed);

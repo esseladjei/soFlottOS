@@ -40,6 +40,8 @@ public sealed record OrderQuoteResponse(
     decimal RatePerKilometer,
     decimal DistanceCost,
     bool MinimumChargeApplied,
+    TaxTreatment TaxTreatment,
+    string? TaxNote,
     RouteEndpointResponse Pickup,
     RouteEndpointResponse Dropoff,
     IReadOnlyList<RoutePointResponse> Geometry);

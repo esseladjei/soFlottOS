@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using soFlottOS.Api.Domain;
 
 namespace soFlottOS.Api.Dtos;
 
@@ -44,6 +45,12 @@ public sealed record SaveClientRequest
 
     [Range(0.01, 1_000_000)]
     public decimal? DefaultRatePerKilometer { get; init; }
+
+    /// <summary>
+    /// Admin-only. Normally the tax treatment is derived from the country (DE → 19% VAT,
+    /// EU → reverse charge, UK/UAE → not taxable). Set this to force a treatment for edge cases.
+    /// </summary>
+    public TaxTreatment? TaxTreatmentOverride { get; init; }
 }
 
 /// <summary>Row in the admin CRM list.</summary>
@@ -77,5 +84,7 @@ public sealed record ClientDetailResponse(
     string? TaxIdNumber,
     string? SpecialDeliveryInstructions,
     decimal? DefaultBaseFee,
-    decimal? DefaultRatePerKilometer)
+    decimal? DefaultRatePerKilometer,
+    TaxTreatment? TaxTreatmentOverride,
+    TaxTreatment EffectiveTaxTreatment)
     : ClientSummaryResponse(Id, CompanyName, ContactPerson, Email, Phone, City, PostalCode, ActiveOrders, TotalOrders, CreatedAt);

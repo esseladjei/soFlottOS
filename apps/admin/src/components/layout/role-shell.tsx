@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BriefcaseBusiness, ChevronDown, LogOut, Menu, ReceiptText, Users } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, Calculator, ChevronDown, LogOut, Menu, ReceiptText, Users } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
-import { activeGroup, matchesPath, type NavGroup } from "@/components/layout/navigation";
+import { activeGroup, activeItem, type NavGroup } from "@/components/layout/navigation";
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/ui/logo-mark";
 import { BrandTagline } from "@/components/ui/brand-tagline";
@@ -19,6 +19,8 @@ const groupIcons = {
   operations: BriefcaseBusiness,
   people: Users,
   billing: ReceiptText,
+  pricing: Calculator,
+  help: BookOpen,
 };
 
 function Navigation({ nav, pathname, label, onNavigate }: {
@@ -55,7 +57,7 @@ function Navigation({ nav, pathname, label, onNavigate }: {
             {isOpen ? (
               <div className="ml-[21px] space-y-1 border-l border-stone-200 py-1 pl-4">
                 {group.items.map((item) => {
-                  const isActive = matchesPath(pathname, item.href);
+                  const isActive = activeItem(group.items, pathname) === item.href;
                   return (
                     <Link
                       aria-current={isActive ? "page" : undefined}

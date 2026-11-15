@@ -213,9 +213,10 @@ public sealed class BookingAvailabilityTests
         var clients = new ClientRepository(context);
         var emails = new EmailCommunications(EmailSamples.Queue(context));
         var pricing = new PricingOptions();
-        var invoices = new InvoiceService(new EmailTestInvoiceRepository(context), clients, EmailSamples.Seller(), pricing, emails);
+        var invoices = new InvoiceService(new EmailTestInvoiceRepository(context), clients, EmailSamples.Seller(), emails);
         return new(new OrderRepository(context), clients, new UserRepository(context),
-            routing ?? new FakeRoutingService(), new FakeGeocodingService(), new PricingService(pricing), invoices, new FakeNotificationQueue(),
+            routing ?? new FakeRoutingService(), new FakeGeocodingService(), new PricingService(pricing),
+            PricingEngineFactory.Create(context, pricing), invoices, new FakeNotificationQueue(),
             emails, new BusinessTransaction(context), availability);
     }
 

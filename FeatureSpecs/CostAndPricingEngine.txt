@@ -1,0 +1,1556 @@
+# soFlott UG — Centralised Cost & Pricing Management System
+## Backend Implementation Specification
+
+**Project:** soFlott UG  
+**Module:** Cost & Pricing Management  
+**Business Units:** soFlott Express and soFlott Digital  
+**Backend:** C# / ASP.NET Core REST API  
+**Frontend:** Next.js  
+**Database:** PostgreSQL  
+**Architecture:** Modular monolith, layered architecture, domain-driven design principles
+
+---
+
+# 1. PURPOSE AND BUSINESS OBJECTIVE
+
+Implement a centralised, dynamic and configurable Cost & Pricing Management System within the soFlott administration backend.
+
+The objective is to enable the company to configure its operational costs, overhead expenses, cost allocation methods, risk reserves, pricing strategies and profit margins centrally.
+
+The pricing engine must use these configurations to automatically calculate sustainable selling prices for all business services.
+
+The system must support:
+
+- Contracted delivery routes.
+- Logistics subcontracting.
+- On-demand B2B deliveries.
+- Recurring B2B delivery agreements.
+- Software development.
+- API development and integration engineering.
+- IT consulting.
+- Digital transformation.
+- Software maintenance and technical support.
+- Other services added in the future.
+
+The system must not contain hardcoded prices or assumptions about operating costs.
+
+All pricing parameters must be configurable through the administration interface.
+
+## Core business principle
+
+Separate the following concepts:
+
+1. Cost configuration: What does it cost soFlott to operate?
+2. Cost allocation: How should those costs be distributed across services?
+3. Pricing strategy: How should the company charge customers?
+4. Price calculation: What is the calculated selling price?
+5. Commercial quotation: What price is offered to a customer?
+6. Actual profitability: Did the service generate the expected profit?
+
+These must be separate but interconnected domain components.
+
+---
+
+# 2. HIGH-LEVEL ARCHITECTURE
+
+Implement the following logical modules:
+
+Cost & Pricing Management
+- Cost Categories
+- Cost Items
+- Cost Pools
+- Cost Allocation Rules
+- Cost Profiles
+- Pricing Strategies
+- Pricing Rules
+- Pricing Profiles
+- Pricing Calculator
+- Pricing Simulation
+- Rate Card Management
+- Price Overrides
+- Pricing Version Management
+- Profitability Analysis
+
+Business Operations
+- Express Services
+- Contracted Routes
+- Subcontracting Assignments
+- On-Demand Deliveries
+- B2B Service Agreements
+- Digital Services
+- Projects
+- Support Contracts
+
+Financial Intelligence
+- Estimated Cost
+- Actual Cost
+- Revenue
+- Contribution Margin
+- Gross Profit
+- Operating Profit
+- Variance Analysis
+
+## Architectural requirements
+
+The pricing engine must be a reusable application/domain service.
+
+Business modules must not implement their own independent pricing formulas.
+
+They should submit a pricing request to the central pricing engine and receive a structured calculation result.
+
+Suggested application structure:
+
+src/
+  Modules/
+    Pricing/
+      Domain/
+        Entities/
+        ValueObjects/
+        Enums/
+        Services/
+      Application/
+        Commands/
+        Queries/
+        DTOs/
+        Interfaces/
+        Services/
+      Infrastructure/
+        Persistence/
+        Repositories/
+      API/
+        Controllers/
+
+    Express/
+    Digital/
+    Contracts/
+    Finance/
+
+Use the existing project architecture and naming conventions where they already exist. Do not unnecessarily restructure unrelated modules.
+
+---
+
+# 3. COST MANAGEMENT
+
+This is the foundation of the entire pricing engine.
+
+The administrator must be able to register and manage all expenses incurred by the company.
+
+## 3.1 Cost Categories
+
+Create configurable cost categories.
+
+Suggested initial categories:
+
+**Vehicle and Transport**
+- Fuel
+- Tyres
+- Brake pads and discs
+- Vehicle servicing
+- Repairs
+- Vehicle insurance
+- Vehicle tax
+- Vehicle depreciation
+- Vehicle financing or leasing
+- Parking
+- Tolls
+
+**Personnel**
+- Employee salary
+- Employer social contributions
+- Employer insurance contributions
+- Driver allowances
+- Contractor payments
+- Training
+
+**Business Operations**
+- Accounting
+- Legal services
+- Business insurance
+- Telephone
+- Internet
+- Office expenses
+- Software subscriptions
+- Hosting
+- Marketing
+- Administration
+
+**Digital Services**
+- Development tools
+- Cloud infrastructure
+- Third-party APIs
+- Software licences
+- External contractors
+- Project-specific services
+- Testing infrastructure
+
+Allow administrators to create additional categories.
+
+Each category should have:
+
+- Name
+- Description
+- Business unit applicability
+- Cost type
+- Allocation method
+- Active status
+
+Do not assume that all cost categories apply to every business unit.
+
+## 3.2 Cost Types
+
+Support the following cost classifications:
+
+| Cost type | Description |
+|---|---|
+| Fixed | Remains relatively constant regardless of activity |
+| Variable | Changes according to operational activity |
+| Semi-variable | Contains fixed and variable components |
+| Direct | Directly attributable to a particular service |
+| Indirect | Requires allocation across services |
+| One-time | Occurs once |
+| Recurring | Occurs periodically |
+
+Cost classification and cost allocation must be separate concepts.
+
+For example, vehicle insurance is a fixed recurring cost, but its allocation can be based on vehicle operating days or kilometres.
+
+## 3.3 Cost Items
+
+Create a CostItem entity.
+
+Suggested properties:
+
+- Id
+- Name
+- Description
+- CostCategoryId
+- BusinessUnit
+- CostType
+- Amount
+- Currency
+- Frequency
+- EffectiveFrom
+- EffectiveTo
+- AllocationMethod
+- IsActive
+- CreatedAt
+- UpdatedAt
+
+Frequency options:
+
+- OneTime
+- Daily
+- Weekly
+- Monthly
+- Quarterly
+- Annually
+- PerHour
+- PerKilometre
+- PerDelivery
+- PerRoute
+- PerProject
+
+Allow costs to be entered as either a fixed amount or a unit-based amount.
+
+Examples:
+
+Vehicle insurance:
+€1,200 annually.
+
+Fuel:
+Calculated from fuel consumption, fuel price and distance.
+
+Accounting:
+€100 monthly.
+
+External API:
+€0.02 per transaction.
+
+A cost item must support effective dates so that historical calculations remain reproducible when costs change.
+
+---
+
+# 4. COST ALLOCATION ENGINE
+
+Implement a flexible cost allocation engine.
+
+This is one of the most important components.
+
+The engine must distribute fixed and indirect costs to individual services using configurable allocation drivers.
+
+## 4.1 Allocation Methods
+
+Support:
+
+- Per kilometre
+- Per hour
+- Per working day
+- Per delivery
+- Per successful delivery
+- Per stop
+- Per parcel
+- Per route
+- Per vehicle
+- Per employee
+- Per project
+- Per customer
+- Percentage of revenue
+- Equal distribution
+- Custom allocation driver
+
+Example:
+
+Annual vehicle insurance = €1,200.
+
+Expected annual vehicle operating days = 240.
+
+Insurance allocation per operating day:
+
+€1,200 / 240 = €5.
+
+Another example:
+
+Monthly administration cost = €300.
+
+Expected monthly deliveries = 100.
+
+Administration allocation:
+
+€300 / 100 = €3 per delivery.
+
+The administrator must configure the allocation driver and denominator assumptions.
+
+## 4.2 Cost Pools
+
+Introduce CostPools to group related expenses.
+
+Examples:
+
+Vehicle Operating Cost Pool:
+- Fuel
+- Tyres
+- Brakes
+- Maintenance
+- Depreciation
+
+Business Overhead Pool:
+- Accounting
+- Telephone
+- Software
+- Marketing
+- Administration
+
+Digital Delivery Cost Pool:
+- Development tools
+- Cloud subscriptions
+- Infrastructure
+- Technical resources
+
+Cost pools must support:
+
+- Multiple cost items
+- Business unit restrictions
+- Allocation methods
+- Effective dates
+- Active/inactive status
+
+## 4.3 Avoid double counting
+
+The allocation engine must ensure that one cost is not allocated twice to the same service.
+
+For example, if vehicle insurance is already included in the vehicle operating cost per kilometre, it must not also be independently added through a general overhead allocation.
+
+Implement allocation tracking and validation.
+
+The system must clearly distinguish:
+
+- Original expense.
+- Allocated expense.
+- Remaining unallocated expense.
+
+---
+
+# 5. COST PROFILES
+
+Create reusable CostProfiles.
+
+A cost profile defines which cost items and cost pools apply to a particular type of service.
+
+Examples:
+
+- Standard Delivery Vehicle Profile
+- Large Delivery Vehicle Profile
+- Subcontracted Driver Profile
+- Software Development Profile
+- Integration Engineering Profile
+- IT Consulting Profile
+
+A profile should contain:
+
+- Name
+- Description
+- Business unit
+- Applicable service types
+- Cost pool associations
+- Direct cost configuration
+- Allocation rules
+- Risk allowance configuration
+- Effective date
+- Version
+- Active status
+
+When a new service or contract is created, the administrator can select an appropriate cost profile.
+
+The system should suggest a default profile based on the selected service type.
+
+---
+
+# 6. EXPRESS VEHICLE COST CALCULATION
+
+Implement a dedicated vehicle cost calculation component.
+
+A vehicle profile should support:
+
+- Vehicle purchase price
+- Purchase date
+- Expected residual value
+- Expected useful mileage
+- Fuel consumption per 100 km
+- Current fuel price
+- Tyre replacement cost
+- Expected tyre lifespan
+- Brake replacement cost
+- Expected brake lifespan
+- Servicing cost
+- Expected servicing interval
+- Insurance
+- Vehicle tax
+- Financing or leasing cost
+- Other vehicle expenses
+
+Calculate vehicle operating costs dynamically.
+
+Examples:
+
+Fuel cost per kilometre:
+
+(Fuel consumption per 100 km / 100) × Fuel price per litre.
+
+Depreciation per kilometre:
+
+(Purchase price - Expected residual value) / Expected useful kilometres.
+
+Tyre cost per kilometre:
+
+Tyre replacement cost / Expected tyre lifespan in kilometres.
+
+Brake cost per kilometre:
+
+Brake replacement cost / Expected brake lifespan in kilometres.
+
+Service cost per kilometre:
+
+Service cost / Service interval in kilometres.
+
+The total vehicle operating cost per kilometre must combine applicable cost components without double counting.
+
+Also support time-based vehicle costs for vehicles that incur expenses regardless of mileage.
+
+The administrator must be able to change assumptions and immediately preview their impact.
+
+---
+
+# 7. PERSONNEL AND LABOUR COST ENGINE
+
+Create a reusable labour costing component.
+
+A resource profile should support:
+
+- Employee or contractor type
+- Gross salary or contractual compensation
+- Employer social contributions
+- Employer-related additional costs
+- Paid working hours
+- Expected productive hours
+- Billable utilisation
+- Annual leave
+- Public holidays
+- Training and non-billable time
+- Other employment costs
+
+Calculate the actual cost per productive hour.
+
+Formula:
+
+Total annual employment cost / Expected productive annual hours.
+
+Do not use all calendar working hours as billable hours.
+
+For digital services, include a configurable billable utilisation percentage.
+
+For delivery services, include paid loading time, driving time, waiting time, return journeys and other working time.
+
+Support different labour profiles for:
+
+- Delivery drivers
+- Dispatch personnel
+- Software engineers
+- Integration engineers
+- IT consultants
+- Project managers
+
+---
+
+# 8. PRICING STRATEGY ENGINE
+
+Implement a configurable pricing strategy system.
+
+A pricing strategy defines how calculated costs are converted into selling prices.
+
+Support the following strategies.
+
+## 8.1 Cost Plus Pricing
+
+Selling Price = Total Cost × (1 + Markup Percentage).
+
+## 8.2 Target Margin Pricing
+
+Selling Price = Total Cost / (1 - Target Margin Percentage).
+
+Keep markup and margin separate throughout the system.
+
+Never treat them as interchangeable.
+
+## 8.3 Fixed Pricing
+
+Allow an administrator to configure a fixed selling price.
+
+The engine must still calculate the underlying cost and profitability.
+
+Flag prices that fall below configured minimum profitability thresholds.
+
+## 8.4 Unit-Based Pricing
+
+Support pricing by:
+
+- Kilometre
+- Hour
+- Day
+- Delivery
+- Successful delivery
+- Stop
+- Parcel
+- Route
+- Project
+- Month
+- Service transaction
+
+## 8.5 Tiered Pricing
+
+Allow different rates based on quantity, distance, duration or volume.
+
+Example:
+
+- First 50 deliveries: Rate A
+- Deliveries 51–100: Rate B
+- Deliveries above 100: Rate C
+
+Support both progressive and volume-based tiers.
+
+Clearly distinguish between the two calculation methods.
+
+## 8.6 Hybrid Pricing
+
+Support combinations such as:
+
+Base fee + distance rate + waiting time + additional services.
+
+Another example:
+
+Monthly retainer + included support hours + additional hourly charges.
+
+## 8.7 Minimum Charge
+
+Allow a minimum selling price for a service regardless of calculated cost.
+
+## 8.8 Risk and Contingency
+
+Support configurable risk allowances.
+
+Risk allowance methods:
+
+- Fixed amount
+- Percentage of direct costs
+- Percentage of total costs
+- Unit-based reserve
+- Custom calculation
+
+Risk allowances must be visible as separate cost components in calculation results.
+
+Do not confuse a risk reserve with an accounting provision or actual expense.
+
+---
+
+# 9. PRICING PROFILES AND RULES
+
+Create PricingProfiles.
+
+A pricing profile associates:
+
+- Service type
+- Cost profile
+- Pricing strategy
+- Allocation rules
+- Margin target
+- Markup target, where applicable
+- Minimum price
+- Minimum margin
+- Risk allowance
+- Applicable pricing units
+- Optional customer or contract-specific rules
+- Effective dates
+- Version
+
+Example profiles:
+
+Express:
+- Standard B2B On-Demand
+- Contracted Daily Route
+- Parcel Subcontracting
+- Hourly Logistics Assignment
+- Recurring Delivery Agreement
+
+Digital:
+- Software Development
+- API Integration
+- IT Consulting
+- Digital Transformation
+- Maintenance and Support
+
+Each service type should have a default pricing profile.
+
+Administrators must be able to create additional profiles without requiring code changes.
+
+## Pricing rule priority
+
+Implement deterministic rule precedence:
+
+1. Explicit approved contract-specific pricing.
+2. Approved customer-specific pricing.
+3. Service-specific pricing profile.
+4. Business-unit default pricing profile.
+5. Global default pricing profile.
+
+If no applicable profile exists, the engine must not silently invent a price.
+
+Return a clear configuration error requiring administrator attention.
+
+---
+
+# 10. SERVICE-SPECIFIC PRICING CONFIGURATION
+
+## 10.1 Contracted Routes
+
+When creating a contracted route, collect:
+
+- Customer
+- Vehicle
+- Assigned driver or labour profile
+- Route distance
+- Estimated return distance
+- Operating days
+- Working hours
+- Number of stops
+- Expected delivery volume
+- Waiting time
+- Loading and unloading time
+- Contract duration
+- Service-level requirements
+
+The pricing engine should calculate:
+
+- Vehicle cost
+- Labour cost
+- Route overhead
+- Risk allowance
+- Total daily cost
+- Daily selling price
+- Weekly selling price
+- Monthly selling price
+- Estimated annual revenue
+- Expected profit
+- Expected margin
+
+Allow the administrator to select the pricing strategy:
+
+- Fixed daily route fee
+- Fixed monthly route fee
+- Per kilometre
+- Per stop
+- Per delivery
+- Hybrid pricing
+
+Support guaranteed minimum remuneration and additional charge rules.
+
+## 10.2 Logistics Subcontracting
+
+Support:
+
+- Per parcel
+- Per successful delivery
+- Per attempted delivery
+- Per route
+- Per shift
+- Per hour
+- Hybrid pricing
+
+Collect:
+
+- Expected parcel volume
+- Expected successful delivery rate
+- Route distance
+- Driver hours
+- Vehicle allocation
+- Return-to-depot distance
+- Failed delivery assumptions
+- Customer payment terms
+
+Calculate the price using realistic expected volumes.
+
+Show the financial impact if actual volume is lower than expected.
+
+Allow minimum daily or weekly remuneration.
+
+## 10.3 On-Demand B2B Delivery
+
+Support:
+
+- Base collection fee
+- Chargeable distance
+- Actual vehicle distance
+- Time-based charges
+- Waiting-time fees
+- Urgency surcharge
+- Special handling
+- Additional stops
+- Minimum order value
+
+The calculation must distinguish between customer-visible distance and actual operating distance.
+
+## 10.4 Recurring B2B Delivery
+
+Support:
+
+- Monthly account fee
+- Included delivery allowance
+- Price per additional delivery
+- Volume discounts
+- Service-level surcharges
+- Minimum monthly commitment
+
+## 10.5 Software Development
+
+Support:
+
+- Fixed-price projects
+- Hourly billing
+- Daily billing
+- Milestone pricing
+- Time and materials
+- Monthly retainers
+
+Calculate estimated labour, tools, infrastructure, third-party costs, project management, contingency and profitability.
+
+## 10.6 API and Integration Engineering
+
+Support:
+
+- Technical discovery fee
+- Integration implementation
+- Number of systems
+- Number of endpoints
+- Complexity factor
+- Data migration
+- Testing
+- Deployment
+- Documentation
+- Ongoing monitoring and maintenance
+
+Allow discovery to be priced separately from implementation.
+
+Do not rely exclusively on endpoint count to calculate project complexity.
+
+## 10.7 IT Consulting
+
+Support:
+
+- Hourly rate
+- Daily rate
+- Fixed assessment
+- Architecture review
+- Technical audit
+- Advisory retainer
+- Strategy engagement
+
+## 10.8 Digital Transformation
+
+Support phased pricing:
+
+- Discovery and business analysis
+- Current-state assessment
+- Transformation roadmap
+- Architecture and solution design
+- Implementation
+- Migration
+- Training
+- Ongoing optimisation
+
+Each phase can have its own pricing strategy.
+
+## 10.9 Maintenance and Support
+
+Support:
+
+- Fixed monthly subscription
+- Included support hours
+- Additional hourly charges
+- SLA tiers
+- Emergency support
+- On-call arrangements
+- Infrastructure and licensing pass-through costs
+
+---
+
+# 11. CENTRAL PRICING CALCULATION ENGINE
+
+Implement a central PricingCalculationService.
+
+Suggested interface:
+
+CalculatePriceAsync(PricingRequest request)
+
+The engine should:
+
+1. Identify business unit and service type.
+2. Resolve applicable pricing profile.
+3. Resolve applicable cost profile.
+4. Load active cost items and allocation rules.
+5. Calculate direct costs.
+6. Calculate allocated overhead.
+7. Calculate vehicle and labour costs when applicable.
+8. Calculate project-specific or service-specific costs.
+9. Apply risk and contingency allowances.
+10. Calculate total estimated cost.
+11. Apply the configured pricing strategy.
+12. Apply minimum price and pricing constraints.
+13. Calculate expected profit and margin.
+14. Return a detailed calculation breakdown.
+
+The engine must be deterministic and testable.
+
+Avoid embedding database queries, HTTP requests or UI dependencies inside domain calculation logic.
+
+Use an application service to resolve configuration and a pure domain calculation component to perform the mathematics.
+
+## Calculation result
+
+Return a structured result containing:
+
+- CalculationId
+- ServiceType
+- PricingProfileId
+- PricingProfileVersion
+- CostProfileId
+- CostProfileVersion
+- Currency
+- CalculationDate
+- DirectCosts
+- AllocatedOverhead
+- LabourCosts
+- VehicleCosts
+- RiskAllowance
+- TotalEstimatedCost
+- BaseSellingPrice
+- AppliedSurcharges
+- AppliedDiscounts
+- FinalNetSellingPrice
+- VATRate
+- VATAmount
+- FinalGrossSellingPrice
+- ExpectedProfit
+- ExpectedMargin
+- AppliedPricingRules
+- Warnings
+- CalculationStatus
+
+Include a detailed cost breakdown rather than returning only the final price.
+
+---
+
+# 12. RATE CARD MANAGEMENT
+
+This is a major feature.
+
+Whenever an administrator creates a B2B contract, contracted route or recurring service agreement, the system should be capable of generating a professional rate card automatically.
+
+A rate card is a customer-facing document defining agreed service prices.
+
+## Rate card generation workflow
+
+1. Administrator creates or selects a customer.
+2. Administrator selects the service type.
+3. Administrator enters service-specific operational details.
+4. System resolves the applicable pricing profile.
+5. Pricing engine calculates the cost and recommended selling price.
+6. Administrator reviews the calculation.
+7. Administrator can adjust the commercial price if authorised.
+8. System calculates the resulting profit and margin.
+9. Administrator approves the quotation.
+10. System generates a rate card PDF.
+11. Rate card is attached to the customer contract.
+12. Contract receives a snapshot of the approved pricing terms.
+
+## Rate card contents
+
+Include:
+
+- soFlott company information
+- Customer information
+- Rate card reference
+- Contract reference
+- Service description
+- Pricing unit
+- Quantity assumptions
+- Agreed unit rates
+- Additional charges
+- Waiting-time charges
+- Overtime charges, where applicable
+- Minimum charges
+- Volume discounts
+- Validity period
+- Payment terms
+- VAT treatment
+- Special commercial conditions
+- Document version
+
+The rate card must clearly distinguish net prices, VAT and gross prices where applicable.
+
+## Important
+
+Do not regenerate existing customer rate cards automatically when global pricing configurations change.
+
+Existing contracts must preserve their approved prices.
+
+New pricing configurations should affect new quotations and contracts unless an authorised contract amendment is made.
+
+---
+
+# 13. AUTOMATIC PRICE ASSIGNMENT
+
+Integrate the pricing engine into existing service creation workflows.
+
+Examples:
+
+**Create Contracted Route**
+
+When an administrator creates a contracted route:
+
+- Select customer.
+- Select route type.
+- Enter distance, working hours, stops and operating schedule.
+- Select vehicle and labour profiles.
+- Resolve pricing profile automatically.
+- Calculate recommended daily and monthly rates.
+- Allow administrator review.
+- Save the approved rate.
+- Generate the associated rate card.
+
+**Create Subcontracting Assignment**
+
+- Select logistics company.
+- Select pricing method.
+- Enter expected parcel volume or route details.
+- Calculate costs and rates.
+- Validate minimum profitability.
+- Generate assignment pricing.
+
+**Create On-Demand B2B Service**
+
+- Select customer.
+- Enter collection and delivery details.
+- Calculate operating distance and time.
+- Apply applicable pricing rules.
+- Return the recommended customer price.
+- Save the accepted quotation.
+
+**Create Digital Project**
+
+- Select service type.
+- Select labour profiles.
+- Estimate hours and complexity.
+- Add external costs.
+- Select pricing strategy.
+- Calculate project quotation.
+- Generate project rate card or proposal.
+
+Do not duplicate pricing calculations in individual controllers.
+
+All workflows must call the central pricing application service.
+
+---
+
+# 14. PRICING SIMULATION
+
+Provide an administration interface where users can experiment with different cost and pricing assumptions without creating actual contracts.
+
+Examples:
+
+- What happens if fuel increases by 15%?
+- What happens if the delivery volume drops from 100 to 60?
+- What if a route takes two additional hours?
+- What if I increase my profit margin from 20% to 30%?
+- What if I charge a fixed monthly fee instead of per delivery?
+- What happens if project hours increase by 25%?
+
+Allow the administrator to change parameters and immediately recalculate.
+
+Simulation must not modify saved cost configurations or approved contracts.
+
+Allow users to save simulation scenarios for later comparison.
+
+---
+
+# 15. PRICING VERSIONING AND AUDITABILITY
+
+Historical pricing accuracy is essential.
+
+Implement immutable pricing calculation snapshots.
+
+Every approved quotation or contract must preserve:
+
+- Cost assumptions used.
+- Cost profile version.
+- Pricing profile version.
+- Applied rules.
+- Calculation breakdown.
+- Final agreed prices.
+- Approval details.
+- Calculation timestamp.
+
+If an administrator changes fuel prices, insurance, labour costs or profit targets, previous calculations must remain unchanged.
+
+Introduce pricing profile versioning.
+
+Changes should create a new version rather than silently modifying historical versions.
+
+Implement audit logging for:
+
+- Cost changes.
+- Pricing rule changes.
+- Manual price overrides.
+- Quotation approval.
+- Contract price amendments.
+- Rate card generation.
+
+Store the user responsible and the timestamp.
+
+---
+
+# 16. ACTUAL COST AND PROFITABILITY ANALYSIS
+
+The system must eventually compare estimated costs against actual operational costs.
+
+For Express:
+
+- Actual kilometres.
+- Actual fuel consumption or expenditure.
+- Actual working hours.
+- Actual deliveries.
+- Actual failed delivery attempts.
+- Actual maintenance expenses.
+- Actual vehicle expenses.
+
+For Digital:
+
+- Actual development hours.
+- Actual consulting hours.
+- Actual infrastructure costs.
+- Actual third-party services.
+- Actual project expenses.
+- Actual support hours.
+
+Calculate:
+
+Estimated Cost
+Actual Cost
+Estimated Revenue
+Actual Revenue
+Estimated Profit
+Actual Profit
+Cost Variance
+Profit Variance
+Margin Variance
+
+Example:
+
+Estimated project cost: €4,000.
+
+Actual project cost: €5,000.
+
+Cost variance: +€1,000.
+
+The system should flag projects or routes where actual costs exceed configured thresholds.
+
+Do not treat estimated expenses as actual accounting transactions.
+
+Keep operational costing and accounting records distinct, with the possibility of future financial-system integration.
+
+---
+
+# 17. DATABASE DESIGN
+
+Use PostgreSQL and the existing project's migration and ORM conventions.
+
+Suggested core tables:
+
+**Cost management**
+
+- cost_categories
+- cost_items
+- cost_pools
+- cost_pool_items
+- cost_allocation_rules
+- cost_profiles
+- cost_profile_items
+- labour_profiles
+- vehicle_profiles
+
+**Pricing configuration**
+
+- pricing_strategies
+- pricing_profiles
+- pricing_profile_versions
+- pricing_rules
+- pricing_tiers
+- pricing_surcharges
+- pricing_discounts
+- pricing_overrides
+
+**Calculations and quotations**
+
+- pricing_calculations
+- pricing_calculation_items
+- pricing_simulations
+- pricing_simulation_scenarios
+- quotations
+- quotation_items
+
+**Contracts and rate cards**
+
+- contracts
+- contract_services
+- contract_rate_cards
+- contract_rate_card_items
+- contract_price_snapshots
+
+**Profitability**
+
+- actual_cost_records
+- service_cost_allocations
+- profitability_records
+- cost_variance_records
+
+Use appropriate foreign keys, indexes, unique constraints, decimal precision and effective-date constraints.
+
+Use PostgreSQL NUMERIC for monetary and rate calculations. Never use floating-point types for financial arithmetic.
+
+Use explicit currency codes.
+
+Store timestamps in UTC.
+
+Use database transactions when approving quotations, creating contracts and attaching pricing snapshots.
+
+Do not store every pricing parameter as an unstructured JSON document. Use relational tables for core business entities and rules. JSONB may be used for extensible service-specific calculation inputs or calculation snapshots where appropriate.
+
+All tenant, company and user ownership relationships must follow the existing application's security and data ownership model.
+
+---
+
+# 18. API DESIGN
+
+Implement REST endpoints following existing API conventions.
+
+Suggested endpoints:
+
+**Cost Management**
+
+GET /api/admin/pricing/cost-categories
+
+POST /api/admin/pricing/cost-categories
+
+GET /api/admin/pricing/cost-items
+
+POST /api/admin/pricing/cost-items
+
+PUT /api/admin/pricing/cost-items/{id}
+
+GET /api/admin/pricing/cost-pools
+
+POST /api/admin/pricing/cost-pools
+
+GET /api/admin/pricing/cost-profiles
+
+POST /api/admin/pricing/cost-profiles
+
+**Pricing Configuration**
+
+GET /api/admin/pricing/profiles
+
+POST /api/admin/pricing/profiles
+
+GET /api/admin/pricing/profiles/{id}
+
+PUT /api/admin/pricing/profiles/{id}
+
+POST /api/admin/pricing/profiles/{id}/versions
+
+GET /api/admin/pricing/rules
+
+POST /api/admin/pricing/rules
+
+**Calculation**
+
+POST /api/admin/pricing/calculate
+
+POST /api/admin/pricing/simulate
+
+GET /api/admin/pricing/calculations/{id}
+
+**Quotations and Rate Cards**
+
+POST /api/admin/quotations
+
+POST /api/admin/quotations/{id}/calculate
+
+POST /api/admin/quotations/{id}/approve
+
+POST /api/admin/contracts/{id}/generate-rate-card
+
+GET /api/admin/contracts/{id}/rate-cards
+
+GET /api/admin/rate-cards/{id}
+
+**Profitability**
+
+GET /api/admin/pricing/profitability
+
+GET /api/admin/pricing/profitability/services/{id}
+
+GET /api/admin/pricing/variance
+
+Adapt endpoint names to existing project routing conventions.
+
+All endpoints require appropriate authentication, authorisation and validation.
+
+---
+
+# 19. ADMINISTRATION INTERFACE
+
+Create a dedicated Pricing Management section in the admin dashboard.
+
+Suggested navigation:
+
+Pricing & Cost Management
+- Overview
+- Cost Categories
+- Cost Items
+- Cost Pools
+- Cost Allocation
+- Vehicle Profiles
+- Labour Profiles
+- Cost Profiles
+- Pricing Profiles
+- Pricing Rules
+- Pricing Simulator
+- Quotations
+- Rate Cards
+- Profitability Reports
+- Pricing Audit Log
+
+## Pricing dashboard
+
+Display:
+
+- Total configured overhead.
+- Vehicle cost per kilometre.
+- Average labour cost per hour.
+- Active pricing profiles.
+- Outstanding quotations.
+- Approved rate cards.
+- Average estimated profit margin.
+- Services below minimum margin.
+- Estimated versus actual cost variance.
+
+## Cost configuration screen
+
+Allow administrators to add, edit, deactivate and review cost items.
+
+Display the effective cost contribution of each item.
+
+## Pricing profile editor
+
+Provide a configuration interface where administrators can:
+
+- Select applicable service types.
+- Attach cost profiles.
+- Choose pricing strategies.
+- Configure margin targets.
+- Configure minimum prices.
+- Configure risk allowances.
+- Configure surcharges.
+- Configure volume tiers.
+- Configure validity dates.
+
+Provide a live calculation preview.
+
+## Pricing simulator
+
+Provide a form to configure sample service parameters and immediately display:
+
+- Total estimated cost.
+- Direct costs.
+- Allocated overhead.
+- Risk allowance.
+- Selling price.
+- Profit.
+- Margin.
+
+Allow scenario comparisons.
+
+## Contract pricing screen
+
+When creating a contract, provide a pricing summary panel.
+
+Show:
+
+Recommended price
+Agreed price
+Total estimated cost
+Expected profit
+Expected margin
+Pricing strategy
+Cost profile
+Pricing profile
+
+Allow authorised commercial adjustments and require a reason for overrides.
+
+---
+
+# 20. VAT AND GERMAN COMMERCIAL REQUIREMENTS
+
+The pricing engine must distinguish:
+
+- Net selling price.
+- Applicable VAT rate.
+- VAT amount.
+- Gross selling price.
+
+VAT must be applied after the net selling price is calculated.
+
+Support configurable VAT treatment by service and tax classification.
+
+Do not hardcode one VAT rate for all services.
+
+The system must allow:
+
+- Standard taxable services.
+- Other applicable tax treatments.
+- Different VAT classifications where legally required.
+
+Do not assume that every subcontracting arrangement, software service or cross-border B2B service has identical VAT treatment.
+
+Tax treatment must be validated against the applicable German and EU rules.
+
+The pricing engine is not a substitute for tax accounting or invoicing compliance.
+
+---
+
+# 21. VALIDATION AND BUSINESS RULES
+
+Implement the following protections:
+
+1. No approved price without an applicable pricing profile or explicitly approved manual price.
+2. No negative monetary values unless the field specifically permits credits or adjustments.
+3. Margin must be between 0% and 100%.
+4. Markup and margin must be separately identified.
+5. Every calculation must identify its configuration versions.
+6. Historical contracts must not change when pricing profiles are updated.
+7. Manual price overrides must be audited.
+8. A calculation must flag missing cost configuration.
+9. Unallocated overhead must be visible.
+10. Prevent duplicate allocation of the same cost.
+11. Prevent invalid effective-date ranges.
+12. Flag prices below minimum profitability thresholds.
+13. Distinguish expected delivery volume from guaranteed volume.
+14. Distinguish estimated costs from actual expenses.
+15. All financial calculations must use decimal arithmetic.
+
+A warning should not automatically block a calculation unless it violates a mandatory business rule.
+
+---
+
+# 22. TESTING REQUIREMENTS
+
+Implement unit tests for all calculation components.
+
+Test at minimum:
+
+- Cost per kilometre.
+- Fuel cost.
+- Brake depreciation.
+- Tyre depreciation.
+- Vehicle depreciation.
+- Labour cost per productive hour.
+- Fixed overhead allocation.
+- Variable cost allocation.
+- Risk allowance.
+- Cost-plus pricing.
+- Target margin pricing.
+- Fixed pricing.
+- Tiered pricing.
+- Hybrid pricing.
+- Minimum charges.
+- Additional surcharges.
+- VAT calculation.
+- Pricing profile precedence.
+- Versioned calculations.
+- Manual overrides.
+- Actual versus estimated profitability.
+
+Add integration tests for:
+
+- Contracted route creation and price assignment.
+- Subcontracting assignment pricing.
+- On-demand delivery pricing.
+- Digital project quotation.
+- Rate card generation.
+- Contract price snapshot creation.
+- Pricing profile changes after contract approval.
+
+Include edge cases such as zero expected volume, missing allocation denominators, empty routes, project overruns and incomplete cost profiles.
+
+---
+
+# 23. IMPLEMENTATION PHASES
+
+Do not implement the entire module in one uncontrolled change.
+
+Implement in logical phases.
+
+**Phase 1 — Cost Foundation**
+
+- Cost categories.
+- Cost items.
+- Cost pools.
+- Cost allocation rules.
+- Vehicle profiles.
+- Labour profiles.
+- Cost profiles.
+
+**Phase 2 — Pricing Engine**
+
+- Pricing strategies.
+- Pricing profiles.
+- Pricing rules.
+- Central calculation service.
+- Calculation breakdown.
+- Unit and margin calculations.
+
+**Phase 3 — Express Integration**
+
+- Contracted route pricing.
+- Subcontracting pricing.
+- On-demand B2B pricing.
+- Recurring B2B pricing.
+
+**Phase 4 — Digital Integration**
+
+- Software development pricing.
+- Integration engineering pricing.
+- IT consulting pricing.
+- Digital transformation pricing.
+- Support and maintenance pricing.
+
+**Phase 5 — Quotations and Rate Cards**
+
+- Quotation workflow.
+- Approval workflow.
+- PDF generation.
+- Customer-specific rate cards.
+- Contract pricing snapshots.
+
+**Phase 6 — Simulation and Profitability**
+
+- Scenario simulation.
+- Estimated versus actual costs.
+- Profitability reports.
+- Variance analysis.
+- Pricing alerts.
+
+Each phase must include database migrations, backend implementation, frontend integration, validation and automated tests.
+
+---
+
+# 24. ACCEPTANCE CRITERIA
+
+The feature is considered successfully implemented when:
+
+1. An administrator can configure company-wide and business-unit-specific overhead.
+2. An administrator can configure vehicle and labour costs.
+3. The system can allocate overhead using different cost drivers.
+4. An administrator can create different cost profiles.
+5. An administrator can create different pricing profiles without code changes.
+6. The central pricing engine can calculate different service types.
+7. Creating a contracted route automatically generates a recommended price.
+8. Creating a subcontracting assignment automatically generates a recommended price.
+9. Creating an on-demand delivery automatically calculates its selling price.
+10. Creating a Digital service quotation automatically calculates its selling price.
+11. The system can generate a customer-facing rate card.
+12. Approved contract prices remain historically stable.
+13. An administrator can simulate changes to cost assumptions.
+14. The system can compare actual and estimated profitability.
+15. Every calculation is traceable to its cost and pricing configuration versions.
+16. The system prevents silent double counting and exposes unallocated overhead.
+17. All calculations are covered by automated tests.
+
+---
+
+# 25. FINAL ARCHITECTURAL DIRECTIVE
+
+The pricing engine must be service-agnostic at its core but service-aware through configuration and calculation strategies.
+
+Do not build a large collection of hardcoded conditional statements for each service.
+
+Use appropriate strategy interfaces, calculation components and service-specific input models.
+
+Suggested abstractions:
+
+- ICostCalculator
+- ICostAllocationStrategy
+- IPricingStrategy
+- IPricingProfileResolver
+- IPricingCalculationService
+- IRateCardGenerator
+- IProfitabilityAnalyzer
+
+Use a strategy-based architecture where new pricing methods can be introduced without modifying existing service workflows.
+
+The central pricing engine should return a complete, explainable calculation breakdown.
+
+The same calculation must always produce the same result when supplied with the same inputs and the same configuration versions.
+
+Keep the system modular, testable, auditable and extensible.
+
+**Most importantly: the pricing engine calculates the economically sustainable price; the commercial layer determines the final price offered to the customer.**
+
+These are two different responsibilities and must remain separate.

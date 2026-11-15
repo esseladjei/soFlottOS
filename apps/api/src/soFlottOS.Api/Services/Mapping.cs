@@ -1,6 +1,8 @@
 using soFlottOS.Api.Common;
+using soFlottOS.Api.Domain;
 using soFlottOS.Api.Domain.Entities;
 using soFlottOS.Api.Dtos;
+using soFlottOS.Api.Services.Pricing;
 
 namespace soFlottOS.Api.Services;
 
@@ -42,7 +44,9 @@ public static class Mapping
             client.TaxIdNumber,
             client.SpecialDeliveryInstructions,
             client.DefaultBaseFee,
-            client.DefaultRatePerKilometer);
+            client.DefaultRatePerKilometer,
+            client.TaxTreatmentOverride,
+            TaxTreatmentResolver.Resolve(client));
 
     public static OrderResponse ToResponse(this Order order) =>
         new(
@@ -93,6 +97,11 @@ public static class Mapping
         new(
             invoice.Id,
             invoice.InvoiceNumber,
+            invoice.ServiceType,
+            invoice.ServiceType.InvoiceCode(),
+            invoice.ServiceType.Label(),
+            invoice.TaxTreatment,
+            invoice.TaxNote,
             invoice.ClientId,
             invoice.Client?.CompanyName ?? string.Empty,
             invoice.OrderId,
@@ -110,6 +119,11 @@ public static class Mapping
         new(
             invoice.Id,
             invoice.InvoiceNumber,
+            invoice.ServiceType,
+            invoice.ServiceType.InvoiceCode(),
+            invoice.ServiceType.Label(),
+            invoice.TaxTreatment,
+            invoice.TaxNote,
             invoice.ClientId,
             invoice.Client.CompanyName,
             invoice.OrderId,

@@ -11,6 +11,11 @@ namespace soFlottOS.Api.Dtos;
 public record InvoiceResponse(
     int Id,
     string InvoiceNumber,
+    ServiceType ServiceType,
+    string ServiceCode,
+    string ServiceLabel,
+    TaxTreatment TaxTreatment,
+    string? TaxNote,
     int ClientId,
     string ClientCompanyName,
     int OrderId,
@@ -41,6 +46,11 @@ public sealed record InvoiceIssuerResponse(
 public sealed record InvoiceDetailResponse(
     int Id,
     string InvoiceNumber,
+    ServiceType ServiceType,
+    string ServiceCode,
+    string ServiceLabel,
+    TaxTreatment TaxTreatment,
+    string? TaxNote,
     int ClientId,
     string ClientCompanyName,
     int OrderId,
@@ -56,7 +66,7 @@ public sealed record InvoiceDetailResponse(
     ClientDetailResponse Client,
     OrderResponse Order,
     int PaymentTermsDays)
-    : InvoiceResponse(Id, InvoiceNumber, ClientId, ClientCompanyName, OrderId, NetTotal, VatRate, VatTotal, GrossTotal, Status, PaymentMethod, IssuedAt, DueDate);
+    : InvoiceResponse(Id, InvoiceNumber, ServiceType, ServiceCode, ServiceLabel, TaxTreatment, TaxNote, ClientId, ClientCompanyName, OrderId, NetTotal, VatRate, VatTotal, GrossTotal, Status, PaymentMethod, IssuedAt, DueDate);
 
 /// <summary>Admin action: Draft -> Sent -> Paid / Overdue.</summary>
 public sealed record UpdateInvoiceStatusRequest

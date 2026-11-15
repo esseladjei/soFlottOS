@@ -168,6 +168,7 @@ export function BookingForm({ clientId }: { clientId: number }) {
                 {figure(t.quote.gross, formatCurrency(result.grossPrice), true)}
               </div>
               {result.minimumChargeApplied ? <p className="text-sm text-stone-600">{t.minimumChargeApplied}</p> : null}
+              {result.taxNote ? <p className="text-sm text-stone-600">{content.pricing.enums.taxTreatment[result.taxTreatment]} — {result.taxNote}</p> : null}
               <div className="space-y-2">
                 <p className="text-sm font-bold">{t.mapTitle}</p>
                 <RouteMap
