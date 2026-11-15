@@ -40,6 +40,25 @@ export default async function ConsoleLayout({ children }: { children: ReactNode 
       label: shell.admin.nav.billing,
       items: [{ href: "/invoices", label: shell.admin.nav.invoices }],
     },
+    {
+      id: "pricing",
+      label: shell.admin.nav.pricing,
+      items: [
+        { href: "/pricing", label: shell.admin.nav.pricingOverview },
+        { href: "/pricing/costs", label: shell.admin.nav.pricingCosts },
+        { href: "/pricing/vehicles", label: shell.admin.nav.pricingVehicles },
+        { href: "/pricing/labour", label: shell.admin.nav.pricingLabour },
+        { href: "/pricing/cost-profiles", label: shell.admin.nav.pricingCostProfiles },
+        { href: "/pricing/profiles", label: shell.admin.nav.pricingProfiles },
+        { href: "/pricing/simulator", label: shell.admin.nav.pricingSimulator },
+        { href: "/pricing/audit", label: shell.admin.nav.pricingAudit },
+      ],
+    },
+    {
+      id: "help",
+      label: shell.admin.nav.help,
+      items: [{ href: "/help", label: shell.admin.nav.pricingGuide }],
+    },
   ];
 
   return <RoleShell session={session} title={shell.admin.title} nav={nav}>{children}</RoleShell>;

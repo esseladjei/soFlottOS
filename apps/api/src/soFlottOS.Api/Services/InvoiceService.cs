@@ -4,6 +4,7 @@ using soFlottOS.Api.Domain;
 using soFlottOS.Api.Domain.Entities;
 using soFlottOS.Api.Dtos;
 using soFlottOS.Api.Services.Email;
+using soFlottOS.Api.Services.Pricing;
 
 namespace soFlottOS.Api.Services;
 
@@ -32,13 +33,11 @@ public sealed class InvoiceService(
     IInvoiceRepository invoiceRepository,
     IClientRepository clientRepository,
     InvoicingOptions invoicingOptions,
-    PricingOptions pricingOptions,
     IEmailCommunications emails) : IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository = invoiceRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly InvoicingOptions _invoicingOptions = invoicingOptions;
-    private readonly PricingOptions _pricingOptions = pricingOptions;
 
     /// <summary>Called by <see cref="OrderService"/> straight after an order is stored.</summary>
     public async Task<Invoice> CreateForOrderAsync(Order order, CancellationToken cancellationToken = default)
@@ -47,13 +46,16 @@ public sealed class InvoiceService(
 
         var invoice = new Invoice
         {
-            InvoiceNumber = await BuildInvoiceNumberAsync(issuedAt, cancellationToken),
+            InvoiceNumber = await BuildInvoiceNumberAsync(order.ServiceType, issuedAt, cancellationToken),
+            ServiceType = order.ServiceType,
+            TaxTreatment = order.TaxTreatment,
+            TaxNote = TaxTreatmentResolver.NoteFor(order.TaxTreatment),
             ClientId = order.ClientId,
             Client = order.Client,
             OrderId = order.Id,
             Order = order,
             NetTotal = order.NetPrice,
-            VatRate = _pricingOptions.VatRate,
+            VatRate = order.VatRate,
             VatTotal = order.VatAmount,
             GrossTotal = order.GrossPrice,
             PaymentMethod = order.PaymentMethod,
@@ -140,14 +142,17 @@ public sealed class InvoiceService(
     }
 
     /// <summary>
-    /// German law requires consecutive invoice numbers, e.g. SOFLOTT-2026-1001.
+    /// German law requires consecutive, gap-free invoice numbers. We keep ONE yearly sequence for the
+    /// whole company and embed the service code so anyone can tell at a glance what was billed:
+    /// SOFLOTT-DLV-2026-1001 (on-demand delivery), SOFLOTT-RTE-2026-1002 (contracted route),
+    /// SOFLOTT-SWD-2026-1003 (software development), see <see cref="ServiceTypes.InvoiceCode"/>.
     /// The sequence restarts every year from Invoicing:StartingSequence.
     /// </summary>
-    private async Task<string> BuildInvoiceNumberAsync(DateTimeOffset issuedAt, CancellationToken cancellationToken)
+    private async Task<string> BuildInvoiceNumberAsync(ServiceType serviceType, DateTimeOffset issuedAt, CancellationToken cancellationToken)
     {
         var issuedThisYear = await _invoiceRepository.CountIssuedInYearAsync(issuedAt.Year, cancellationToken);
         var sequence = _invoicingOptions.StartingSequence + issuedThisYear;
 
-        return $"{_invoicingOptions.Prefix}-{issuedAt.Year}-{sequence:D4}";
+        return $"{_invoicingOptions.Prefix}-{serviceType.InvoiceCode()}-{issuedAt.Year}-{sequence:D4}";
     }
 }

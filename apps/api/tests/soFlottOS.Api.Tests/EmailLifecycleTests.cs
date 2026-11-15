@@ -150,9 +150,9 @@ public sealed class EmailLifecycleTests
             var orders = new OrderRepository(Context);
             var emails = new EmailCommunications(EmailSamples.Queue(Context));
             var pricing = new PricingOptions();
-            Invoices = new InvoiceService(new EmailTestInvoiceRepository(Context), clients, EmailSamples.Seller(), pricing, emails);
+            Invoices = new InvoiceService(new EmailTestInvoiceRepository(Context), clients, EmailSamples.Seller(), emails);
             Orders = new OrderService(orders, clients, users, new FakeRoutingService(), new FakeGeocodingService(), new PricingService(pricing),
-                Invoices, new FakeNotificationQueue(), emails, new BusinessTransaction(Context),
+                PricingEngineFactory.Create(Context, pricing), Invoices, new FakeNotificationQueue(), emails, new BusinessTransaction(Context),
                 new BookingAvailabilityService(Context, TimeProvider.System,
                     new MessageLocale(new Microsoft.AspNetCore.Http.HttpContextAccessor())));
             Drivers = new DriverService(users, orders, new FakeNotificationQueue(), emails);

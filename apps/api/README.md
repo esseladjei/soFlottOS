@@ -150,6 +150,30 @@ Services throw `NotFoundException`, `ValidationException`, `ConflictException`,
 `UnauthorizedException`, `ForbiddenException` or `ExternalServiceException`.
 `ApiExceptionHandler` turns them into RFC 7807 JSON, which the frontend displays.
 
+## Cost & pricing engine
+
+`Services/Pricing/` holds the centralised cost & pricing engine (`PricingCalculator`,
+`TaxTreatmentResolver`, admin services) exposed under `/api/admin/pricing`. Admins maintain
+cost categories/items, vehicle and labour cost profiles, bundle them into service cost
+profiles and attach pricing profiles (strategy, margin, overhead, risk, minimum charge) per
+service type and optionally per client. `PricingSeeder` creates a default cost base and one
+profile per service type on first run. Invoice numbers embed the service code
+(`SOFLOTT-DLV-2026-0007`) and VAT follows the client's billing country: Germany 19 %, EU reverse
+charge, UK/UAE non-taxable. See `docs/API-CONTRACT.md` for details.
+
+In the admin's **Pricing profiles** page, **Customer pays** shows the fixed net
+price (including any minimum), customer unit rates, or the cost-based pricing rule.
+The same indicator updates as the profile is edited. Save changes, then use
+**Calculate customer total** on the saved profile to open the simulator with that
+profile, service and client selected. Enter the job quantities to calculate the
+net price, applicable VAT, gross customer total and estimated profit. Unit rates
+and profit percentages alone are not a final job quote.
+
+Admins can open **Help > Costing & pricing guide** (`/help`) for the English or
+German setup workflow, definitions, allocation rules, margin formulas, worked B2B
+delivery and API integration examples, warning explanations and current workflow
+limitations. The guide links directly to the relevant configuration pages.
+
 ## Endpoints
 
 See [`../../docs/API-CONTRACT.md`](../../docs/API-CONTRACT.md), or open

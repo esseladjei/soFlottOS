@@ -57,6 +57,18 @@ public sealed class Order : BaseEntity
 
     // --- Pricing (calculated once, at booking time) -------------------------
 
+    /// <summary>Which service this order sells; v1 orders are always on-demand deliveries.</summary>
+    public ServiceType ServiceType { get; set; } = ServiceType.OnDemandDelivery;
+
+    /// <summary>Snapshot of the engine calculation that produced the price (null for legacy tariff).</summary>
+    public int? PricingCalculationId { get; set; }
+
+    /// <summary>VAT treatment frozen at booking time.</summary>
+    public TaxTreatment TaxTreatment { get; set; } = TaxTreatment.StandardGermanVat;
+
+    /// <summary>VAT rate applied (0.19 or 0).</summary>
+    public decimal VatRate { get; set; } = 0.19m;
+
     public decimal DistanceKm { get; set; }
 
     public int EstimatedDurationMinutes { get; set; }

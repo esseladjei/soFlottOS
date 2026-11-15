@@ -31,6 +31,12 @@ public sealed class Client : BaseEntity
     /// <summary>German VAT id (USt-IdNr.) printed on the invoice.</summary>
     public string? TaxIdNumber { get; set; }
 
+    /// <summary>
+    /// Manual VAT treatment override. Null = derived from <see cref="Country"/> and <see cref="TaxIdNumber"/>
+    /// by TaxTreatmentResolver (Germany → 19%, EU with VAT id → §13b reverse charge, non-EU → §3a not taxable).
+    /// </summary>
+    public TaxTreatment? TaxTreatmentOverride { get; set; }
+
     /// <summary>Standing instructions that apply to every delivery for this client.</summary>
     public string? SpecialDeliveryInstructions { get; set; }
 

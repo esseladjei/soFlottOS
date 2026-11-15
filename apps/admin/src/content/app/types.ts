@@ -7,6 +7,7 @@
 // `npm run typecheck` fail instead of showing an empty label in production.
 // ---------------------------------------------------------------------------
 
+import type { PricingContent } from "@/content/app/pricing";
 import type {
   CargoCategory,
   DriverAvailability,
@@ -46,6 +47,8 @@ export interface ValidationMessages {
 }
 
 export interface AppContent {
+  /** Cost & pricing engine copy (see pricing.ts). */
+  pricing: PricingContent;
   bookingAvailability: {
     title: string;
     description: string;
@@ -150,6 +153,17 @@ export interface AppContent {
         drivers: string;
         invoices: string;
         bookingAvailability: string;
+        pricing: string;
+        pricingOverview: string;
+        pricingCosts: string;
+        pricingVehicles: string;
+        pricingLabour: string;
+        pricingCostProfiles: string;
+        pricingProfiles: string;
+        pricingSimulator: string;
+        pricingAudit: string;
+        help: string;
+        pricingGuide: string;
       };
     };
   };

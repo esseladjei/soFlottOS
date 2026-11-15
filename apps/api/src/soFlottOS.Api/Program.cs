@@ -11,6 +11,7 @@ using soFlottOS.Api.Common;
 using soFlottOS.Api.Data;
 using soFlottOS.Api.Data.Repositories;
 using soFlottOS.Api.Services;
+using soFlottOS.Api.Services.Pricing;
 using soFlottOS.Api.Services.Notifications;
 using soFlottOS.Api.Services.Security;
 using soFlottOS.Api.Services.Email;
@@ -91,6 +92,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IConsentRepository, ConsentRepository>();
 builder.Services.AddScoped<IPrivacyRequestRepository, PrivacyRequestRepository>();
 builder.Services.AddScoped<DataSeeder>();
+builder.Services.AddScoped<PricingSeeder>();
 
 // 2b. Business logic (service layer).
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -108,6 +110,11 @@ builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IPricingService, PricingService>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<IPricingAuditService, PricingAuditService>();
+builder.Services.AddScoped<ICostConfigurationService, CostConfigurationService>();
+builder.Services.AddScoped<IPricingProfileService, PricingProfileService>();
+builder.Services.AddScoped<IPricingCalculationService, PricingCalculationService>();
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddScoped<INotificationQueue, NotificationQueue>();
@@ -330,4 +337,5 @@ static async Task InitializeDatabaseAsync(WebApplication app)
     }
 
     await scope.ServiceProvider.GetRequiredService<DataSeeder>().SeedAsync();
+    await scope.ServiceProvider.GetRequiredService<PricingSeeder>().SeedAsync();
 }

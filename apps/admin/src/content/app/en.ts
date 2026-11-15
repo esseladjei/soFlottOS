@@ -1,7 +1,9 @@
 // English copy for the signed-in application.
+import { pricingEn } from "@/content/app/pricing";
 import type { AppContent } from "@/content/app/types";
 
 export const en: AppContent = {
+  pricing: pricingEn,
   common: {
     languageLabel: "Choose language",
     signOut: "Sign out",
@@ -165,6 +167,17 @@ export const en: AppContent = {
         clients: "Clients",
         drivers: "Drivers",
         invoices: "Invoices",
+        pricing: "Cost & pricing",
+        pricingOverview: "Overview",
+        pricingCosts: "Cost items",
+        pricingVehicles: "Vehicles",
+        pricingLabour: "Labour",
+        pricingCostProfiles: "Cost profiles",
+        pricingProfiles: "Pricing profiles",
+        pricingSimulator: "Simulator",
+        pricingAudit: "Change log",
+        help: "Help",
+        pricingGuide: "Costing & pricing guide",
       },
     },
   },

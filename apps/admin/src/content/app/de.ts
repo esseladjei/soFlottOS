@@ -1,7 +1,9 @@
 // German copy for the signed-in application. Default language.
+import { pricingDe } from "@/content/app/pricing";
 import type { AppContent } from "@/content/app/types";
 
 export const de: AppContent = {
+  pricing: pricingDe,
   common: {
     languageLabel: "Sprache wählen",
     signOut: "Abmelden",
@@ -166,6 +168,17 @@ export const de: AppContent = {
         clients: "Kunden",
         drivers: "Fahrer",
         invoices: "Rechnungen",
+        pricing: "Kosten & Preise",
+        pricingOverview: "Übersicht",
+        pricingCosts: "Kostenpositionen",
+        pricingVehicles: "Fahrzeuge",
+        pricingLabour: "Personal",
+        pricingCostProfiles: "Kostenprofile",
+        pricingProfiles: "Preisprofile",
+        pricingSimulator: "Simulator",
+        pricingAudit: "Änderungsprotokoll",
+        help: "Hilfe",
+        pricingGuide: "Kosten & Preise verstehen",
       },
     },
   },

@@ -23,6 +23,15 @@ Next.js frontend (`apps/web`). Every endpoint below is implemented by a controll
 | `InvoiceStatus` | `Draft`, `Sent`, `Paid`, `Overdue` |
 | `PaymentMethod` | `BankTransfer`, `PayPal` |
 | `CargoCategory` | `Document`, `SmallBox`, `AutoPart`, `Oversized` |
+| `ServiceType` | `B2BDelivery` (DLV), `ContractedRoute` (RTE), `Subcontracting` (SUB), `Recurring` (REC), `SoftwareDevelopment` (SWD), `ApiIntegration` (API), `Consulting` (CON), `DataExchange` (DTX), `Support` (SUP) |
+| `TaxTreatment` | `StandardGermanVat` (19 %), `ReverseChargeEu` (0 %, §13b UStG), `NonTaxableThirdCountry` (0 %, §3a Abs. 2 UStG) |
+| `CostType` | `Fixed`, `Variable`, `SemiVariable`, `OneTime` |
+| `AllocationMethod` | `PerHour`, `PerKilometre`, `PerDelivery`, `PerRoute`, `PerProject`, `PerWorkingDay`, `PerStop`, `PerParcel`, `PerMonth`, `WholeAmount` |
+| `PricingStrategy` | `CostPlus`, `TargetMargin`, `FixedPrice`, `RateCard` |
+| `PricingUnit` | `Fixed`, `Kilometre`, `Hour`, `Day`, `Delivery`, `Stop`, `Parcel`, `Route`, `Project`, `Month` |
+| `RiskAllowanceMethod` | `None`, `FixedAmount`, `PercentageOfDirectCosts`, `PercentageOfTotalCosts` |
+| `CalculationStatus` | `Ok`, `Warning`, `Error` |
+| `PricingAuditAction` | `Created`, `Updated`, `Deactivated`, `NewVersion`, `ManualOverride` |
 
 ## Auth - `/api/auth` (anonymous unless stated)
 
@@ -87,6 +96,23 @@ Changing an invoice to `Paid` stages a payment-confirmation email; changing it t
 distinct status indicators in the admin and client workspaces. The invoice detail
 page can be printed or saved as PDF from the browser.
 
+### Invoice numbering and tax
+
+Invoice numbers are `{Prefix}-{SERVICE}-{Year}-{Seq}` (e.g. `SOFLOTT-DLV-2026-0007`), where
+`SERVICE` is the three-letter code of the `ServiceType` in the enum table above, so the
+service an invoice belongs to is visible in the number itself. Sequences are per
+service and year. `Invoice` / `InvoiceDetail` carry `serviceCode`, `serviceLabel`,
+`taxTreatment`, `vatRate` and `taxNote` (the legal note printed under the totals).
+
+Tax treatment is resolved per client from the billing country unless the client has a
+`taxTreatmentOverride`:
+
+| Billing country | Treatment | VAT |
+| --- | --- | --- |
+| Germany | `StandardGermanVat` | 19 % |
+| Ireland / other EU member state | `ReverseChargeEu` | 0 % – "Steuerschuldnerschaft des Leistungsempfängers (§13b UStG)" |
+| United Kingdom, UAE, other third countries | `NonTaxableThirdCountry` | 0 % – not taxable in Germany (§3a Abs. 2 UStG) |
+
 ## Booking availability - `/api/booking-availability`
 
 | Method | Route | Roles | Body / response |
@@ -129,6 +155,33 @@ are collected separately in the UI and saved as complete addresses. Both contact
 names and phone numbers are required. All four coordinates may be omitted together;
 in that case the quote contains the base fee only until address geocoding is available.
 Driver profiles include completed delivery counts and gross revenue from delivered jobs.
+
+## Cost & pricing engine - `/api/admin/pricing` (Admin role)
+
+Centralised cost base and pricing profiles. Every entity has a `GET` list (`?includeInactive=`),
+`POST` create and `PUT {id}` update; deactivation is a `PUT` with `isActive: false`. Changes are
+written to the audit log.
+
+| Method | Route | Response |
+| --- | --- | --- |
+| GET | `/api/admin/pricing/overview` | `PricingOverview` (counts, active profiles per service, recent calculations) |
+| GET | `/api/admin/pricing/reference` | enum values + labels for UI selects |
+| GET/POST/PUT | `/api/admin/pricing/cost-categories[/{id}]` | `CostCategory` |
+| GET/POST/PUT | `/api/admin/pricing/cost-items[/{id}]` | `CostItem` (amount, `costType`, `allocationMethod`, validity window) |
+| GET/POST/PUT | `/api/admin/pricing/vehicle-profiles[/{id}]` | `VehicleCostProfile` (derived `costPerKm`, `costPerHour`) |
+| GET/POST/PUT | `/api/admin/pricing/labour-profiles[/{id}]` | `LabourCostProfile` (derived fully-loaded `costPerHour`) |
+| GET/POST/PUT | `/api/admin/pricing/cost-profiles[/{id}]` | `ServiceCostProfile` (cost items + vehicle + labour bundled per service) |
+| GET/POST/PUT | `/api/admin/pricing/profiles[/{id}]` | `PricingProfile` (strategy, margin, overhead %, risk allowance, min charge, unit rates, optional `clientId`) |
+| POST | `/api/admin/pricing/calculate` | `PricingCalculation` – persisted calculation for a contract/order |
+| POST | `/api/admin/pricing/simulate` | `PricingCalculation` – what-if, not persisted |
+| GET | `/api/admin/pricing/calculations[/{id}]` | `PricingCalculation[]` – history with full breakdown |
+| GET | `/api/admin/pricing/audit` | `PricingAuditEntry[]` |
+
+Profile resolution when pricing an order or contract: a client-specific active profile for the
+service type wins, otherwise the general active profile for the service type, otherwise the legacy
+tariff (`max(minimumCharge, baseFee + km × ratePerKm)`). Pricing result =
+direct costs (cost items + vehicle + labour × quantities) + overhead % + risk allowance → cost
+base → margin per strategy → minimum charge → VAT per the client's tax treatment.
 
 ## Privacy - `/api/privacy` (GDPR / TDDDG)
 

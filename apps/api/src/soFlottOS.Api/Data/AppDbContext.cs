@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using soFlottOS.Api.Domain;
 using soFlottOS.Api.Domain.Entities;
+using soFlottOS.Api.Domain.Entities.Pricing;
 
 namespace soFlottOS.Api.Data;
 
@@ -38,6 +39,28 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 
     public DbSet<PrivacyRequest> PrivacyRequests => Set<PrivacyRequest>();
 
+    // --- Cost & pricing engine -------------------------------------------------
+
+    public DbSet<CostCategory> CostCategories => Set<CostCategory>();
+
+    public DbSet<CostItem> CostItems => Set<CostItem>();
+
+    public DbSet<VehicleProfile> VehicleProfiles => Set<VehicleProfile>();
+
+    public DbSet<LabourProfile> LabourProfiles => Set<LabourProfile>();
+
+    public DbSet<CostProfile> CostProfiles => Set<CostProfile>();
+
+    public DbSet<CostProfileItem> CostProfileItems => Set<CostProfileItem>();
+
+    public DbSet<PricingProfile> PricingProfiles => Set<PricingProfile>();
+
+    public DbSet<PricingProfileRate> PricingProfileRates => Set<PricingProfileRate>();
+
+    public DbSet<PricingCalculation> PricingCalculations => Set<PricingCalculation>();
+
+    public DbSet<PricingAuditEntry> PricingAuditEntries => Set<PricingAuditEntry>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ConfigureUsers(modelBuilder);
@@ -49,6 +72,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         ConfigureEmails(modelBuilder);
         ConfigureConsentRecords(modelBuilder);
         ConfigurePrivacyRequests(modelBuilder);
+        ConfigurePricingEngine(modelBuilder);
         var availability = modelBuilder.Entity<BookingAvailability>();
         availability.ToTable("BookingAvailability");
         availability.HasKey(entity => entity.Id);
@@ -127,6 +151,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         client.Property(entity => entity.PostalCode).HasMaxLength(20).IsRequired();
         client.Property(entity => entity.Country).HasMaxLength(100).IsRequired();
         client.Property(entity => entity.TaxIdNumber).HasMaxLength(50);
+        client.Property(entity => entity.TaxTreatmentOverride).HasConversion<string>().HasMaxLength(32);
         client.Property(entity => entity.SpecialDeliveryInstructions).HasMaxLength(1000);
         client.Property(entity => entity.DefaultBaseFee).HasPrecision(10, 2);
         client.Property(entity => entity.DefaultRatePerKilometer).HasPrecision(10, 2);
@@ -147,6 +172,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         order.Property(entity => entity.CargoCategory).HasConversion<string>().HasMaxLength(32).IsRequired();
         order.Property(entity => entity.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
         order.Property(entity => entity.PaymentMethod).HasConversion<string>().HasMaxLength(32).IsRequired();
+        order.Property(entity => entity.ServiceType).HasConversion<string>().HasMaxLength(32).IsRequired();
+        order.Property(entity => entity.TaxTreatment).HasConversion<string>().HasMaxLength(32).IsRequired();
+        order.Property(entity => entity.VatRate).HasPrecision(5, 4).IsRequired();
         order.Property(entity => entity.WeightKg).HasPrecision(8, 2).IsRequired();
 
         order.Property(entity => entity.PickupAddress).HasMaxLength(500).IsRequired();
@@ -213,6 +241,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         invoice.Property(entity => entity.GrossTotal).HasPrecision(10, 2).IsRequired();
         invoice.Property(entity => entity.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
         invoice.Property(entity => entity.PaymentMethod).HasConversion<string>().HasMaxLength(32).IsRequired();
+        invoice.Property(entity => entity.ServiceType).HasConversion<string>().HasMaxLength(32).IsRequired();
+        invoice.Property(entity => entity.TaxTreatment).HasConversion<string>().HasMaxLength(32).IsRequired();
+        invoice.Property(entity => entity.TaxNote).HasMaxLength(300);
 
         // Invoice numbers must be unique (German bookkeeping requirement).
         invoice.HasIndex(entity => entity.InvoiceNumber).IsUnique();
@@ -296,5 +327,149 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         request.Property(entity => entity.Locale).HasMaxLength(2).IsRequired();
         request.Property(entity => entity.HandlerNote).HasMaxLength(2000);
         request.HasIndex(entity => new { entity.Status, entity.CreatedAt });
+    }
+
+    private static void ConfigurePricingEngine(ModelBuilder modelBuilder)
+    {
+        var category = modelBuilder.Entity<CostCategory>();
+        category.ToTable("CostCategories");
+        category.HasKey(entity => entity.Id);
+        category.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        category.Property(entity => entity.Description).HasMaxLength(500);
+        category.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32);
+
+        var item = modelBuilder.Entity<CostItem>();
+        item.ToTable("CostItems");
+        item.HasKey(entity => entity.Id);
+        item.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        item.Property(entity => entity.Description).HasMaxLength(500);
+        item.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32);
+        item.Property(entity => entity.CostType).HasConversion<string>().HasMaxLength(32).IsRequired();
+        item.Property(entity => entity.Frequency).HasConversion<string>().HasMaxLength(32).IsRequired();
+        item.Property(entity => entity.AllocationMethod).HasConversion<string>().HasMaxLength(32).IsRequired();
+        item.Property(entity => entity.Amount).HasPrecision(12, 2).IsRequired();
+        item.Property(entity => entity.AllocationDenominator).HasPrecision(12, 2);
+        item.Property(entity => entity.Currency).HasMaxLength(3).IsRequired();
+        item.HasIndex(entity => entity.IsActive);
+        item.HasOne(entity => entity.Category)
+            .WithMany(c => c.Items)
+            .HasForeignKey(entity => entity.CostCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        var vehicle = modelBuilder.Entity<VehicleProfile>();
+        vehicle.ToTable("VehicleProfiles");
+        vehicle.HasKey(entity => entity.Id);
+        vehicle.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        vehicle.Property(entity => entity.Description).HasMaxLength(500);
+        foreach (var name in new[]
+                 {
+                     nameof(VehicleProfile.PurchasePrice), nameof(VehicleProfile.ExpectedResidualValue),
+                     nameof(VehicleProfile.ExpectedUsefulKilometres), nameof(VehicleProfile.TyreReplacementCost),
+                     nameof(VehicleProfile.TyreLifespanKm), nameof(VehicleProfile.BrakeReplacementCost),
+                     nameof(VehicleProfile.BrakeLifespanKm), nameof(VehicleProfile.ServiceCost),
+                     nameof(VehicleProfile.ServiceIntervalKm), nameof(VehicleProfile.AnnualInsurance),
+                     nameof(VehicleProfile.AnnualVehicleTax), nameof(VehicleProfile.MonthlyFinancingCost),
+                     nameof(VehicleProfile.AnnualOtherCosts), nameof(VehicleProfile.ExpectedAnnualKilometres),
+                 })
+        {
+            vehicle.Property(name).HasPrecision(12, 2);
+        }
+
+        vehicle.Property(entity => entity.FuelConsumptionPer100Km).HasPrecision(6, 2);
+        vehicle.Property(entity => entity.FuelPricePerLitre).HasPrecision(6, 3);
+
+        var labour = modelBuilder.Entity<LabourProfile>();
+        labour.ToTable("LabourProfiles");
+        labour.HasKey(entity => entity.Id);
+        labour.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        labour.Property(entity => entity.Description).HasMaxLength(500);
+        labour.Property(entity => entity.ResourceType).HasMaxLength(32).IsRequired();
+        labour.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32).IsRequired();
+        labour.Property(entity => entity.AnnualGrossSalary).HasPrecision(12, 2);
+        labour.Property(entity => entity.AnnualAdditionalCosts).HasPrecision(12, 2);
+        labour.Property(entity => entity.EmployerContributionPercent).HasPrecision(5, 2);
+        labour.Property(entity => entity.PaidHoursPerWeek).HasPrecision(5, 2);
+        labour.Property(entity => entity.BillableUtilisationPercent).HasPrecision(5, 2);
+
+        var costProfile = modelBuilder.Entity<CostProfile>();
+        costProfile.ToTable("CostProfiles");
+        costProfile.HasKey(entity => entity.Id);
+        costProfile.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        costProfile.Property(entity => entity.Description).HasMaxLength(500);
+        costProfile.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32).IsRequired();
+        costProfile.Property(entity => entity.RiskAllowanceMethod).HasConversion<string>().HasMaxLength(32).IsRequired();
+        costProfile.Property(entity => entity.RiskAllowanceValue).HasPrecision(12, 2);
+        costProfile.HasOne(entity => entity.VehicleProfile).WithMany().HasForeignKey(entity => entity.VehicleProfileId).OnDelete(DeleteBehavior.SetNull);
+        costProfile.HasOne(entity => entity.LabourProfile).WithMany().HasForeignKey(entity => entity.LabourProfileId).OnDelete(DeleteBehavior.SetNull);
+
+        var link = modelBuilder.Entity<CostProfileItem>();
+        link.ToTable("CostProfileItems");
+        link.HasKey(entity => new { entity.CostProfileId, entity.CostItemId });
+        link.HasOne(entity => entity.CostProfile).WithMany(p => p.Items).HasForeignKey(entity => entity.CostProfileId).OnDelete(DeleteBehavior.Cascade);
+        link.HasOne(entity => entity.CostItem).WithMany(i => i.ProfileLinks).HasForeignKey(entity => entity.CostItemId).OnDelete(DeleteBehavior.Cascade);
+
+        var pricing = modelBuilder.Entity<PricingProfile>();
+        pricing.ToTable("PricingProfiles");
+        pricing.HasKey(entity => entity.Id);
+        pricing.Property(entity => entity.Name).HasMaxLength(150).IsRequired();
+        pricing.Property(entity => entity.Description).HasMaxLength(500);
+        pricing.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32).IsRequired();
+        pricing.Property(entity => entity.ServiceType).HasConversion<string>().HasMaxLength(32);
+        pricing.Property(entity => entity.Strategy).HasConversion<string>().HasMaxLength(32).IsRequired();
+        pricing.Property(entity => entity.Currency).HasMaxLength(3).IsRequired();
+        pricing.Property(entity => entity.MarkupPercent).HasPrecision(6, 2);
+        pricing.Property(entity => entity.TargetMarginPercent).HasPrecision(6, 2);
+        pricing.Property(entity => entity.MinimumMarginPercent).HasPrecision(6, 2);
+        pricing.Property(entity => entity.FixedPrice).HasPrecision(12, 2);
+        pricing.Property(entity => entity.MinimumPrice).HasPrecision(12, 2);
+        pricing.HasIndex(entity => new { entity.BusinessUnit, entity.ServiceType, entity.IsActive });
+        pricing.HasOne(entity => entity.Client).WithMany().HasForeignKey(entity => entity.ClientId).OnDelete(DeleteBehavior.Cascade);
+        pricing.HasOne(entity => entity.CostProfile).WithMany().HasForeignKey(entity => entity.CostProfileId).OnDelete(DeleteBehavior.SetNull);
+
+        var rate = modelBuilder.Entity<PricingProfileRate>();
+        rate.ToTable("PricingProfileRates");
+        rate.HasKey(entity => entity.Id);
+        rate.Property(entity => entity.Label).HasMaxLength(150).IsRequired();
+        rate.Property(entity => entity.Unit).HasConversion<string>().HasMaxLength(32).IsRequired();
+        rate.Property(entity => entity.Rate).HasPrecision(12, 4).IsRequired();
+        rate.Property(entity => entity.IncludedQuantity).HasPrecision(12, 2);
+        rate.HasOne(entity => entity.PricingProfile).WithMany(p => p.Rates).HasForeignKey(entity => entity.PricingProfileId).OnDelete(DeleteBehavior.Cascade);
+
+        var calc = modelBuilder.Entity<PricingCalculation>();
+        calc.ToTable("PricingCalculations");
+        calc.HasKey(entity => entity.Id);
+        calc.Property(entity => entity.Name).HasMaxLength(150);
+        calc.Property(entity => entity.Currency).HasMaxLength(3).IsRequired();
+        calc.Property(entity => entity.BusinessUnit).HasConversion<string>().HasMaxLength(32).IsRequired();
+        calc.Property(entity => entity.ServiceType).HasConversion<string>().HasMaxLength(32).IsRequired();
+        calc.Property(entity => entity.TaxTreatment).HasConversion<string>().HasMaxLength(32).IsRequired();
+        calc.Property(entity => entity.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
+        calc.Property(entity => entity.VatRate).HasPrecision(5, 4);
+        calc.Property(entity => entity.ExpectedMarginPercent).HasPrecision(8, 2);
+        foreach (var name in new[]
+                 {
+                     nameof(PricingCalculation.DirectCosts), nameof(PricingCalculation.AllocatedOverhead),
+                     nameof(PricingCalculation.LabourCosts), nameof(PricingCalculation.VehicleCosts),
+                     nameof(PricingCalculation.RiskAllowance), nameof(PricingCalculation.TotalEstimatedCost),
+                     nameof(PricingCalculation.FinalNetSellingPrice), nameof(PricingCalculation.VatAmount),
+                     nameof(PricingCalculation.FinalGrossSellingPrice), nameof(PricingCalculation.ExpectedProfit),
+                 })
+        {
+            calc.Property(name).HasPrecision(12, 2);
+        }
+
+        calc.Property(entity => entity.InputJson).HasColumnType("text").IsRequired();
+        calc.Property(entity => entity.BreakdownJson).HasColumnType("text").IsRequired();
+        calc.HasIndex(entity => entity.CalculationId).IsUnique();
+        calc.HasIndex(entity => entity.OrderId);
+        calc.HasIndex(entity => new { entity.IsSimulation, entity.CreatedAt });
+
+        var audit = modelBuilder.Entity<PricingAuditEntry>();
+        audit.ToTable("PricingAuditEntries");
+        audit.HasKey(entity => entity.Id);
+        audit.Property(entity => entity.EntityType).HasMaxLength(64).IsRequired();
+        audit.Property(entity => entity.Action).HasConversion<string>().HasMaxLength(32).IsRequired();
+        audit.Property(entity => entity.Summary).HasMaxLength(1000).IsRequired();
+        audit.HasIndex(entity => entity.CreatedAt);
     }
 }

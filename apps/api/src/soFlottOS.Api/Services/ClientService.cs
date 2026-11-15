@@ -82,6 +82,7 @@ public sealed class ClientService(IClientRepository clientRepository, IEmailComm
         // the request and put them back when a client edits its own profile.
         var currentBaseFee = client.DefaultBaseFee;
         var currentRatePerKilometer = client.DefaultRatePerKilometer;
+        var currentTaxTreatment = client.TaxTreatmentOverride;
 
         Apply(request, client);
 
@@ -89,6 +90,7 @@ public sealed class ClientService(IClientRepository clientRepository, IEmailComm
         {
             client.DefaultBaseFee = currentBaseFee;
             client.DefaultRatePerKilometer = currentRatePerKilometer;
+            client.TaxTreatmentOverride = currentTaxTreatment;
         }
 
         await _clientRepository.SaveChangesAsync(cancellationToken);
@@ -110,6 +112,7 @@ public sealed class ClientService(IClientRepository clientRepository, IEmailComm
         client.SpecialDeliveryInstructions = Clean(request.SpecialDeliveryInstructions);
         client.DefaultBaseFee = request.DefaultBaseFee;
         client.DefaultRatePerKilometer = request.DefaultRatePerKilometer;
+        client.TaxTreatmentOverride = request.TaxTreatmentOverride;
     }
 
     private static void EnsureAccess(Client client, CurrentUser currentUser)

@@ -1,6 +1,7 @@
 // Zod schema for the admin CRM form, built from translated messages.
 import { z } from "zod";
 import type { ValidationMessages } from "@/content/app/types";
+import { taxTreatments } from "@/types/api";
 
 export function createClientSchema(t: ValidationMessages) {
   return z.object({
@@ -16,6 +17,7 @@ export function createClientSchema(t: ValidationMessages) {
     specialDeliveryInstructions: z.string().optional(),
     defaultBaseFee: z.coerce.number().optional(),
     defaultRatePerKilometer: z.coerce.number().optional(),
+    taxTreatmentOverride: z.enum(taxTreatments).or(z.literal("")).optional(),
   });
 }
 
